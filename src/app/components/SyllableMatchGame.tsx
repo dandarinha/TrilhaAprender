@@ -19,8 +19,6 @@ const LEVELS: Level[] = [
     consonant: 'B',
     bank: [
       { syllable: 'BA', word: 'BALEIA',   emoji: '🐳' },
-      { syllable: 'BE', word: 'BESOURO',  emoji: '🪲' },
-      { syllable: 'BI', word: 'BISONTE',  emoji: '🦬' },
       { syllable: 'BO', word: 'BOTO',     emoji: '🐬' },
       { syllable: 'BU', word: 'BÚFALO',   emoji: '🐃' },
     ],
@@ -77,7 +75,6 @@ const LEVELS: Level[] = [
     bank: [
       { syllable: 'MA', word: 'MACACO',   emoji: '🐵' },
       { syllable: 'ME', word: 'MELANCIA', emoji: '🍉' },
-      { syllable: 'MI', word: 'MINHOCA',  emoji: '🪱' },
       { syllable: 'MO', word: 'MORANGO',  emoji: '🍓' },
     ],
     distractors: [
@@ -141,6 +138,67 @@ const LEVELS: Level[] = [
       { word: 'MORANGO', emoji: '🍓' },
     ],
   },
+  {
+    consonant: 'F',
+    bank: [
+      { syllable: 'FA', word: 'FALCÃO',   emoji: '🦅' },
+      { syllable: 'FU', word: 'FURACÃO',  emoji: '🌪️' },
+    ],
+    distractors: [
+      { word: 'MACACO', emoji: '🐵' },
+      { word: 'SAPO',   emoji: '🐸' },
+      { word: 'SOL',    emoji: '☀️' },
+    ],
+  },
+  {
+    consonant: 'J',
+    bank: [
+      { syllable: 'JA', word: 'JACARÉ',   emoji: '🐊' },
+      { syllable: 'JI', word: 'JIBÓIA',   emoji: '🐍' },
+      { syllable: 'JO', word: 'JOANINHA', emoji: '🐞' },
+    ],
+    distractors: [
+      { word: 'ONÇA',   emoji: '🐆' },
+      { word: 'UVA',    emoji: '🍇' },
+    ],
+  },
+  {
+    consonant: 'N',
+    bank: [
+      { syllable: 'NE', word: 'NEVE',     emoji: '❄️' },
+      { syllable: 'NO', word: 'NOITE',    emoji: '🌙' },
+      { syllable: 'NU', word: 'NUVEM',    emoji: '☁️' },
+    ],
+    distractors: [
+      { word: 'ARARA',   emoji: '🦜' },
+      { word: 'SOL',     emoji: '☀️' },
+    ],
+  },
+  {
+    consonant: 'S',
+    bank: [
+      { syllable: 'SA', word: 'SAPO',     emoji: '🐸' },
+      { syllable: 'SE', word: 'SERPENTE', emoji: '🐍' },
+      { syllable: 'SO', word: 'SOL',      emoji: '☀️' },
+    ],
+    distractors: [
+      { word: 'BALEIA',  emoji: '🐳' },
+      { word: 'ZEBRA',   emoji: '🦓' },
+      { word: 'JACARÉ',  emoji: '🐊' },
+    ],
+  },
+  {
+    consonant: 'Z',
+    bank: [
+      { syllable: 'ZA', word: 'ZANGÃO',   emoji: '🐝' },
+      { syllable: 'ZE', word: 'ZEBRA',    emoji: '🦓' },
+    ],
+    distractors: [
+      { word: 'IGUANA',   emoji: '🦎' },
+      { word: 'BORBOLETA',emoji: '🦋' },
+      { word: 'SAPO',     emoji: '🐸' },
+    ],
+  }
 ];
 
 function shuffleArray<T>(array: T[]): T[] {

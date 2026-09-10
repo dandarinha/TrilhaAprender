@@ -8,36 +8,34 @@ import { SpeakButton } from './SpeakButton';
 // Apenas animais, flores, insetos, frutas e vegetais (todos com emoji correspondente)
 const WORDS_DATA = [
   // 2 sílabas
-  { word: "GATO",       syllables: ["GA", "TO"],               emoji: "🐱" },
-  { word: "PATO",       syllables: ["PA", "TO"],               emoji: "🦆" },
-  { word: "RATO",       syllables: ["RA", "TO"],               emoji: "🐀" },
-  { word: "SAPO",       syllables: ["SA", "PO"],               emoji: "🐸" },
-  { word: "VACA",       syllables: ["VA", "CA"],               emoji: "🐮" },
-  { word: "PERA",       syllables: ["PE", "RA"],               emoji: "🍐" },
-  { word: "LOBO",       syllables: ["LO", "BO"],               emoji: "🐺" },
-  { word: "ROSA",       syllables: ["RO", "SA"],               emoji: "🌹" },
-  { word: "FOCA",       syllables: ["FO", "CA"],               emoji: "🦭" },
-  { word: "GALO",       syllables: ["GA", "LO"],               emoji: "🐓" },
+  { word: "GATO",       syllables: ["GA", "TO"],              emoji: "🐱" },
+  { word: "PATO",       syllables: ["PA", "TO"],              emoji: "🦆" },
+  { word: "RATO",       syllables: ["RA", "TO"],              emoji: "🐀" },
+  { word: "SAPO",       syllables: ["SA", "PO"],              emoji: "🐸" },
+  { word: "VACA",       syllables: ["VA", "CA"],              emoji: "🐮" },
+  { word: "PERA",       syllables: ["PE", "RA"],              emoji: "🍐" },
+  { word: "LOBO",       syllables: ["LO", "BO"],              emoji: "🐺" },
+  { word: "ROSA",       syllables: ["RO", "SA"],              emoji: "🌹" },
+  { word: "GALO",       syllables: ["GA", "LO"],              emoji: "🐓" },
   // 3 sílabas
-  { word: "BANANA",     syllables: ["BA", "NA", "NA"],         emoji: "🍌" },
-  { word: "MACACO",     syllables: ["MA", "CA", "CO"],         emoji: "🐵" },
-  { word: "CAVALO",     syllables: ["CA", "VA", "LO"],         emoji: "🐴" },
-  { word: "TUCANO",     syllables: ["TU", "CA", "NO"],         emoji: "🐦" },
+  { word: "BANANA",     syllables: ["BA", "NA", "NA"],        emoji: "🍌" },
+  { word: "MACACO",     syllables: ["MA", "CA", "CO"],        emoji: "🐵" },
+  { word: "CAVALO",     syllables: ["CA", "VA", "LO"],        emoji: "🐴" },
+  { word: "TUCANO",     syllables: ["TU", "CA", "NO"],        emoji: "🐦" },
   { word: "ARARA",      syllables: ["A", "RA", "RA"],          emoji: "🦜" },
-  { word: "TOMATE",     syllables: ["TO", "MA", "TE"],         emoji: "🍅" },
-  { word: "ABELHA",     syllables: ["A", "BE", "LHA"],         emoji: "🐝" },
-  { word: "COELHO",     syllables: ["CO", "E", "LHO"],         emoji: "🐰" },
-  { word: "CENOURA",    syllables: ["CE", "NOU", "RA"],        emoji: "🥕" },
-  { word: "MORANGO",    syllables: ["MO", "RAN", "GO"],        emoji: "🍓" },
-  { word: "LAGARTO",    syllables: ["LA", "GAR", "TO"],        emoji: "🦎" },
-  { word: "GORILA",     syllables: ["GO", "RI", "LA"],         emoji: "🦍" },
+  { word: "TOMATE",     syllables: ["TO", "MA", "TE"],        emoji: "🍅" },
+  { word: "ABELHA",     syllables: ["A", "BE", "LHA"],        emoji: "🐝" },
+  { word: "COELHO",     syllables: ["CO", "E", "LHO"],        emoji: "🐰" },
+  { word: "CENOURA",    syllables: ["CE", "NOU", "RA"],       emoji: "🥕" },
+  { word: "MORANGO",    syllables: ["MO", "RAN", "GO"],       emoji: "🍓" },
+  { word: "LAGARTO",    syllables: ["LA", "GAR", "TO"],       emoji: "🦎" },
+  { word: "GORILA",     syllables: ["GO", "RI", "LA"],        emoji: "🦍" },
   // 4 sílabas
   { word: "MELANCIA",   syllables: ["ME", "LAN", "CI", "A"],   emoji: "🍉" },
   { word: "BORBOLETA",  syllables: ["BOR", "BO", "LE", "TA"],  emoji: "🦋" },
   { word: "TARTARUGA",  syllables: ["TAR", "TA", "RU", "GA"],  emoji: "🐢" },
   { word: "JOANINHA",   syllables: ["JO", "A", "NI", "NHA"],   emoji: "🐞" },
   { word: "ELEFANTE",   syllables: ["E", "LE", "FAN", "TE"],   emoji: "🐘" },
-  { word: "DINOSSAURO", syllables: ["DI", "NOS", "SAU", "RO"], emoji: "🦕" },
 ];
 
 function shuffleWords<T>(arr: T[]): T[] {
@@ -221,7 +219,7 @@ export default function PortugueseGame() {
         </div>
 
         <div className="relative inline-block">
-          <div className="text-7xl sm:text-9xl mb-2 sm:mb-4 animate-bounce bg-white rounded-3xl p-4 sm:p-6 border-4 border-white shadow-[0_8px_0_rgba(0,0,0,0.2)]">
+          <div className="text-7xl sm:text-9xl mb-2 sm:mb-4 bg-white rounded-3xl p-4 sm:p-6 border-4 border-white shadow-[0_8px_0_rgba(0,0,0,0.2)]">
             {currentWordData.emoji}
           </div>
           <div className="absolute -top-2 -right-2">

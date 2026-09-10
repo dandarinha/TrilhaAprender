@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
-import { BookOpen, Music, Puzzle, Play, LogOut, ChevronLeft, Plus, Minus, Hash, PawPrint, Compass, Leaf, Footprints } from 'lucide-react';
+import { Play, LogOut, ChevronLeft, PawPrint, Compass, Leaf, Footprints } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 type Trail = { id: string; name: string; subject: string; path: string; color: string; icon: React.ReactNode };
@@ -13,9 +13,9 @@ const BIOMAS: { id: 'portuguese' | 'math'; name: string; subject: string; emoji:
     emoji: '🌳',
     color: 'from-[#2e7d32] to-[#57b85b]',
     trails: [
-      { id: 'portuguese',     name: 'Trilha Vermelha', subject: 'Forme a Palavra', path: '/portuguese',     color: 'from-[#e0402b] to-[#f4795f]', icon: <BookOpen size={40} className="text-white" /> },
-      { id: 'syllable-match', name: 'Trilha Azul',     subject: 'Sílaba Inicial',  path: '/syllable-match', color: 'from-[#2a7de1] to-[#5aa0ee]', icon: <Puzzle size={40} className="text-white" /> },
-      { id: 'rhymes',         name: 'Trilha Amarela',  subject: 'Rimas',           path: '/rhymes',         color: 'from-[#f6a623] to-[#ffd166]', icon: <Music size={40} className="text-white" /> },
+      { id: 'portuguese',     name: 'Trilha Vermelha', subject: 'Forme a Palavra', path: '/portuguese',     color: 'from-[#e0402b] to-[#f4795f]', icon: <Footprints size={40} className="text-[#e0402b]" /> },
+      { id: 'syllable-match', name: 'Trilha Azul',     subject: 'Sílaba Inicial',  path: '/syllable-match', color: 'from-[#2a7de1] to-[#5aa0ee]', icon: <Footprints size={40} className="text-[#2a7de1]" /> },
+      { id: 'rhymes',         name: 'Trilha Amarela',  subject: 'Rimas',           path: '/rhymes',         color: 'from-[#f6a623] to-[#ffd166]', icon: <Footprints size={40} className="text-[#f6a623]" /> },
     ],
   },
   {
@@ -25,9 +25,9 @@ const BIOMAS: { id: 'portuguese' | 'math'; name: string; subject: string; emoji:
     emoji: '🌲',
     color: 'from-[#0b6e8f] to-[#2ab7d6]',
     trails: [
-      { id: 'addition',    name: 'Trilha Vermelha', subject: 'Adição',    path: '/math/addition',    color: 'from-[#e0402b] to-[#f4795f]', icon: <Plus size={40} className="text-white" /> },
-      { id: 'subtraction', name: 'Trilha Azul',     subject: 'Subtração', path: '/math/subtraction', color: 'from-[#2a7de1] to-[#5aa0ee]', icon: <Minus size={40} className="text-white" /> },
-      { id: 'counting',    name: 'Trilha Amarela',  subject: 'Contagem',  path: '/math/counting',    color: 'from-[#f6a623] to-[#ffd166]', icon: <Hash size={40} className="text-white" /> },
+      { id: 'addition',    name: 'Trilha Vermelha', subject: 'Adição',    path: '/math/addition',    color: 'from-[#e0402b] to-[#f4795f]', icon: <Footprints size={40} className="text-[#e0402b]" /> },
+      { id: 'subtraction', name: 'Trilha Azul',     subject: 'Subtração', path: '/math/subtraction', color: 'from-[#2a7de1] to-[#5aa0ee]', icon: <Footprints size={40} className="text-[#2a7de1]" /> },
+      { id: 'counting',    name: 'Trilha Amarela',  subject: 'Contagem',  path: '/math/counting',    color: 'from-[#f6a623] to-[#ffd166]', icon: <Footprints size={40} className="text-[#f6a623]" /> },
     ],
   },
 ];
@@ -308,8 +308,15 @@ function TrailsForBiomaScreen({ biomaId, onBack }: { biomaId: 'portuguese' | 'ma
               to={trail.path}
               className={`group w-full relative flex flex-row sm:flex-col items-center justify-center p-4 sm:p-8 rounded-3xl bg-gradient-to-b ${trail.color} shadow-[0_6px_0_rgba(0,0,0,0.3)] overflow-hidden border-4 border-white transition-all hover:translate-y-[-4px] hover:shadow-[0_10px_0_rgba(0,0,0,0.3)] active:translate-y-[2px] gap-4 sm:gap-6`}
             >
+              {/* Marca d'água de pegadas sutis ao fundo do card */}
+              <div className="absolute inset-0 pointer-events-none text-white/20">
+                <Footprints className="absolute -top-3 -right-3 w-16 h-16 sm:w-20 sm:h-20 -rotate-12 group-hover:scale-110 group-hover:rotate-0 transition-transform duration-300" />
+                <Footprints className="absolute -bottom-3 -left-3 w-16 h-16 sm:w-20 sm:h-20 rotate-45 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300" />
+              </div>
+
               <div className="relative z-10 flex flex-row sm:flex-col items-center gap-4 sm:gap-6">
-                <div className="bg-white p-3 sm:p-6 rounded-3xl border-4 border-white shadow-[0_4px_0_rgba(0,0,0,0.15)] group-hover:-translate-y-1 transition-transform duration-300">
+                {/* Quadro branco centralizado com o ícone de pegada colorido */}
+                <div className="bg-white p-4 sm:p-6 rounded-3xl border-4 border-white shadow-[0_4px_0_rgba(0,0,0,0.15)] group-hover:-translate-y-1 transition-transform duration-300 flex items-center justify-center">
                   {trail.icon}
                 </div>
                 <div className="text-left sm:text-center" style={{ fontFamily: 'var(--font-display)' }}>

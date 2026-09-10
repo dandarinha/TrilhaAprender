@@ -2,14 +2,11 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useGame } from '../GameContext';
 import { SpeakButton } from '../SpeakButton';
-import { AlienIcon } from '../AlienIcon';
 
 const words = [
   { word: 'GATO', image: '🐱', missing: 2, options: ['T', 'P', 'M'] },
-  { word: 'CASA', image: '🏠', missing: 1, options: ['A', 'E', 'O'] },
   { word: 'SOL',  image: '☀️', missing: 0, options: ['S', 'C', 'L'] },
   { word: 'FLOR', image: '🌸', missing: 2, options: ['O', 'A', 'U'] },
-  { word: 'BOLA', image: '⚽', missing: 1, options: ['O', 'A', 'I'] },
 ];
 
 export function PortugueseGame() {
@@ -53,7 +50,6 @@ export function PortugueseGame() {
       <header className="relative z-10 w-full p-4 sm:p-6 flex items-center justify-between bg-black/40 backdrop-blur-md border-b-4 border-pink-500/50 shadow-lg shrink-0">
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="bg-white rounded-full p-2 border-2 border-pink-400">
-            <AlienIcon color={tutorHex} size={32} />
           </div>
           <div>
             <h1 className="font-display text-xl sm:text-2xl text-pink-400">
@@ -179,7 +175,6 @@ export function PortugueseGame() {
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             className="bg-white rounded-full p-4 border-4 border-slate-200 shadow-lg"
           >
-            <AlienIcon color={tutorHex} size={80} />
           </motion.div>
           <div className="bg-white text-slate-800 font-bold text-xl p-4 rounded-3xl rounded-bl-none shadow-lg border-2 border-slate-100 mb-6 max-w-xs">
             {isCorrect === true
