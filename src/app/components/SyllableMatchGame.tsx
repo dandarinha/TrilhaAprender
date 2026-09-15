@@ -7,7 +7,8 @@ import { SpeakButton } from './SpeakButton';
 
 type Target = { syllable: string; word: string; emoji: string };
 type Distractor = { word: string; emoji: string };
-type Level = { consonant: string; bank: Target[]; distractors: Distractor[] };
+type Difficulty = 'facil' | 'medio' | 'dificil';
+type Level = { consonant: string; difficulty: Difficulty; bank: Target[]; distractors: Distractor[] };
 
 /**
  * Sílaba inicial: cada nível é uma consoante com seu banco de sílabas
@@ -15,8 +16,12 @@ type Level = { consonant: string; bank: Target[]; distractors: Distractor[] };
  * A criança clica na figura e a sílaba correspondente perde o brilho no banco.
  */
 const LEVELS: Level[] = [
+  // ==========================================
+  // GRUPO: FÁCIL (Consoantes Simples e Diretas)
+  // ==========================================
   {
     consonant: 'B',
+    difficulty: 'facil',
     bank: [
       { syllable: 'BA', word: 'BALEIA',   emoji: '🐳' },
       { syllable: 'BO', word: 'BOTO',     emoji: '🐬' },
@@ -29,34 +34,21 @@ const LEVELS: Level[] = [
     ],
   },
   {
-    consonant: 'C',
+    consonant: 'F',
+    difficulty: 'facil',
     bank: [
-      { syllable: 'CA', word: 'CAVALO',  emoji: '🐴' },
-      { syllable: 'CE', word: 'CENOURA', emoji: '🥕' },
-      { syllable: 'CI', word: 'CISNE',   emoji: '🦢' },
-      { syllable: 'CO', word: 'COELHO',  emoji: '🐰' },
+      { syllable: 'FA', word: 'FALCÃO',   emoji: '🦅' },
+      { syllable: 'FU', word: 'FURACÃO',  emoji: '🌪️' },
     ],
     distractors: [
-      { word: 'PATO',   emoji: '🦆' },
-      { word: 'ABELHA', emoji: '🐝' },
-      { word: 'UVA',    emoji: '🍇' },
-    ],
-  },
-  {
-    consonant: 'G',
-    bank: [
-      { syllable: 'GA', word: 'GATO',      emoji: '🐱' },
-      { syllable: 'GI', word: 'GIRASSOL',  emoji: '🌻' },
-      { syllable: 'GO', word: 'GORILA',    emoji: '🦍' },
-    ],
-    distractors: [
-      { word: 'PATO',   emoji: '🦆' },
-      { word: 'ABELHA', emoji: '🐝' },
-      { word: 'MAÇÃ',   emoji: '🍎' },
+      { word: 'MACACO', emoji: '🐵' },
+      { word: 'SAPO',   emoji: '🐸' },
+      { word: 'SOL',    emoji: '☀️' },
     ],
   },
   {
     consonant: 'L',
+    difficulty: 'facil',
     bank: [
       { syllable: 'LA', word: 'LAGARTO', emoji: '🦎' },
       { syllable: 'LE', word: 'LEÃO',    emoji: '🦁' },
@@ -72,9 +64,11 @@ const LEVELS: Level[] = [
   },
   {
     consonant: 'M',
+    difficulty: 'facil',
     bank: [
       { syllable: 'MA', word: 'MACACO',   emoji: '🐵' },
       { syllable: 'ME', word: 'MELANCIA', emoji: '🍉' },
+      { syllable: 'MI', word: 'MILHO',    emoji: '🌽' },
       { syllable: 'MO', word: 'MORANGO',  emoji: '🍓' },
     ],
     distractors: [
@@ -84,7 +78,22 @@ const LEVELS: Level[] = [
     ],
   },
   {
+    consonant: 'N',
+    difficulty: 'facil',
+    bank: [
+      { syllable: 'NE', word: 'NEVE',     emoji: '❄️' },
+      { syllable: 'NO', word: 'NOITE',    emoji: '🌙' },
+      { syllable: 'NU', word: 'NUVEM',    emoji: '☁️' },
+    ],
+    distractors: [
+      { word: 'ARARA',   emoji: '🦜' },
+      { word: 'SOL',     emoji: '☀️' },
+      { word: 'COELHO',  emoji: '🐰' },
+    ],
+  },
+  {
     consonant: 'P',
+    difficulty: 'facil',
     bank: [
       { syllable: 'PA', word: 'PATO',    emoji: '🦆' },
       { syllable: 'PE', word: 'PEIXE',   emoji: '🐟' },
@@ -99,11 +108,12 @@ const LEVELS: Level[] = [
   },
   {
     consonant: 'T',
+    difficulty: 'facil',
     bank: [
       { syllable: 'TA', word: 'TARTARUGA', emoji: '🐢' },
+      { syllable: 'TE', word: 'TEIA',      emoji: '🕸️' },
       { syllable: 'TI', word: 'TIGRE',     emoji: '🐯' },
       { syllable: 'TO', word: 'TOMATE',    emoji: '🍅' },
-      { syllable: 'TU', word: 'TUCANO',    emoji: '🐦' },
     ],
     distractors: [
       { word: 'MACACO', emoji: '🐵' },
@@ -112,7 +122,67 @@ const LEVELS: Level[] = [
     ],
   },
   {
+    consonant: 'V',
+    difficulty: 'facil',
+    bank: [
+      { syllable: 'VA', word: 'VACA',   emoji: '🐮' },
+      { syllable: 'VU', word: 'VULCÃO', emoji: '🌋' },
+    ],
+    distractors: [
+      { word: 'PATO',    emoji: '🦆' },
+      { word: 'ABELHA',  emoji: '🐝' },
+      { word: 'MORANGO', emoji: '🍓' },
+    ],
+  },
+  {
+    consonant: 'J',
+    difficulty: 'facil',
+    bank: [
+      { syllable: 'JA', word: 'JACARÉ',   emoji: '🐊' },
+      { syllable: 'JO', word: 'JOANINHA', emoji: '🐞' },
+    ],
+    distractors: [
+      { word: 'ONÇA',   emoji: '🐆' },
+      { word: 'UVA',    emoji: '🍇' },
+      { word: 'TIGRE',  emoji: '🐯' },
+    ],
+  },
+
+  // ==========================================
+  // GRUPO: MÉDIO (Sons Alternados ou Variados)
+  // ==========================================
+  {
+    consonant: 'C',
+    difficulty: 'medio',
+    bank: [
+      { syllable: 'CA', word: 'CAVALO',  emoji: '🐴' },
+      { syllable: 'CE', word: 'CENOURA', emoji: '🥕' },
+      { syllable: 'CI', word: 'CISNE',   emoji: '🦢' },
+      { syllable: 'CO', word: 'COELHO',  emoji: '🐰' },
+    ],
+    distractors: [
+      { word: 'PATO',   emoji: '🦆' },
+      { word: 'ABELHA', emoji: '🐝' },
+      { word: 'MELÃO',  emoji: '🍈' },
+    ],
+  },
+  {
+    consonant: 'G',
+    difficulty: 'medio',
+    bank: [
+      { syllable: 'GA', word: 'GATO',      emoji: '🐱' },
+      { syllable: 'GI', word: 'GIRASSOL',  emoji: '🌻' },
+      { syllable: 'GO', word: 'GORILA',    emoji: '🦍' },
+    ],
+    distractors: [
+      { word: 'PATO',   emoji: '🦆' },
+      { word: 'ABELHA', emoji: '🐝' },
+      { word: 'MAÇÃ',   emoji: '🍎' },
+    ],
+  },
+  {
     consonant: 'R',
+    difficulty: 'medio',
     bank: [
       { syllable: 'RA', word: 'RATO',        emoji: '🐀' },
       { syllable: 'RE', word: 'RENA',        emoji: '🦌' },
@@ -126,59 +196,12 @@ const LEVELS: Level[] = [
     ],
   },
   {
-    consonant: 'V',
-    bank: [
-      { syllable: 'VA', word: 'VACA',   emoji: '🐮' },
-      { syllable: 'VE', word: 'VEADO',  emoji: '🦌' },
-      { syllable: 'VI', word: 'VÍBORA', emoji: '🐍' },
-    ],
-    distractors: [
-      { word: 'PATO',    emoji: '🦆' },
-      { word: 'ABELHA',  emoji: '🐝' },
-      { word: 'MORANGO', emoji: '🍓' },
-    ],
-  },
-  {
-    consonant: 'F',
-    bank: [
-      { syllable: 'FA', word: 'FALCÃO',   emoji: '🦅' },
-      { syllable: 'FU', word: 'FURACÃO',  emoji: '🌪️' },
-    ],
-    distractors: [
-      { word: 'MACACO', emoji: '🐵' },
-      { word: 'SAPO',   emoji: '🐸' },
-      { word: 'SOL',    emoji: '☀️' },
-    ],
-  },
-  {
-    consonant: 'J',
-    bank: [
-      { syllable: 'JA', word: 'JACARÉ',   emoji: '🐊' },
-      { syllable: 'JI', word: 'JIBÓIA',   emoji: '🐍' },
-      { syllable: 'JO', word: 'JOANINHA', emoji: '🐞' },
-    ],
-    distractors: [
-      { word: 'ONÇA',   emoji: '🐆' },
-      { word: 'UVA',    emoji: '🍇' },
-    ],
-  },
-  {
-    consonant: 'N',
-    bank: [
-      { syllable: 'NE', word: 'NEVE',     emoji: '❄️' },
-      { syllable: 'NO', word: 'NOITE',    emoji: '🌙' },
-      { syllable: 'NU', word: 'NUVEM',    emoji: '☁️' },
-    ],
-    distractors: [
-      { word: 'ARARA',   emoji: '🦜' },
-      { word: 'SOL',     emoji: '☀️' },
-    ],
-  },
-  {
     consonant: 'S',
+    difficulty: 'medio',
     bank: [
       { syllable: 'SA', word: 'SAPO',     emoji: '🐸' },
       { syllable: 'SE', word: 'SERPENTE', emoji: '🐍' },
+      { syllable: 'SI', word: 'SIRI',     emoji: '🦀' },
       { syllable: 'SO', word: 'SOL',      emoji: '☀️' },
     ],
     distractors: [
@@ -189,6 +212,7 @@ const LEVELS: Level[] = [
   },
   {
     consonant: 'Z',
+    difficulty: 'medio',
     bank: [
       { syllable: 'ZA', word: 'ZANGÃO',   emoji: '🐝' },
       { syllable: 'ZE', word: 'ZEBRA',    emoji: '🦓' },
@@ -198,8 +222,53 @@ const LEVELS: Level[] = [
       { word: 'BORBOLETA',emoji: '🦋' },
       { word: 'SAPO',     emoji: '🐸' },
     ],
-  }
+  },
+
+  // ==========================================
+  // GRUPO: DIFÍCIL (Dígrafos e Encontros)
+  // ==========================================
+  {
+    consonant: 'CH',
+    difficulty: 'dificil',
+    bank: [
+      { syllable: 'CHU', word: 'CHUVA',   emoji: '🌧️' },
+    ],
+    distractors: [
+      { word: 'GATO',   emoji: '🐱' },
+      { word: 'ABELHA', emoji: '🐝' },
+      { word: 'UVA',    emoji: '🍇' },
+    ],
+  },
+  {
+    consonant: 'BR',
+    difficulty: 'dificil',
+    bank: [
+      { syllable: 'BRA', word: 'BRASA',   emoji: '🔥' },
+      { syllable: 'BRO', word: 'BROTO',   emoji: '🌱' },
+    ],
+    distractors: [
+      { word: 'PATO',   emoji: '🦆' },
+      { word: 'LEÃO',   emoji: '🦁' },
+      { word: 'MAÇÃ',   emoji: '🍎' },
+    ],
+  },
+  {
+    consonant: 'TR',
+    difficulty: 'dificil',
+    bank: [
+      { syllable: 'TRE', word: 'TREVO',   emoji: '🍀' },
+      { syllable: 'TRI', word: 'TRIGO',   emoji: '🌾' },
+      { syllable: 'TRO', word: 'TROVÃO',  emoji: '⚡' },
+    ],
+    distractors: [
+      { word: 'VACA',   emoji: '🐮' },
+      { word: 'PEIXE',  emoji: '🐟' },
+      { word: 'NUVEM',  emoji: '☁️' },
+    ],
+  },
+
 ];
+
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -219,6 +288,14 @@ export default function SyllableMatchGame() {
   const [wrongIds, setWrongIds] = useState<string[]>([]);
 
   const level = useMemo(() => LEVELS[levelIndex % LEVELS.length], [levelIndex]);
+
+  const difficultyInfo = {
+    facil: { label: 'Fácil', subtitle: 'Vamos começar! 🌱', color: 'from-emerald-400 to-green-600', icon: '🌱' },
+    medio: { label: 'Médio', subtitle: 'Você está evoluindo! ⭐', color: 'from-amber-400 to-orange-500', icon: '⭐' },
+    dificil: { label: 'Difícil', subtitle: 'Desafio final! 🚀', color: 'from-rose-500 to-red-700', icon: '🚀' },
+  } as const;
+
+  const currentDifficulty = difficultyInfo[level.difficulty];
 
   const figures = useMemo<Figure[]>(() => {
     const targets: Figure[] = level.bank.map((t) => ({ word: t.word, emoji: t.emoji, syllable: t.syllable }));
@@ -253,7 +330,7 @@ export default function SyllableMatchGame() {
 
   return (
     <GameLayout
-      planetName={`Sílaba Inicial — Letra ${level.consonant}`}
+      planetName={`Sílaba Inicial — ${currentDifficulty.label} — Letra ${level.consonant}`}
       themeColor="blue"
       lives={lives}
       score={score}
@@ -264,6 +341,31 @@ export default function SyllableMatchGame() {
       }}
     >
       <div className="flex flex-col items-center gap-5 sm:gap-7 py-2 sm:py-4">
+        {/* Indicador discreto de dificuldade */}
+        <div className="flex flex-wrap items-center justify-center gap-2 text-xs sm:text-sm font-bold">
+          {(['facil', 'medio', 'dificil'] as const).map((difficulty) => {
+            const info = difficultyInfo[difficulty];
+            const active = level.difficulty === difficulty;
+            return (
+              <span
+                key={difficulty}
+                aria-current={active ? 'step' : undefined}
+                className={`rounded-full border px-3 py-1 transition-all ${
+                  active
+                    ? difficulty === 'facil'
+                      ? 'border-emerald-300/70 bg-emerald-500/20 text-emerald-100'
+                      : difficulty === 'medio'
+                      ? 'border-amber-300/70 bg-amber-500/20 text-amber-100'
+                      : 'border-rose-300/70 bg-rose-500/20 text-rose-100'
+                    : 'border-white/15 bg-white/5 text-white/35'
+                }`}
+              >
+                {info.label}
+              </span>
+            );
+          })}
+        </div>
+
         <div className="flex items-center gap-2 sm:gap-3">
           <h3
             className="text-base sm:text-2xl font-black text-center text-[#bfe0ff] uppercase tracking-widest"
@@ -308,25 +410,26 @@ export default function SyllableMatchGame() {
             const isFound = fig.syllable != null && foundSyllables.includes(fig.syllable);
             const isWrong = wrongIds.includes(fig.word);
             return (
-              <div key={fig.word} className="relative w-[28%] sm:w-[21%]">
+              <div key={fig.word} className="relative w-[30%] sm:w-[21%] aspect-square">
                 {!isFound && (
-                  <div className="absolute -top-3 -right-3 z-10">
-                    <SpeakButton text={fig.word} size={16} />
+                  <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-10 rounded-full bg-white/95 p-0.5 sm:p-1 shadow-md">
+                    <SpeakButton text={fig.word} size={15} />
                   </div>
                 )}
                 {isFound && (
-                  <div className="absolute -top-3 -right-3 z-10 bg-[#35b35b] text-white rounded-full p-1.5 border-2 border-white shadow-md">
-                    <Check size={16} />
+                  <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-10 flex h-6 w-6 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-[#35b35b] text-white border-2 border-white shadow-md">
+                    <Check size={14} />
                   </div>
                 )}
                 <motion.button
-                  whileHover={{ scale: isFound ? 1 : 1.05 }}
-                  whileTap={{ scale: isFound ? 1 : 0.95 }}
-                  animate={isWrong ? { x: [-8, 8, -8, 8, 0] } : {}}
+                  whileHover={{ scale: isFound ? 1 : 1.03 }}
+                  whileTap={{ scale: isFound ? 1 : 0.97 }}
+                  animate={isWrong ? { x: [-6, 6, -6, 6, 0] } : {}}
                   onClick={() => handlePick(fig)}
                   disabled={isFound}
+                  aria-label={fig.word}
                   className={`
-                    w-full flex flex-col items-center justify-center gap-1 p-2 sm:p-4 rounded-3xl border-4 transition-all min-h-[88px] sm:min-h-[150px]
+                    h-full w-full flex flex-col items-center justify-center gap-2 p-2 sm:p-4 rounded-3xl border-4 transition-all
                     ${isFound
                       ? 'bg-[#0d3d28] border-[#35b35b]/40 opacity-50'
                       : isWrong
@@ -334,7 +437,9 @@ export default function SyllableMatchGame() {
                       : 'bg-gradient-to-b from-[#2a7de1] to-[#1c5db0] border-white shadow-[0_4px_0_rgba(0,0,0,0.3)] hover:from-[#3a8def]'}
                   `}
                 >
-                  <span className="text-3xl sm:text-6xl bg-white rounded-2xl p-1.5 sm:p-3 border-2 border-white">{fig.emoji}</span>
+                  <span className="flex aspect-square w-full max-w-[92px] sm:max-w-[116px] items-center justify-center rounded-2xl bg-white/95 p-2 sm:p-3 text-4xl sm:text-6xl leading-none shadow-sm">
+                    <span aria-hidden="true">{fig.emoji}</span>
+                  </span>
                 </motion.button>
               </div>
             );

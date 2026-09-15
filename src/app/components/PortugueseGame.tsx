@@ -198,83 +198,115 @@ export default function PortugueseGame() {
         setCorrectCount(0);
       }}
     >
-      <div className="flex flex-col items-center justify-center gap-4 sm:gap-8 py-2 sm:py-4">
-        <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex flex-col items-center justify-center gap-2 sm:gap-8 py-0 sm:py-4">
+        <div className="flex items-center justify-center gap-1 sm:gap-3 w-full">
           <h3
-            className="text-xl sm:text-3xl font-black text-center uppercase tracking-widest text-red-200"
+            className="text-sm sm:text-3xl font-black text-center uppercase tracking-wide sm:tracking-widest text-red-200 max-w-[calc(100vw-90px)]"
             style={{ fontFamily: 'var(--font-display)' }}
           >
             Forme a palavra!
           </h3>
+
           <SpeakButton text={currentWordData.word} />
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-4 text-red-100 font-bold flex-wrap justify-center">
-          <span className="bg-red-900/60 border-2 border-white px-3 py-1 rounded-full text-sm sm:text-base" style={{ fontFamily: 'var(--font-display)' }}>
+        <div className="flex items-center gap-1 sm:gap-4 text-red-100 font-bold flex-wrap justify-center">
+          <span
+            className="bg-red-900/60 border-2 border-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-base"
+            style={{ fontFamily: 'var(--font-display)' }}
+          >
             Nível {level} — {targetSyllables} sílabas
           </span>
-          <span className="bg-red-900/60 border-2 border-white px-3 py-1 rounded-full text-sm sm:text-base">
+
+          <span className="bg-red-900/60 border-2 border-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-base">
             {correctCount % 3} / 3
           </span>
         </div>
 
         <div className="relative inline-block">
-          <div className="text-7xl sm:text-9xl mb-2 sm:mb-4 bg-white rounded-3xl p-4 sm:p-6 border-4 border-white shadow-[0_8px_0_rgba(0,0,0,0.2)]">
+          <div className="text-5xl sm:text-9xl mb-1 sm:mb-4 bg-white rounded-2xl sm:rounded-3xl p-2 sm:p-6 border-2 sm:border-4 border-white shadow-[0_4px_0_rgba(0,0,0,0.2)] sm:shadow-[0_8px_0_rgba(0,0,0,0.2)]">
             {currentWordData.emoji}
           </div>
+
           <div className="absolute -top-2 -right-2">
             <SpeakButton text={currentWordData.word} />
           </div>
         </div>
 
         {isWordSearch ? (
-          <div className="flex flex-col items-center gap-3 sm:gap-4 w-full">
-            <h4 className="text-lg sm:text-2xl font-bold text-white mb-1 sm:mb-2">Encontre a palavra!</h4>
+          <div className="flex flex-col items-center gap-2 sm:gap-4 w-full">
+            <h4 className="text-base sm:text-2xl font-bold text-white mb-0 sm:mb-2">
+              Encontre a palavra!
+            </h4>
+
             <div
-              className="grid gap-1.5 sm:gap-2 p-3 sm:p-4 bg-red-900/60 rounded-2xl border-4 border-red-400"
-              style={{ gridTemplateColumns: `repeat(${Math.max(5, currentWordData.word.length + 1)}, minmax(0, 1fr))` }}
+              className="grid gap-1 sm:gap-2 p-2 sm:p-4 bg-red-900/60 rounded-xl sm:rounded-2xl border-2 sm:border-4 border-red-400 max-w-full"
+              style={{
+                gridTemplateColumns: `repeat(${Math.max(
+                  5,
+                  currentWordData.word.length + 1
+                )}, minmax(0, 1fr))`,
+              }}
             >
               {grid.map((cell) => {
                 const isSelected = wordSearchSelected.includes(cell.id);
+
                 return (
                   <motion.button
                     key={cell.id}
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => handleWordSearchClick(cell)}
                     className={`
-                      w-9 h-9 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-base sm:text-3xl font-black transition-colors border-2
-                      ${isSelected
-                        ? 'bg-green-500 text-white border-white shadow-lg'
-                        : 'bg-white text-red-600 border-red-200 shadow-sm hover:bg-red-50'}
+                      w-7 h-7 sm:w-14 sm:h-14
+                      rounded-lg sm:rounded-xl
+                      flex items-center justify-center
+                      text-sm sm:text-3xl font-black
+                      transition-colors border-2
+                      ${
+                        isSelected
+                          ? 'bg-green-500 text-white border-white shadow-lg'
+                          : 'bg-white text-red-600 border-red-200 shadow-sm hover:bg-red-50'
+                      }
                     `}
                     style={{ fontFamily: 'var(--font-display)' }}
                   >
                     {cell.letter}
                   </motion.button>
-                )
+                );
               })}
             </div>
-            <div className="h-10 mt-2 sm:mt-4 flex gap-2">
+
+            <div className="h-8 sm:h-10 mt-1 sm:mt-4 flex gap-1 sm:gap-2">
               {wordSearchSelected.map((id, i) => (
-                <div key={i} className="w-7 sm:w-8 h-10 border-b-4 border-white text-xl sm:text-2xl font-bold text-center text-white">
-                  {grid.find(c => c.id === id)?.letter}
+                <div
+                  key={i}
+                  className="w-5 sm:w-8 h-8 sm:h-10 border-b-2 sm:border-b-4 border-white text-base sm:text-2xl font-bold text-center text-white"
+                >
+                  {grid.find((c) => c.id === id)?.letter}
                 </div>
               ))}
-              {Array.from({ length: currentWordData.word.length - wordSearchSelected.length }).map((_, i) => (
-                <div key={`empty-${i}`} className="w-7 sm:w-8 h-10 border-b-4 border-white/30" />
+
+              {Array.from({
+                length:
+                  currentWordData.word.length - wordSearchSelected.length,
+              }).map((_, i) => (
+                <div
+                  key={`empty-${i}`}
+                  className="w-5 sm:w-8 h-8 sm:h-10 border-b-2 sm:border-b-4 border-white/30"
+                />
               ))}
             </div>
           </div>
         ) : (
           <>
-            <div className="flex flex-wrap gap-2 sm:gap-4 min-h-16 sm:min-h-32 p-4 sm:p-6 border-4 border-dashed border-red-300 rounded-3xl bg-black/30 justify-center items-center w-full max-w-3xl relative">
+            <div className="flex flex-wrap gap-1.5 sm:gap-4 min-h-14 sm:min-h-32 p-2 sm:p-6 border-2 sm:border-4 border-dashed border-red-300 rounded-2xl sm:rounded-3xl bg-black/30 justify-center items-center w-full max-w-3xl relative">
               {selectedSyllables.length > 0 && (
                 <button
                   onClick={handleClear}
-                  className="absolute -top-3 -right-3 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition-colors"
+                  className="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 bg-red-500 text-white rounded-full p-1.5 sm:p-2 hover:bg-red-600 transition-colors"
                 >
-                  <RefreshCcw size={16} />
+                  <RefreshCcw size={14} className="sm:w-4 sm:h-4" />
                 </button>
               )}
 
@@ -284,7 +316,7 @@ export default function PortugueseGame() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-white/40 text-sm sm:text-lg font-bold flex items-center h-full text-center"
+                    className="text-white/40 text-xs sm:text-lg font-bold flex items-center h-full text-center"
                   >
                     Clique nas sílabas na ordem certa
                   </motion.span>
@@ -295,7 +327,7 @@ export default function PortugueseGame() {
                       animate={{ scale: 1, opacity: 1, y: 0 }}
                       exit={{ scale: 0, opacity: 0 }}
                       key={item + i}
-                      className="bg-white text-red-600 font-black text-2xl sm:text-5xl px-4 sm:px-8 py-3 sm:py-6 rounded-2xl shadow-md"
+                      className="bg-white text-red-600 font-black text-xl sm:text-5xl px-3 sm:px-8 py-2 sm:py-6 rounded-xl sm:rounded-2xl shadow-md"
                     >
                       {item.split('-')[0]}
                     </motion.div>
@@ -304,35 +336,41 @@ export default function PortugueseGame() {
               </AnimatePresence>
             </div>
 
-            <div className="flex flex-wrap gap-2 sm:gap-4 justify-center mt-3 sm:mt-6 w-full max-w-2xl">
+            <div className="flex flex-wrap gap-1.5 sm:gap-4 justify-center mt-1 sm:mt-6 w-full max-w-2xl">
               {shuffledSyllables.map((syllable, index) => {
                 const id = syllable + '-' + index;
                 const isSelected = selectedSyllables.includes(id);
+
                 return (
                   <div key={id} className="relative">
                     {!isSelected && (
-                      <div className="absolute -top-3 -right-3 z-10">
-                        <SpeakButton text={syllable} size={16} />
+                      <div className="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 z-10">
+                        <SpeakButton text={syllable} size={14} />
                       </div>
                     )}
+
                     <motion.button
                       whileHover={{ scale: isSelected ? 1 : 1.05 }}
                       whileTap={{ scale: isSelected ? 1 : 0.95 }}
                       onClick={() => handleSyllableClick(syllable, index)}
                       disabled={isSelected}
                       className={`
-                        ${isSelected
-                          ? 'bg-black/30 text-white/20 border-white/10 shadow-none scale-95'
-                          : 'bg-gradient-to-b from-red-400 to-red-600 text-white border-red-700 shadow-[0_4px_0_rgb(153,27,27)] hover:from-red-300 hover:to-red-500'
+                        ${
+                          isSelected
+                            ? 'bg-black/30 text-white/20 border-white/10 shadow-none scale-95'
+                            : 'bg-gradient-to-b from-red-400 to-red-600 text-white border-red-700 shadow-[0_3px_0_rgb(153,27,27)] sm:shadow-[0_4px_0_rgb(153,27,27)] hover:from-red-300 hover:to-red-500'
                         }
-                        border px-5 sm:px-10 py-3 sm:py-6 rounded-2xl font-black text-2xl sm:text-5xl transition-all duration-200 uppercase
+                        border px-3 sm:px-10 py-2 sm:py-6
+                        rounded-xl sm:rounded-2xl
+                        font-black text-xl sm:text-5xl
+                        transition-all duration-200 uppercase
                       `}
                       style={{ fontFamily: 'var(--font-display)' }}
                     >
                       {syllable}
                     </motion.button>
                   </div>
-                )
+                );
               })}
             </div>
           </>

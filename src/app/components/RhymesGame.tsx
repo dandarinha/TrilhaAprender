@@ -186,9 +186,7 @@ export default function RhymesGame() {
           
           {/* Coluna A (Esquerda) */}
           <div className="flex flex-col gap-3 sm:gap-4">
-            <span className="text-center text-white/80 font-bold text-xs sm:text-sm uppercase tracking-wider">
-              Coluna A
-            </span>
+
             {leftColumn.map((card) => {
               const matched = isLeftMatched(card);
               const isSelected = selectedLeft?.word === card.word;
@@ -231,9 +229,7 @@ export default function RhymesGame() {
 
           {/* Coluna B (Direita) */}
           <div className="flex flex-col gap-3 sm:gap-4">
-            <span className="text-center text-white/80 font-bold text-xs sm:text-sm uppercase tracking-wider">
-              Coluna B
-            </span>
+
             {rightColumn.map((card) => {
               const matched = isRightMatched(card);
               const isSelected = selectedRight?.word === card.word;

@@ -1,12 +1,18 @@
 import React, { useMemo } from 'react';
 import { Link } from 'react-router';
-import { ArrowLeft, Sun, PawPrint, TreePine, RefreshCw } from 'lucide-react';
+import {
+  ArrowLeft,
+  Sun,
+  PawPrint,
+  TreePine,
+  RefreshCw,
+} from 'lucide-react';
 import { motion } from 'motion/react';
 import { randomCuriosity } from '../lib/curiosities';
 
 interface GameLayoutProps {
   planetName: string;
-  themeColor: string; // chave de tema: red | blue | yellow | green | purple
+  themeColor: string;
   lives: number;
   score: number;
   gameOver: boolean;
@@ -32,17 +38,28 @@ export function GameLayout({
   children,
 }: GameLayoutProps) {
   const borderHex = BORDER_HEX[themeColor] ?? '#35b35b';
-  // Curiosidade sorteada uma vez por partida encerrada
-  const curiosity = useMemo(() => randomCuriosity(), [gameOver]);
+
+  const curiosity = useMemo(
+    () => randomCuriosity(),
+    [gameOver]
+  );
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-b from-[#0d3d28] via-[#0b4a2e] to-[#052e1c] text-white overflow-hidden flex flex-col relative"
-      style={{ fontFamily: 'var(--font-body)' }}
+      className="
+        relative flex min-h-0 w-full max-w-full flex-col
+        overflow-x-hidden overflow-y-auto
+        bg-gradient-to-b from-[#0d3d28] via-[#0b4a2e] to-[#052e1c]
+        text-white
+      "
+      style={{
+        fontFamily: 'var(--font-body)',
+        minHeight: '100dvh',
+      }}
     >
-      {/* Vagalumes flutuando no dossel */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        {[...Array(28)].map((_, i) => (
+      {/* Vagalumes */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        {[...Array(20)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full bg-yellow-200"
@@ -53,51 +70,111 @@ export function GameLayout({
               left: Math.random() * 100 + '%',
               boxShadow: '0 0 10px rgba(246,224,94,0.9)',
             }}
-            animate={{ opacity: [0.15, 1, 0.15], y: [0, -12, 0] }}
-            transition={{ duration: Math.random() * 4 + 3, repeat: Infinity, ease: 'easeInOut' }}
+            animate={{
+              opacity: [0.15, 1, 0.15],
+              y: [0, -12, 0],
+            }}
+            transition={{
+              duration: Math.random() * 4 + 3,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
           />
         ))}
       </div>
 
       {/* Folhagem inferior */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-32 z-0 pointer-events-none opacity-70 bg-gradient-to-t from-[#052e1c] to-transparent" />
+      <div
+        className="
+          pointer-events-none absolute bottom-0 left-0 right-0
+          z-0 h-16 opacity-70
+          bg-gradient-to-t from-[#052e1c] to-transparent
+          sm:h-32
+        "
+      />
 
-      {/* Header */}
-      <header className="relative z-10 p-3 sm:p-6 flex justify-between items-center bg-[#052e1c]/70 backdrop-blur-sm border-b-4 border-[#6b3f22] shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+      {/* Header compacto */}
+      <header
+        className="
+          relative z-10 flex shrink-0 items-center justify-between
+          border-b-2 border-[#6b3f22]
+          bg-[#052e1c]/70
+          px-2.5 py-2
+          shadow-[0_3px_12px_rgba(0,0,0,0.35)]
+          backdrop-blur-sm
+          sm:border-b-4 sm:px-6 sm:py-4
+        "
+      >
         <Link
           to="/"
-          className="flex items-center gap-2 bg-[#6b3f22] hover:bg-[#7c4a28] transition-colors px-3 py-2 rounded-full font-bold border-2 border-[#a9713f] shadow-[0_3px_0_rgba(0,0,0,0.3)]"
+          className="
+            flex items-center gap-1.5
+            rounded-full border-2 border-[#a9713f]
+            bg-[#6b3f22]
+            px-2.5 py-1.5
+            text-sm font-bold
+            shadow-[0_2px_0_rgba(0,0,0,0.3)]
+            transition-colors hover:bg-[#7c4a28]
+            sm:gap-2 sm:px-3 sm:py-2
+          "
         >
-          <ArrowLeft size={18} />
-          <span className="hidden sm:inline text-sm">Trilhas</span>
+          <ArrowLeft size={17} />
+          <span className="hidden sm:inline">Trilhas</span>
         </Link>
 
-        <div className="flex items-center gap-3 sm:gap-6 text-lg sm:text-2xl font-black">
-          {/* Pontuação em pegadas */}
+        <div className="flex items-center gap-2.5 text-base font-black sm:gap-6 sm:text-2xl">
+          {/* Pontuação */}
           <motion.div
             key={score}
             initial={{ scale: 1.5 }}
             animate={{ scale: 1 }}
-            className="flex items-center gap-1 sm:gap-2 text-[#f6a623] drop-shadow-[0_0_8px_rgba(246,166,35,0.6)]"
+            className="
+              flex items-center gap-1
+              text-[#f6a623]
+              drop-shadow-[0_0_8px_rgba(246,166,35,0.6)]
+              sm:gap-2
+            "
           >
-            <PawPrint size={24} className="fill-[#f6a623] sm:hidden" />
-            <PawPrint size={30} className="fill-[#f6a623] hidden sm:block" />
-            <span style={{ fontFamily: 'var(--font-display)' }}>{score}</span>
+            <PawPrint
+              size={21}
+              className="fill-[#f6a623] sm:hidden"
+            />
+
+            <PawPrint
+              size={30}
+              className="hidden fill-[#f6a623] sm:block"
+            />
+
+            <span style={{ fontFamily: 'var(--font-display)' }}>
+              {score}
+            </span>
           </motion.div>
 
-          {/* Energia em raios de sol */}
+          {/* Vidas */}
           <div className="flex items-center gap-0.5 sm:gap-1">
             {[...Array(3)].map((_, i) => (
               <motion.div
                 key={i}
                 initial={false}
-                animate={{ scale: i < lives ? 1 : 0.5, opacity: i < lives ? 1 : 0.3, rotate: i < lives ? 0 : 0 }}
+                animate={{
+                  scale: i < lives ? 1 : 0.5,
+                  opacity: i < lives ? 1 : 0.3,
+                }}
               >
                 <Sun
-                  size={26}
-                  className={i < lives
-                    ? 'fill-yellow-300 text-yellow-400 drop-shadow-[0_0_6px_rgba(250,204,21,0.7)]'
-                    : 'fill-[#1c3b2a] text-[#2d5a40]'}
+                  size={22}
+                  className={
+                    i < lives
+                      ? `
+                        fill-yellow-300 text-yellow-400
+                        drop-shadow-[0_0_6px_rgba(250,204,21,0.7)]
+                        sm:h-[26px] sm:w-[26px]
+                      `
+                      : `
+                        fill-[#1c3b2a] text-[#2d5a40]
+                        sm:h-[26px] sm:w-[26px]
+                      `
+                  }
                 />
               </motion.div>
             ))}
@@ -105,85 +182,204 @@ export function GameLayout({
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="relative z-10 flex-1 flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 w-full">
+      {/* Conteúdo principal */}
+      <main
+        className="
+          relative z-10 flex min-h-0 w-full flex-1
+          flex-col items-center justify-start
+          px-2 py-4
+          sm:justify-center
+          sm:px-4 sm:py-6
+        "
+      >
         {!gameOver ? (
-          <div className="w-full max-w-4xl flex flex-col items-center gap-6 sm:gap-10">
+          <div
+            className="
+              flex w-full min-w-0 max-w-3xl
+              flex-col items-center justify-center gap-2
+              sm:gap-4
+            "
+          >
+            {/* Nome do jogo */}
             <motion.div
-              initial={{ y: -50, opacity: 0 }}
+              initial={{ y: -30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              className="flex flex-col items-center gap-1 sm:gap-2"
+              className="flex min-w-0 flex-col items-center gap-1"
             >
               <span
-                className="inline-flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 rounded-full text-base sm:text-2xl font-black uppercase tracking-widest bg-[#6b3f22] border-4 border-[#a9713f] shadow-[0_4px_0_rgba(0,0,0,0.3)]"
-                style={{ fontFamily: 'var(--font-display)', color: '#fdf6e3' }}
+                className="
+                  inline-flex max-w-full items-center justify-center
+                  rounded-full border-2 border-[#a9713f]
+                  bg-[#6b3f22]
+                  px-3 py-1.5
+                  text-center text-sm font-black uppercase
+                  tracking-wide
+                  shadow-[0_3px_0_rgba(0,0,0,0.3)]
+                  sm:border-4 sm:px-6 sm:py-3
+                  sm:text-2xl sm:tracking-widest
+                "
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  color: '#fdf6e3',
+                }}
               >
-                🌿 {planetName}
+                <span className="truncate">
+                  🌿 {planetName}
+                </span>
               </span>
             </motion.div>
 
-            {/* Painel de madeira/folha */}
+            {/* Painel principal com altura mínima, não fixa */}
             <div
-              className="w-full max-w-2xl bg-[#14432c]/90 backdrop-blur-md border-[6px] rounded-3xl p-4 sm:p-10 shadow-[0_10px_0_rgba(0,0,0,0.3)]"
+              className="
+                w-full min-w-0
+                max-w-[340px]
+                min-h-[360px]
+                rounded-2xl border-4
+                bg-[#14432c]/90
+                p-3
+                shadow-[0_5px_0_rgba(0,0,0,0.3)]
+                backdrop-blur-md
+                overflow-hidden
+                sm:max-w-2xl
+                sm:min-h-[500px]
+                sm:rounded-3xl
+                sm:border-[6px]
+                sm:p-6
+                sm:shadow-[0_10px_0_rgba(0,0,0,0.3)]
+              "
               style={{ borderColor: borderHex }}
             >
-              {children}
+              <div className="flex w-full flex-col items-center">
+                {children}
+              </div>
             </div>
           </div>
         ) : (
+          /* Tela de fim de jogo */
           <motion.div
-            initial={{ scale: 0.8, opacity: 0, y: 50 }}
+            initial={{ scale: 0.8, opacity: 0, y: 30 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            transition={{ type: 'spring', bounce: 0.6 }}
-            className="bg-[#14432c] border-[6px] border-[#6b3f22] p-6 sm:p-10 rounded-[2rem] text-center max-w-md w-full shadow-[0_16px_0_rgba(0,0,0,0.4),0_0_40px_rgba(246,166,35,0.3)]"
+            transition={{
+              type: 'spring',
+              bounce: 0.6,
+            }}
+            className="
+              w-full max-w-md
+              rounded-2xl border-4 border-[#6b3f22]
+              bg-[#14432c]
+              p-3 text-center
+              shadow-[0_8px_0_rgba(0,0,0,0.4),0_0_25px_rgba(246,166,35,0.3)]
+              sm:rounded-[2rem]
+              sm:border-[6px] sm:p-10
+              sm:shadow-[0_16px_0_rgba(0,0,0,0.4),0_0_40px_rgba(246,166,35,0.3)]
+            "
           >
-            <div className="text-6xl sm:text-8xl mb-3 sm:mb-4">🌿</div>
+            <div className="mb-1 text-5xl sm:mb-4 sm:text-8xl">
+              🌿
+            </div>
+
             <h2
-              className="text-3xl sm:text-5xl font-black mb-2 sm:mb-3 text-transparent bg-clip-text bg-gradient-to-r from-[#f6a623] via-[#35b35b] to-[#2a7de1]"
-              style={{ fontFamily: 'var(--font-display)' }}
+              className="
+                mb-1 text-2xl font-black
+                text-transparent
+                sm:mb-3 sm:text-5xl
+              "
+              style={{
+                fontFamily: 'var(--font-display)',
+                backgroundImage:
+                  'linear-gradient(to right, #f6a623, #35b35b, #2a7de1)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+              }}
             >
               Fim da Trilha!
             </h2>
-            <p className="text-lg sm:text-2xl text-white/90 mb-4 sm:mb-6 font-bold">
+
+            <p className="mb-3 text-base font-bold text-white/90 sm:mb-6 sm:text-2xl">
               Você juntou{' '}
-              <strong className="text-[#f6a623] text-2xl sm:text-4xl">{score}</strong>{' '}
+              <strong className="text-xl text-[#f6a623] sm:text-4xl">
+                {score}
+              </strong>{' '}
               pegadas! 🐾
             </p>
 
-            {/* Card de curiosidade sobre a fauna brasileira */}
+            {/* Curiosidade */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-left bg-[#0d3d28] border-4 border-[#35b35b]/60 rounded-2xl p-4 sm:p-5 mb-6 shadow-[0_4px_0_rgba(0,0,0,0.3)]"
+              className="
+                mb-3 rounded-xl
+                border-2 border-[#35b35b]/60
+                bg-[#0d3d28]
+                p-2.5 text-left
+                shadow-[0_3px_0_rgba(0,0,0,0.3)]
+                sm:mb-6 sm:rounded-2xl
+                sm:border-4 sm:p-5
+              "
             >
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-3xl sm:text-4xl">{curiosity.emoji}</span>
+              <div className="mb-1 flex items-center gap-2">
+                <span className="text-2xl sm:text-4xl">
+                  {curiosity.emoji}
+                </span>
+
                 <div>
-                  <p className="text-[10px] sm:text-xs uppercase tracking-widest text-[#35b35b] font-black">Você sabia?</p>
-                  <p className="text-sm sm:text-lg font-black text-yellow-200" style={{ fontFamily: 'var(--font-display)' }}>
+                  <p className="text-[9px] font-black uppercase tracking-widest text-[#35b35b] sm:text-xs">
+                    Você sabia?
+                  </p>
+
+                  <p
+                    className="text-xs font-black text-yellow-200 sm:text-lg"
+                    style={{ fontFamily: 'var(--font-display)' }}
+                  >
                     {curiosity.animal}
                   </p>
                 </div>
               </div>
-              <p className="text-sm sm:text-base text-white/90 font-semibold leading-snug">{curiosity.fact}</p>
+
+              <p className="text-xs font-semibold leading-snug text-white/90 sm:text-base">
+                {curiosity.fact}
+              </p>
             </motion.div>
 
-            <div className="flex flex-col gap-3 sm:gap-4">
+            <div className="flex flex-col gap-2 sm:gap-4">
               <button
                 onClick={onRestart}
-                className="w-full py-3 sm:py-4 bg-gradient-to-b from-[#f6a623] to-[#d98a10] hover:brightness-105 rounded-2xl font-black text-lg sm:text-xl flex items-center justify-center gap-2 shadow-[0_5px_0_rgba(0,0,0,0.3)] transition-all active:translate-y-[2px] border-2 border-white/40 text-[#052e1c]"
+                className="
+                  flex w-full items-center justify-center gap-2
+                  rounded-xl border-2 border-white/40
+                  bg-gradient-to-b from-[#f6a623] to-[#d98a10]
+                  py-2.5 text-base font-black
+                  text-[#052e1c]
+                  shadow-[0_3px_0_rgba(0,0,0,0.3)]
+                  transition-all hover:brightness-105
+                  active:translate-y-[2px]
+                  sm:rounded-2xl sm:py-4 sm:text-xl
+                  sm:shadow-[0_5px_0_rgba(0,0,0,0.3)]
+                "
                 style={{ fontFamily: 'var(--font-display)' }}
               >
-                <RefreshCw size={20} />
+                <RefreshCw size={18} />
                 Explorar de novo
               </button>
+
               <Link
                 to="/"
-                className="w-full py-3 sm:py-4 bg-[#6b3f22] hover:bg-[#7c4a28] rounded-2xl font-black text-lg sm:text-xl flex items-center justify-center gap-2 transition-all active:translate-y-[2px] border-2 border-[#a9713f] shadow-[0_5px_0_rgba(0,0,0,0.3)]"
+                className="
+                  flex w-full items-center justify-center gap-2
+                  rounded-xl border-2 border-[#a9713f]
+                  bg-[#6b3f22]
+                  py-2.5 text-base font-black
+                  shadow-[0_3px_0_rgba(0,0,0,0.3)]
+                  transition-all hover:bg-[#7c4a28]
+                  active:translate-y-[2px]
+                  sm:rounded-2xl sm:py-4 sm:text-xl
+                  sm:shadow-[0_5px_0_rgba(0,0,0,0.3)]
+                "
                 style={{ fontFamily: 'var(--font-display)' }}
               >
-                <TreePine size={20} />
+                <TreePine size={18} />
                 Voltar às Trilhas
               </Link>
             </div>

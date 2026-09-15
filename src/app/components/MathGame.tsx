@@ -28,14 +28,16 @@ function makeOptions(answer: number, max = 12): number[] {
 
 function Dots({ count, emoji, color }: { count: number; emoji: string; color: string }) {
   return (
-    <div className={`flex flex-wrap gap-1.5 sm:gap-2 justify-center p-2 sm:p-4 rounded-3xl border-4 border-white ${color} max-w-full`}>
+    <div
+      className={`flex flex-wrap gap-0.5 sm:gap-2 justify-center p-1 sm:p-4 rounded-xl sm:rounded-3xl border-2 sm:border-4 border-white ${color} max-w-full`}
+    >
       {[...Array(count)].map((_, i) => (
         <motion.span
           key={i}
           initial={{ scale: 0, rotate: -180 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{ delay: i * 0.05 }}
-          className="text-3xl sm:text-5xl bg-white rounded-2xl p-1.5 sm:p-2 border-2 border-white shadow-[0_2px_0_rgba(0,0,0,0.15)]"
+          className="text-2xl sm:text-5xl bg-white rounded-lg sm:rounded-2xl p-0.5 sm:p-2 border-2 border-white shadow-[0_2px_0_rgba(0,0,0,0.15)]"
         >
           {emoji}
         </motion.span>
@@ -76,26 +78,39 @@ export function AdditionGame() {
   };
 
   return (
-    <GameLayout planetName="Adição na Floresta" themeColor="red" lives={lives} score={score} gameOver={gameOver} onRestart={() => { resetGame(); setRound(0); }}>
-      <div className="flex flex-col items-center gap-4 sm:gap-6 py-1 sm:py-2">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <h3 className="text-xl sm:text-3xl font-black text-red-200 uppercase tracking-widest" style={{ fontFamily: 'var(--font-display)' }}>
+    <GameLayout
+      planetName="Adição na Floresta"
+      themeColor="red"
+      lives={lives}
+      score={score}
+      gameOver={gameOver}
+      onRestart={() => { resetGame(); setRound(0); }}
+    >
+      <div className="flex flex-col items-center gap-2 sm:gap-6 py-0 sm:py-2">
+        <div className="flex items-center justify-center gap-1 sm:gap-3 w-full">
+          <h3
+            className="text-sm sm:text-3xl font-black text-red-200 uppercase tracking-wide sm:tracking-widest text-center max-w-[calc(100vw-90px)]"
+            style={{ fontFamily: 'var(--font-display)' }}
+          >
             Some os dois grupos!
           </h3>
           <SpeakButton text={`Quanto é ${problem.a} mais ${problem.b}?`} />
         </div>
 
-        <div className="text-3xl sm:text-6xl font-black text-white bg-red-900/60 rounded-3xl px-5 py-3 sm:px-8 sm:py-4 border-4 border-white shadow-[0_4px_0_rgba(0,0,0,0.25)]" style={{ fontFamily: 'var(--font-display)' }}>
+        <div
+          className="text-2xl sm:text-6xl font-black text-white bg-red-900/60 rounded-2xl sm:rounded-3xl px-3 sm:px-8 py-1.5 sm:py-4 border-2 sm:border-4 border-white shadow-[0_3px_0_rgba(0,0,0,0.25)] sm:shadow-[0_4px_0_rgba(0,0,0,0.25)]"
+          style={{ fontFamily: 'var(--font-display)' }}
+        >
           {problem.a} + {problem.b} = ?
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 w-full">
+        <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-4 w-full">
           <Dots count={problem.a} emoji={problem.emoji} color="bg-red-700/60" />
-          <span className="text-3xl sm:text-6xl font-black text-white">+</span>
+          <span className="text-2xl sm:text-6xl font-black text-white">+</span>
           <Dots count={problem.b} emoji={problem.emoji} color="bg-red-700/60" />
         </div>
 
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-md mt-2 sm:mt-4">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4 w-full max-w-md mt-0 sm:mt-4">
           {problem.options.map((o, i) => (
             <motion.button
               key={`${round}-${i}`}
@@ -103,7 +118,7 @@ export function AdditionGame() {
               whileTap={{ scale: locked ? 1 : 0.95 }}
               onClick={() => handleClick(o)}
               disabled={locked}
-              className="bg-gradient-to-b from-red-400 to-red-600 text-white border-4 border-white shadow-[0_4px_0_rgb(153,27,27)] rounded-2xl font-black text-3xl sm:text-5xl py-3 sm:py-5"
+              className="bg-gradient-to-b from-red-400 to-red-600 text-white border-2 sm:border-4 border-white shadow-[0_3px_0_rgb(153,27,27)] sm:shadow-[0_4px_0_rgb(153,27,27)] rounded-xl sm:rounded-2xl font-black text-2xl sm:text-5xl py-2 sm:py-5"
               style={{ fontFamily: 'var(--font-display)' }}
             >
               {o}
@@ -147,37 +162,52 @@ export function SubtractionGame() {
   };
 
   return (
-    <GameLayout planetName="Subtração na Floresta" themeColor="blue" lives={lives} score={score} gameOver={gameOver} onRestart={() => { resetGame(); setRound(0); }}>
-      <div className="flex flex-col items-center gap-4 sm:gap-6 py-1 sm:py-2">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <h3 className="text-xl sm:text-3xl font-black text-blue-200 uppercase tracking-widest" style={{ fontFamily: 'var(--font-display)' }}>
+    <GameLayout
+      planetName="Subtração na Floresta"
+      themeColor="blue"
+      lives={lives}
+      score={score}
+      gameOver={gameOver}
+      onRestart={() => { resetGame(); setRound(0); }}
+    >
+      <div className="flex flex-col items-center gap-2 sm:gap-6 py-0 sm:py-2">
+        <div className="flex items-center justify-center gap-1 sm:gap-3 w-full">
+          <h3
+            className="text-sm sm:text-3xl font-black text-blue-200 uppercase tracking-wide sm:tracking-widest text-center max-w-[calc(100vw-90px)]"
+            style={{ fontFamily: 'var(--font-display)' }}
+          >
             Quantos sobram?
           </h3>
           <SpeakButton text={`Você tem ${problem.a}. Tira ${problem.b}. Quanto sobra?`} />
         </div>
 
-        <div className="text-3xl sm:text-6xl font-black text-white bg-blue-900/60 rounded-3xl px-5 py-3 sm:px-8 sm:py-4 border-4 border-white shadow-[0_4px_0_rgba(0,0,0,0.25)]" style={{ fontFamily: 'var(--font-display)' }}>
+        <div
+          className="text-2xl sm:text-6xl font-black text-white bg-blue-900/60 rounded-2xl sm:rounded-3xl px-3 sm:px-8 py-1.5 sm:py-4 border-2 sm:border-4 border-white shadow-[0_3px_0_rgba(0,0,0,0.25)] sm:shadow-[0_4px_0_rgba(0,0,0,0.25)]"
+          style={{ fontFamily: 'var(--font-display)' }}
+        >
           {problem.a} − {problem.b} = ?
         </div>
 
-        <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center p-2 sm:p-4 rounded-3xl border-4 border-white bg-blue-700/60 max-w-full">
+        <div className="flex flex-wrap gap-0.5 sm:gap-2 justify-center p-1 sm:p-4 rounded-xl sm:rounded-3xl border-2 sm:border-4 border-white bg-blue-700/60 max-w-full">
           {[...Array(problem.a)].map((_, i) => (
             <motion.span
               key={i}
               initial={{ scale: 0 }}
               animate={{ scale: 1, opacity: i < problem.b ? 0.25 : 1 }}
               transition={{ delay: i * 0.05 }}
-              className="relative text-3xl sm:text-5xl bg-white rounded-2xl p-1.5 sm:p-2 border-2 border-white shadow-[0_2px_0_rgba(0,0,0,0.15)]"
+              className="relative text-2xl sm:text-5xl bg-white rounded-lg sm:rounded-2xl p-0.5 sm:p-2 border-2 border-white shadow-[0_2px_0_rgba(0,0,0,0.15)]"
             >
               {problem.emoji}
               {i < problem.b && (
-                <span className="absolute inset-0 flex items-center justify-center text-3xl sm:text-5xl text-red-500 font-black pointer-events-none">✕</span>
+                <span className="absolute inset-0 flex items-center justify-center text-2xl sm:text-5xl text-red-500 font-black pointer-events-none">
+                  ✕
+                </span>
               )}
             </motion.span>
           ))}
         </div>
 
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-md mt-1 sm:mt-2">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4 w-full max-w-md mt-0 sm:mt-2">
           {problem.options.map((o, i) => (
             <motion.button
               key={`${round}-${i}`}
@@ -185,7 +215,7 @@ export function SubtractionGame() {
               whileTap={{ scale: locked ? 1 : 0.95 }}
               onClick={() => handleClick(o)}
               disabled={locked}
-              className="bg-gradient-to-b from-blue-400 to-blue-600 text-white border-4 border-white shadow-[0_4px_0_rgb(30,58,138)] rounded-2xl font-black text-3xl sm:text-5xl py-3 sm:py-5"
+              className="bg-gradient-to-b from-blue-400 to-blue-600 text-white border-2 sm:border-4 border-white shadow-[0_3px_0_rgb(30,58,138)] sm:shadow-[0_4px_0_rgb(30,58,138)] rounded-xl sm:rounded-2xl font-black text-2xl sm:text-5xl py-2 sm:py-5"
               style={{ fontFamily: 'var(--font-display)' }}
             >
               {o}
@@ -257,14 +287,23 @@ export function CountingGame() {
     'bg-red-500';
 
   return (
-    <GameLayout planetName="Contagem Relâmpago ⚡" themeColor="yellow" lives={lives} score={score} gameOver={gameOver} onRestart={() => { resetGame(); setRound(0); }}>
-      <div className="flex flex-col items-center gap-4 sm:gap-5 py-1 sm:py-2">
-
+    <GameLayout
+      planetName="Contagem Relâmpago ⚡"
+      themeColor="yellow"
+      lives={lives}
+      score={score}
+      gameOver={gameOver}
+      onRestart={() => { resetGame(); setRound(0); }}
+    >
+      <div className="flex flex-col items-center gap-2 sm:gap-5 py-0 sm:py-2">
         {/* Timer bar */}
-        <div className="w-full flex flex-col gap-1.5">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <h3 className="text-xl sm:text-3xl font-black text-yellow-200 uppercase tracking-widest" style={{ fontFamily: 'var(--font-display)' }}>
+        <div className="w-full flex flex-col gap-1">
+          <div className="flex justify-between items-center gap-1">
+            <div className="flex items-center gap-1 sm:gap-3 min-w-0">
+              <h3
+                className="text-sm sm:text-3xl font-black text-yellow-200 uppercase tracking-wide sm:tracking-widest text-center truncate"
+                style={{ fontFamily: 'var(--font-display)' }}
+              >
                 Quantos você vê?
               </h3>
               <SpeakButton text="Quantos você vê? Rápido!" />
@@ -273,14 +312,15 @@ export function CountingGame() {
               key={timeLeft}
               initial={{ scale: 1.4 }}
               animate={{ scale: 1 }}
-              className={`text-2xl sm:text-4xl font-black ${timeLeft <= 2 ? 'text-red-400' : timeLeft <= 4 ? 'text-yellow-300' : 'text-green-300'}`}
+              className={`text-xl sm:text-4xl font-black shrink-0 ${timeLeft <= 2 ? 'text-red-400' : timeLeft <= 4 ? 'text-yellow-300' : 'text-green-300'}`}
               style={{ fontFamily: 'var(--font-display)' }}
             >
               {timeLeft}s
             </motion.span>
           </div>
+
           {/* Progress bar track */}
-          <div className="w-full h-4 sm:h-5 bg-white/20 rounded-full overflow-hidden border-2 border-white/30">
+          <div className="w-full h-3 sm:h-5 bg-white/20 rounded-full overflow-hidden border-2 border-white/30">
             <motion.div
               className={`h-full rounded-full ${timerColor} transition-colors duration-300`}
               animate={{ width: `${timerFraction * 100}%` }}
@@ -297,7 +337,7 @@ export function CountingGame() {
               animate={{ opacity: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.6 }}
-              className={`absolute inset-0 rounded-3xl pointer-events-none ${flash === 'correct' ? 'bg-green-400/30' : 'bg-red-400/30'}`}
+              className={`absolute inset-0 rounded-2xl sm:rounded-3xl pointer-events-none ${flash === 'correct' ? 'bg-green-400/30' : 'bg-red-400/30'}`}
             />
           )}
         </AnimatePresence>
@@ -307,11 +347,12 @@ export function CountingGame() {
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', bounce: 0.4 }}
+          className="max-w-full"
         >
           <Dots count={problem.n} emoji={problem.emoji} color="bg-yellow-700/60" />
         </motion.div>
 
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-md">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4 w-full max-w-md">
           {problem.options.map((o, i) => (
             <motion.button
               key={`${round}-${i}`}
@@ -319,7 +360,7 @@ export function CountingGame() {
               whileTap={{ scale: locked ? 1 : 0.92 }}
               onClick={() => handleClick(o)}
               disabled={locked}
-              className="bg-gradient-to-b from-yellow-400 to-yellow-500 text-white border-4 border-white shadow-[0_4px_0_rgb(161,98,7)] rounded-2xl font-black text-3xl sm:text-5xl py-4 sm:py-5 disabled:opacity-60 transition-all"
+              className="bg-gradient-to-b from-yellow-400 to-yellow-500 text-white border-2 sm:border-4 border-white shadow-[0_3px_0_rgb(161,98,7)] sm:shadow-[0_4px_0_rgb(161,98,7)] rounded-xl sm:rounded-2xl font-black text-2xl sm:text-5xl py-2 sm:py-5 disabled:opacity-60 transition-all"
               style={{ fontFamily: 'var(--font-display)' }}
             >
               {o}
@@ -327,7 +368,7 @@ export function CountingGame() {
           ))}
         </div>
 
-        <p className="text-yellow-200/70 text-sm sm:text-base font-bold text-center">
+        <p className="text-yellow-200/70 text-xs sm:text-base font-bold text-center">
           ⚡ Responda antes do tempo acabar!
         </p>
       </div>
