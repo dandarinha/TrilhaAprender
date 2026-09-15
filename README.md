@@ -12,17 +12,17 @@ Gráficos e Ícones: Recharts (para gráficos) e Lucide React (para ícones).
 
 >Clonar o repositório git no cmd :
 
-`git clone https://github.com/dandarinha/TrilhaAprender.git
+git clone https://github.com/dandarinha/TrilhaAprender.git
 
->Entrar na pasta do projeto
+>Entrar na pasta do projeto :
 
 `cd TrilhaAprender`
 
->Instalar npm;
+>Instalar npm :
 
 `npm install`
 
->Executar servidor local;
+>Executar servidor local :
 
 `npm run dev`
 
