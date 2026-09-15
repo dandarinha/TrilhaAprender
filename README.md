@@ -12,7 +12,7 @@ Gráficos e Ícones: Recharts (para gráficos) e Lucide React (para ícones).
 
 >Clonar o repositório git no cmd :
 
-`git clone https://github.com/dandarinha/TrilhaAprender.git
+git clone https://github.com/dandarinha/TrilhaAprender.git
 
 >Entrar na pasta do projeto
 
