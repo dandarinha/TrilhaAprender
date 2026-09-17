@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router";
 
 import Home from "./components/Home";
+import TeacherArea from "./components/TeacherArea.tsx";
 import PortugueseGame from "./components/PortugueseGame";
 import {
   AdditionGame,
@@ -14,6 +15,10 @@ export const router = createBrowserRouter([
   {
     path: "/",
     Component: Home,
+  },
+  {
+    path: "/professor",
+    Component: TeacherArea,
   },
   {
     path: "/portuguese",
