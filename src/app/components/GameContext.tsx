@@ -1,70 +1,168 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
-type ShipType = 'red' | 'blue' | 'yellow' | null;
-type GameScreen = 'start' | 'name-input' | 'ship-select' | 'travel' | 'planet' | 'minigame' | 'reward';
-type Subject = 'portuguese' | 'math' | 'english' | null;
+export type PlayerHistory = {
+  id: string;
+  name: string;
+  stars: number;
+  completedCount: number;
+  date: string;
+};
 
-interface GameState {
+export type TrailColor = 'red' | 'blue' | 'yellow' | null;
+
+export type GameScreen =
+  | 'start'
+  | 'name-input'
+  | 'trail-select'
+  | 'forest'
+  | 'animal'
+  | 'minigame'
+  | 'reward';
+
+export type Subject = 'portuguese' | 'math' | 'english' | null;
+
+export interface GameState {
   playerName: string;
-  selectedShip: ShipType;
+  selectedTrail: TrailColor;
   subject: Subject;
   stars: number;
   currentScreen: GameScreen;
-  currentPlanet: string | null;
+  currentAnimal: string | null;
   completedActivities: string[];
 }
 
-interface GameContextType {
+export interface GameContextType {
   state: GameState;
+  history: PlayerHistory[];
   setPlayerName: (name: string) => void;
-  selectShip: (ship: ShipType) => void;
+  selectTrail: (trail: TrailColor) => void;
   goToScreen: (screen: GameScreen) => void;
   addStars: (amount: number) => void;
   completeActivity: (activityId: string) => void;
+  saveCurrentSession: () => void;
+  clearHistory: () => void;
   resetGame: () => void;
 }
 
-const GameContext = createContext<GameContextType | undefined>(undefined);
+export const GameContext = createContext<GameContextType | undefined>(
+  undefined
+);
 
-const initialState: GameState = {
+export const initialState: GameState = {
   playerName: '',
-  selectedShip: null,
+  selectedTrail: null,
   subject: null,
   stars: 0,
   currentScreen: 'start',
-  currentPlanet: null,
+  currentAnimal: null,
   completedActivities: [],
 };
+
+const HISTORY_STORAGE_KEY = 'trilha_aprender_history';
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<GameState>(initialState);
 
+  const [history, setHistory] = useState<PlayerHistory[]>(() => {
+    if (typeof window === 'undefined') {
+      return [];
+    }
+
+    try {
+      const savedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
+      return savedHistory ? JSON.parse(savedHistory) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(
+        HISTORY_STORAGE_KEY,
+        JSON.stringify(history)
+      );
+    }
+  }, [history]);
+
   const setPlayerName = (name: string) => {
-    setState(prev => ({ ...prev, playerName: name }));
+    setState((previousState) => ({
+      ...previousState,
+      playerName: name,
+    }));
   };
 
-  const selectShip = (ship: ShipType) => {
-    const subject =
-      ship === 'red' ? 'portuguese' :
-      ship === 'blue' ? 'math' :
-      ship === 'yellow' ? 'english' :
-      null;
-    setState(prev => ({ ...prev, selectedShip: ship, subject }));
+  const selectTrail = (trail: TrailColor) => {
+    const subject: Subject =
+      trail === 'red'
+        ? 'portuguese'
+        : trail === 'blue'
+          ? 'math'
+          : trail === 'yellow'
+            ? 'english'
+            : null;
+
+    setState((previousState) => ({
+      ...previousState,
+      selectedTrail: trail,
+      subject,
+    }));
   };
 
   const goToScreen = (screen: GameScreen) => {
-    setState(prev => ({ ...prev, currentScreen: screen }));
+    setState((previousState) => ({
+      ...previousState,
+      currentScreen: screen,
+    }));
   };
 
   const addStars = (amount: number) => {
-    setState(prev => ({ ...prev, stars: prev.stars + amount }));
+    setState((previousState) => ({
+      ...previousState,
+      stars: Math.max(0, previousState.stars + amount),
+    }));
   };
 
   const completeActivity = (activityId: string) => {
-    setState(prev => ({
-      ...prev,
-      completedActivities: [...prev.completedActivities, activityId],
-    }));
+    setState((previousState) => {
+      if (previousState.completedActivities.includes(activityId)) {
+        return previousState;
+      }
+
+      return {
+        ...previousState,
+        completedActivities: [
+          ...previousState.completedActivities,
+          activityId,
+        ],
+      };
+    });
+  };
+
+  const saveCurrentSession = () => {
+    if (!state.playerName.trim()) {
+      return;
+    }
+
+    const newRecord: PlayerHistory = {
+      id:
+        typeof crypto !== 'undefined' && crypto.randomUUID
+          ? crypto.randomUUID()
+          : `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      name: state.playerName,
+      stars: state.stars,
+      completedCount: state.completedActivities.length,
+      date: new Date().toLocaleDateString('pt-BR'),
+    };
+
+    setHistory((previousHistory) => [
+      newRecord,
+      ...previousHistory,
+    ]);
+  };
+
+  const clearHistory = () => {
+    setHistory([]);
   };
 
   const resetGame = () => {
@@ -75,11 +173,14 @@ export function GameProvider({ children }: { children: ReactNode }) {
     <GameContext.Provider
       value={{
         state,
+        history,
         setPlayerName,
-        selectShip,
+        selectTrail,
         goToScreen,
         addStars,
         completeActivity,
+        saveCurrentSession,
+        clearHistory,
         resetGame,
       }}
     >
@@ -90,8 +191,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
 export function useGame() {
   const context = useContext(GameContext);
+
   if (!context) {
-    throw new Error('useGame must be used within GameProvider');
+    throw new Error(
+      'useGame deve ser utilizado dentro de GameProvider.'
+    );
   }
+
   return context;
 }

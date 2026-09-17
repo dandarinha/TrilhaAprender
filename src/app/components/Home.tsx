@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
-import { Play, LogOut, ChevronLeft, PawPrint, Compass, Leaf, Footprints } from 'lucide-react';
+import { Play, LogOut, ChevronLeft, PawPrint, Compass, Leaf, Footprints, Trophy } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-
+import { useGame } from './GameContext';
+import { HistoryModal } from "./HistoryModal";
 type Trail = { id: string; name: string; subject: string; path: string; color: string; icon: React.ReactNode };
 
 const BIOMAS: { id: 'portuguese' | 'math'; name: string; subject: string; emoji: string; color: string; trails: Trail[] }[] = [
@@ -33,29 +34,51 @@ const BIOMAS: { id: 'portuguese' | 'math'; name: string; subject: string; emoji:
 ];
 
 /* ─── START SCREEN ─── */
-function StartScreen({ onStart }: { onStart: () => void }) {
+// import { HistoryModal } from '../HistoryModal'; // Certifique-se de ajustar o caminho da pasta se necessário
+
+export function StartScreen({
+  onStart,
+  onHistory,
+}: {
+  onStart: () => void;
+  onHistory: () => void;
+}) {
+
   return (
     <motion.div
       initial={{ scale: 0.8, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       exit={{ scale: 1.2, opacity: 0 }}
-      className="flex flex-col items-center justify-center gap-8 sm:gap-14 text-center relative z-10"
+      className="flex flex-col items-center justify-center gap-8 sm:gap-14 text-center relative z-10 w-full"
     >
+      {/* Botão de Histórico / Recordes integrado ao tema de Floresta */}
+      <button
+        onClick={onHistory}
+        className="absolute -top-12 sm:top-4 right-4 flex items-center gap-2 bg-[#052e1c]/80 hover:bg-[#0d3d28] text-white font-black text-sm px-4 py-2.5 rounded-2xl border-2 border-[#35b35b]/40 shadow-[0_4px_0_rgba(0,0,0,0.2)] active:translate-y-1 active:shadow-none transition-all cursor-pointer z-20"
+        style={{ fontFamily: 'var(--font-display)' }}
+      >
+        <Trophy className="w-4 h-4 text-amber-400" fill="currentColor" />
+        RECORDES
+      </button>
+
       <div className="space-y-3 sm:space-y-4">
         <div className="inline-flex items-center gap-2 sm:gap-3 bg-[#052e1c]/60 px-4 py-2 sm:px-6 rounded-full backdrop-blur-sm border-2 border-[#35b35b]/50 shadow-[0_0_20px_rgba(53,179,91,0.3)] mb-2 sm:mb-4">
           <Leaf className="text-[#57b85b]" size={18} />
           <span className="text-white font-bold tracking-widest uppercase text-sm sm:text-base">Aventura na Floresta</span>
           <Leaf className="text-[#f6a623]" size={18} />
         </div>
+        
         <h1
           className="text-5xl sm:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-br from-[#f6a623] via-[#57b85b] to-[#2a7de1] filter drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           Trilha do Aprender
         </h1>
+        
         <p className="text-lg sm:text-3xl text-yellow-200 font-black max-w-2xl mx-auto" style={{ fontFamily: 'var(--font-display)' }}>
           Jornada Tropical 🌿
         </p>
+        
         <p className="text-base sm:text-xl text-[#cde7d5] font-bold max-w-xl mx-auto mt-1">
           Aprenda as letras junto com os bichos do Brasil!
         </p>
@@ -73,6 +96,8 @@ function StartScreen({ onStart }: { onStart: () => void }) {
           <span>Explorar</span>
         </div>
       </motion.button>
+
+
     </motion.div>
   );
 }
@@ -336,16 +361,19 @@ function TrailsForBiomaScreen({ biomaId, onBack }: { biomaId: 'portuguese' | 'ma
 
 /* ─── HOME ─── */
 export default function Home() {
+  const { state, setPlayerName, saveCurrentSession, resetGame } = useGame();
   const [step, setStep] = useState(0);
   const [explorerName, setExplorerName] = useState('');
   const [biomaId, setBiomaId] = useState<'portuguese' | 'math' | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   useEffect(() => {
     const savedName = localStorage.getItem('bichoName');
     const savedBioma = localStorage.getItem('bichoBioma') as 'portuguese' | 'math' | null;
     if (savedName) {
       setExplorerName(savedName);
+      setPlayerName(savedName);
       if (savedBioma === 'portuguese' || savedBioma === 'math') {
         setBiomaId(savedBioma);
         setStep(3);
@@ -356,17 +384,36 @@ export default function Home() {
     setIsLoaded(true);
   }, []);
 
+  const handleOpenHistory = () => {
+    setIsHistoryOpen(true);
+  };
+
+  const handleCloseHistory = () => {
+    setIsHistoryOpen(false);
+  };
+
   const handleNameConfirm = (name: string) => {
     setExplorerName(name);
+    setPlayerName(name);
     localStorage.setItem('bichoName', name);
     setStep(2);
   };
 
   const handleLogout = () => {
+    // Salva o progresso antes de trocar de perfil.
+    if (
+      state.playerName.trim() &&
+      (state.stars > 0 || state.completedActivities.length > 0)
+    ) {
+      saveCurrentSession();
+    }
+
     localStorage.removeItem('bichoName');
     localStorage.removeItem('bichoBioma');
     localStorage.removeItem('bichoStars');
     window.dispatchEvent(new Event('bichoStarsChanged'));
+
+    resetGame();
     setExplorerName('');
     setBiomaId(null);
     setStep(0);
@@ -421,12 +468,23 @@ export default function Home() {
 
       <div className={`relative z-10 flex-1 flex flex-col items-center ${isLoggedInScreen ? 'justify-start' : 'justify-center min-h-screen'} p-4 sm:p-8`}>
         <AnimatePresence mode="wait">
-          {step === 0 && <StartScreen key="start" onStart={() => setStep(1)} />}
+          {step === 0 && (
+              <StartScreen
+                key="start"
+                onStart={() => setStep(1)}
+                onHistory={handleOpenHistory}
+              />
+            )}
           {step === 1 && <ExplorerNameScreen key="name" onConfirm={handleNameConfirm} onBack={() => setStep(0)} />}
           {step === 2 && <BiomasScreen key="biomas" onSelectBioma={handleSelectBioma} />}
           {step === 3 && biomaId && <TrailsForBiomaScreen key="trails" biomaId={biomaId} onBack={handleBackToBiomas} />}
         </AnimatePresence>
       </div>
+
+      <HistoryModal
+        isOpen={isHistoryOpen}
+        onClose={handleCloseHistory}
+      />
     </div>
   );
 }
