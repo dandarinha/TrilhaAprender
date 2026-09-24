@@ -32,5 +32,5 @@ git clone https://github.com/dandarinha/TrilhaAprender.git
 
 **github -> https://github.com/dandarinha**
 
-**github -> https://github.com/**
+**github -> https://github.com/mariaeduardasenai8**
   

@@ -13,7 +13,7 @@ import {
 export type PlayerHistory = {
   id: string;
   name: string;
-  stars: number;
+  paws: number;
   completedCount: number;
   date: string;
 };
@@ -35,7 +35,7 @@ export interface GameState {
   playerName: string;
   selectedTrail: TrailColor;
   subject: Subject;
-  stars: number;
+  paws: number;
   currentScreen: GameScreen;
   currentAnimal: string | null;
   completedActivities: string[];
@@ -45,15 +45,15 @@ export interface GameContextType {
   state: GameState;
   history: PlayerHistory[];
 
-  setPlayerName: (name: string) => void;
+  setPlayerName: (name: string) => Promise<void>;
   selectTrail: (trail: TrailColor) => void;
   setSubject: (subject: Subject) => void;
   goToScreen: (screen: GameScreen) => void;
-  addStars: (amount: number) => void;
+  addPaws: (amount: number) => void;
   completeActivity: (activityId: string) => void;
 
-  saveCurrentSession: () => void;
-  clearHistory: () => void;
+  saveCurrentSession: () => Promise<void>;
+  clearHistory: () => Promise<void>;
   resetGame: () => void;
 }
 
@@ -73,120 +73,99 @@ export const initialState: GameState = {
   playerName: "",
   selectedTrail: null,
   subject: null,
-  stars: 0,
+  paws: 0,
   currentScreen: "start",
   currentAnimal: null,
   completedActivities: [],
 };
 
 /* ─────────────────────────────────────────────
-   CONFIGURAÇÕES
+   CONFIGURAÇÕES DE API
 ───────────────────────────────────────────── */
 
-const HISTORY_STORAGE_KEY = "trilha_aprender_history";
-
-/* ─────────────────────────────────────────────
-   FUNÇÕES AUXILIARES
-───────────────────────────────────────────── */
-
-function generateId(): string {
-  if (
-    typeof crypto !== "undefined" &&
-    typeof crypto.randomUUID === "function"
-  ) {
-    return crypto.randomUUID();
-  }
-
-  return `${Date.now()}-${Math.random()
-    .toString(36)
-    .slice(2)}`;
-}
-
-function isValidHistory(value: unknown): value is PlayerHistory[] {
-  if (!Array.isArray(value)) {
-    return false;
-  }
-
-  return value.every((item) => {
-    if (!item || typeof item !== "object") {
-      return false;
-    }
-
-    const player = item as Partial<PlayerHistory>;
-
-    return (
-      typeof player.id === "string" &&
-      typeof player.name === "string" &&
-      typeof player.stars === "number" &&
-      typeof player.completedCount === "number" &&
-      typeof player.date === "string"
-    );
-  });
-}
+const API_BASE_URL = "http://localhost:3000/api";
 
 /* ─────────────────────────────────────────────
    PROVIDER
 ───────────────────────────────────────────── */
 
-export function GameProvider({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export function GameProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<GameState>(initialState);
-
-  const [history, setHistory] = useState<PlayerHistory[]>(() => {
-    if (typeof window === "undefined") {
-      return [];
-    }
-
-    try {
-      const savedHistory = localStorage.getItem(
-        HISTORY_STORAGE_KEY
-      );
-
-      if (!savedHistory) {
-        return [];
-      }
-
-      const parsedHistory: unknown = JSON.parse(savedHistory);
-
-      return isValidHistory(parsedHistory)
-        ? parsedHistory
-        : [];
-    } catch {
-      return [];
-    }
-  });
+  const [history, setHistory] = useState<PlayerHistory[]>([]);
 
   /* ─────────────────────────────────────────
-     SALVAR HISTÓRICO NO LOCALSTORAGE
+     BUSCAR ALUNOS / HISTÓRICO DO MYSQL
   ───────────────────────────────────────── */
+
+  const fetchHistory = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/students`);
+      if (response.ok) {
+        const data: PlayerHistory[] = await response.json();
+        setHistory(data);
+      } else {
+        console.error("Erro ao buscar lista de alunos na API:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar lista de alunos do MySQL:", error);
+    }
+  };
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    try {
-      localStorage.setItem(
-        HISTORY_STORAGE_KEY,
-        JSON.stringify(history)
-      );
-    } catch {
-      // Evita que o jogo quebre caso o armazenamento esteja indisponível.
-    }
-  }, [history]);
+    fetchHistory();
+  }, []);
 
   /* ─────────────────────────────────────────
-     JOGADOR
+     DEFINIR / SELECIONAR JOGADOR E REGISTAR SESSÃO NO BANCO
   ───────────────────────────────────────── */
 
-  const setPlayerName = (name: string) => {
-    setState((previousState) => ({
-      ...previousState,
-      playerName: name.trim(),
-    }));
+  const setPlayerName = async (name: string) => {
+    const trimmedName = name.trim();
+    if (!trimmedName) return;
+
+    const normalizedName = trimmedName.toLowerCase();
+
+    // 1. Localiza se o aluno já existe no cadastro
+    const existingStudent = history.find(
+      (student) => student.name.trim().toLowerCase() === normalizedName
+    );
+
+    if (!existingStudent) {
+      throw new Error("Aluno não cadastrado. Solicite o cadastro à professora.");
+    }
+
+    // 2. Envia a sessão para o backend (MySQL)
+    try {
+      const response = await fetch(`${API_BASE_URL}/students/session`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: existingStudent.name,
+          paws: existingStudent.paws,
+          completedCount: existingStudent.completedCount,
+          date: new Date().toLocaleDateString("pt-BR"),
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || "Não foi possível iniciar a sessão no servidor.");
+      }
+
+      // 3. Atualiza o estado local apenas se o backend confirmar
+      setState((previousState) => ({
+        ...previousState,
+        playerName: existingStudent.name,
+        paws: existingStudent.paws,
+      }));
+
+      // 4. Recarrega o histórico para sincronizar os dados atualizados
+      await fetchHistory();
+    } catch (error) {
+      console.error("Erro ao registar sessão no MySQL:", error);
+      // RE-LANÇA O ERRO para que o NameInputScreen exiba a mensagem na tela!
+      throw error;
+    }
   };
 
   /* ─────────────────────────────────────────
@@ -194,22 +173,6 @@ export function GameProvider({
   ───────────────────────────────────────── */
 
   const selectTrail = (trail: TrailColor) => {
-    /*
-      As três trilhas existem para as duas matérias:
-
-      Português:
-      - Trilha Vermelha
-      - Trilha Azul
-      - Trilha Amarela
-
-      Matemática:
-      - Trilha Vermelha
-      - Trilha Azul
-      - Trilha Amarela
-
-      A cor da trilha não define a matéria.
-    */
-
     setState((previousState) => ({
       ...previousState,
       selectedTrail: trail,
@@ -239,21 +202,34 @@ export function GameProvider({
   };
 
   /* ─────────────────────────────────────────
-     ESTRELAS
+     PATINHAS (ADICIONAR PONTOS)
   ───────────────────────────────────────── */
 
-  const addStars = (amount: number) => {
-    if (!Number.isFinite(amount)) {
-      return;
-    }
+  const addPaws = (amount: number) => {
+    if (!Number.isFinite(amount)) return;
 
-    setState((previousState) => ({
-      ...previousState,
-      stars: Math.max(
-        0,
-        previousState.stars + Math.round(amount)
-      ),
-    }));
+    const delta = Math.round(amount);
+
+    setState((previousState) => {
+      const updatedPaws = Math.max(0, previousState.paws + delta);
+
+      // Sincroniza em tempo real com o backend usando o estado mais recente
+      if (previousState.playerName) {
+        fetch(`${API_BASE_URL}/students/paws`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            playerName: previousState.playerName,
+            paws: updatedPaws,
+          }),
+        }).catch((err) => console.error("Erro ao sincronizar patinhas:", err));
+      }
+
+      return {
+        ...previousState,
+        paws: updatedPaws,
+      };
+    });
   };
 
   /* ─────────────────────────────────────────
@@ -262,97 +238,82 @@ export function GameProvider({
 
   const completeActivity = (activityId: string) => {
     const normalizedId = activityId.trim();
-
-    if (!normalizedId) {
-      return;
-    }
+    if (!normalizedId) return;
 
     setState((previousState) => {
-      if (
-        previousState.completedActivities.includes(
-          normalizedId
-        )
-      ) {
+      if (previousState.completedActivities.includes(normalizedId)) {
         return previousState;
+      }
+
+      const updatedActivities = [...previousState.completedActivities, normalizedId];
+
+      // Sincroniza progresso com a API usando o estado mais recente
+      if (previousState.playerName) {
+        fetch(`${API_BASE_URL}/students/activity`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            playerName: previousState.playerName,
+            completedCount: updatedActivities.length,
+          }),
+        }).catch((err) => console.error("Erro ao sincronizar atividade:", err));
       }
 
       return {
         ...previousState,
-        completedActivities: [
-          ...previousState.completedActivities,
-          normalizedId,
-        ],
+        completedActivities: updatedActivities,
       };
     });
   };
 
   /* ─────────────────────────────────────────
-     SALVAR SESSÃO
+     SALVAR SESSÃO COMPLETA NA API
   ───────────────────────────────────────── */
 
-  const saveCurrentSession = () => {
+  const saveCurrentSession = async () => {
     const playerName = state.playerName.trim();
+    if (!playerName) return;
 
-    if (!playerName) {
-      return;
-    }
+    try {
+      const response = await fetch(`${API_BASE_URL}/students/session`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: playerName,
+          paws: state.paws,
+          completedCount: state.completedActivities.length,
+          date: new Date().toLocaleDateString("pt-BR"),
+        }),
+      });
 
-    const normalizedName = playerName.toLowerCase();
-
-    const newRecord: PlayerHistory = {
-      id: generateId(),
-      name: playerName,
-      stars: Math.max(0, state.stars),
-      completedCount: state.completedActivities.length,
-      date: new Date().toLocaleDateString("pt-BR"),
-    };
-
-    setHistory((previousHistory) => {
-      const existingStudentIndex = previousHistory.findIndex(
-        (student) =>
-          student.name.trim().toLowerCase() === normalizedName
-      );
-
-      /*
-        Se o aluno ainda não existe, ele é adicionado ao mural.
-      */
-      if (existingStudentIndex === -1) {
-        return [newRecord, ...previousHistory];
+      if (response.ok) {
+        await fetchHistory();
+      } else {
+        console.error("Erro ao salvar sessão no servidor:", response.statusText);
       }
-
-      /*
-        Se o aluno já existe, atualiza seus dados sem criar
-        um card duplicado no mural.
-      */
-      const updatedHistory = [...previousHistory];
-
-      const existingStudent =
-        updatedHistory[existingStudentIndex];
-
-      updatedHistory[existingStudentIndex] = {
-        ...existingStudent,
-        name: playerName,
-        stars: Math.max(
-          existingStudent.stars,
-          newRecord.stars
-        ),
-        completedCount: Math.max(
-          existingStudent.completedCount,
-          newRecord.completedCount
-        ),
-        date: newRecord.date,
-      };
-
-      return updatedHistory;
-    });
+    } catch (error) {
+      console.error("Erro ao salvar sessão no MySQL:", error);
+    }
   };
 
   /* ─────────────────────────────────────────
      LIMPAR HISTÓRICO
   ───────────────────────────────────────── */
 
-  const clearHistory = () => {
-    setHistory([]);
+  const clearHistory = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/students`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        setHistory([]);
+      } else {
+        console.error("Erro ao limpar histórico no servidor.");
+      }
+    } catch (error) {
+      console.error("Erro ao limpar histórico no MySQL:", error);
+    }
   };
 
   /* ─────────────────────────────────────────
@@ -366,10 +327,6 @@ export function GameProvider({
     });
   };
 
-  /* ─────────────────────────────────────────
-     PROVIDER
-  ───────────────────────────────────────── */
-
   return (
     <GameContext.Provider
       value={{
@@ -379,7 +336,7 @@ export function GameProvider({
         selectTrail,
         setSubject,
         goToScreen,
-        addStars,
+        addPaws,
         completeActivity,
         saveCurrentSession,
         clearHistory,
@@ -399,9 +356,7 @@ export function useGame(): GameContextType {
   const context = useContext(GameContext);
 
   if (!context) {
-    throw new Error(
-      "useGame deve ser utilizado dentro de GameProvider."
-    );
+    throw new Error("useGame deve ser utilizado dentro de GameProvider.");
   }
 
   return context;
