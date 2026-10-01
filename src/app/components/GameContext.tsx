@@ -6,21 +6,27 @@ import {
   type ReactNode,
 } from "react";
 
-/* ─────────────────────────────────────────────
-   TIPOS
-───────────────────────────────────────────── */
-
-export type PlayerHistory = {
+export type Student = {
   id: string;
   name: string;
+  className: string | null;
   paws: number;
-  completedCount: number;
-  date: string;
+  createdAt: string;
+  lastAccess: string | null;
 };
 
-export type TrailColor = "red" | "blue" | "yellow" | null;
+export type PlayerHistory = Student;
 
-export type Subject = "portuguese" | "math" | null;
+export type TrailColor =
+  | "red"
+  | "blue"
+  | "yellow"
+  | null;
+
+export type Subject =
+  | "portuguese"
+  | "math"
+  | null;
 
 export type GameScreen =
   | "start"
@@ -32,6 +38,7 @@ export type GameScreen =
   | "reward";
 
 export interface GameState {
+  studentId: string | null;
   playerName: string;
   selectedTrail: TrailColor;
   subject: Subject;
@@ -46,30 +53,26 @@ export interface GameContextType {
   history: PlayerHistory[];
 
   setPlayerName: (name: string) => Promise<void>;
+  refreshStudents: () => Promise<void>;
+
   selectTrail: (trail: TrailColor) => void;
   setSubject: (subject: Subject) => void;
   goToScreen: (screen: GameScreen) => void;
-  addPaws: (amount: number) => void;
-  completeActivity: (activityId: string) => void;
+
+  addPaws: (amount: number) => Promise<void>;
+  completeActivity: (activityId: string) => Promise<void>;
 
   saveCurrentSession: () => Promise<void>;
-  clearHistory: () => Promise<void>;
   resetGame: () => void;
 }
 
-/* ─────────────────────────────────────────────
-   CONTEXTO
-───────────────────────────────────────────── */
-
-export const GameContext = createContext<GameContextType | undefined>(
-  undefined
-);
-
-/* ─────────────────────────────────────────────
-   ESTADO INICIAL
-───────────────────────────────────────────── */
+export const GameContext =
+  createContext<GameContextType | undefined>(
+    undefined
+  );
 
 export const initialState: GameState = {
+  studentId: null,
   playerName: "",
   selectedTrail: null,
   subject: null,
@@ -79,251 +82,443 @@ export const initialState: GameState = {
   completedActivities: [],
 };
 
-/* ─────────────────────────────────────────────
-   CONFIGURAÇÕES DE API
-───────────────────────────────────────────── */
+const API_BASE_URL =
+  "http://localhost:3000/api";
 
-const API_BASE_URL = "http://localhost:3000/api";
+export function GameProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const [state, setState] =
+    useState<GameState>(initialState);
 
-/* ─────────────────────────────────────────────
-   PROVIDER
-───────────────────────────────────────────── */
+  const [history, setHistory] = useState<
+    PlayerHistory[]
+  >([]);
 
-export function GameProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<GameState>(initialState);
-  const [history, setHistory] = useState<PlayerHistory[]>([]);
-
-  /* ─────────────────────────────────────────
-     BUSCAR ALUNOS / HISTÓRICO DO MYSQL
-  ───────────────────────────────────────── */
-
-  const fetchHistory = async () => {
+  /**
+   * Carrega os alunos diretamente da API.
+   *
+   * O cadastro dos alunos NÃO acontece aqui.
+   * Esta função apenas consulta o MySQL através da API.
+   */
+  const refreshStudents = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/students`);
-      if (response.ok) {
-        const data: PlayerHistory[] = await response.json();
-        setHistory(data);
-      } else {
-        console.error("Erro ao buscar lista de alunos na API:", response.statusText);
+      const response = await fetch(
+        `${API_BASE_URL}/students`
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          "Não foi possível carregar os alunos."
+        );
       }
+
+      const data: PlayerHistory[] =
+        await response.json();
+
+      setHistory(data);
     } catch (error) {
-      console.error("Erro ao carregar lista de alunos do MySQL:", error);
+      console.error(
+        "Erro ao carregar alunos:",
+        error
+      );
     }
   };
 
+  /**
+   * Carrega os alunos quando o GameProvider é iniciado.
+   */
   useEffect(() => {
-    fetchHistory();
+    refreshStudents();
   }, []);
 
-  /* ─────────────────────────────────────────
-     DEFINIR / SELECIONAR JOGADOR E REGISTAR SESSÃO NO BANCO
-  ───────────────────────────────────────── */
-
-  const setPlayerName = async (name: string) => {
+  /**
+   * Seleciona um aluno já cadastrado pelo professor.
+   *
+   * Não cria aluno.
+   * Não salva aluno no localStorage.
+   * A validação é feita com os alunos vindos da API/MySQL.
+   */
+  const setPlayerName = async (
+    name: string
+  ) => {
     const trimmedName = name.trim();
-    if (!trimmedName) return;
 
-    const normalizedName = trimmedName.toLowerCase();
-
-    // 1. Localiza se o aluno já existe no cadastro
-    const existingStudent = history.find(
-      (student) => student.name.trim().toLowerCase() === normalizedName
-    );
-
-    if (!existingStudent) {
-      throw new Error("Aluno não cadastrado. Solicite o cadastro à professora.");
+    if (!trimmedName) {
+      throw new Error(
+        "Nome do aluno é obrigatório."
+      );
     }
 
-    // 2. Envia a sessão para o backend (MySQL)
+    const student = history.find(
+      (item) =>
+        item.name.trim().toLowerCase() ===
+        trimmedName.toLowerCase()
+    );
+
+    if (!student) {
+      throw new Error(
+        "Aluno não cadastrado. Solicite o cadastro à professora."
+      );
+    }
+
     try {
-      const response = await fetch(`${API_BASE_URL}/students/session`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: existingStudent.name,
-          paws: existingStudent.paws,
-          completedCount: existingStudent.completedCount,
-          date: new Date().toLocaleDateString("pt-BR"),
-        }),
-      });
+      /**
+       * Inicia uma nova sessão para o aluno
+       * já existente no banco.
+       */
+      const response = await fetch(
+        `${API_BASE_URL}/students/${student.id}/session`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response
+        .json()
+        .catch(() => ({}));
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || "Não foi possível iniciar a sessão no servidor.");
+        throw new Error(
+          data.error ||
+            "Não foi possível iniciar a sessão."
+        );
       }
 
-      // 3. Atualiza o estado local apenas se o backend confirmar
+      /**
+       * O endpoint atual retorna apenas os dados
+       * da sessão, não um objeto student.
+       *
+       * Portanto, usamos diretamente o aluno
+       * que já foi encontrado na lista da API.
+       */
+      const selectedStudent = student;
+
+      /**
+       * Atualiza a lista de alunos para refletir
+       * o lastAccess alterado pela sessão.
+       */
+      await refreshStudents();
+
+      /**
+       * Busca as atividades já concluídas
+       * pelo aluno no MySQL.
+       */
+      const performanceResponse =
+        await fetch(
+          `${API_BASE_URL}/students/${student.id}/performance`
+        );
+
+      let completedActivities: string[] = [];
+
+      if (performanceResponse.ok) {
+        const performance =
+          await performanceResponse.json();
+
+        completedActivities = Array.isArray(
+          performance.activities
+        )
+          ? performance.activities.map(
+              (activity: {
+                id: string;
+              }) => activity.id
+            )
+          : [];
+      }
+
+      /**
+       * Atualiza o estado da sessão atual.
+       */
       setState((previousState) => ({
         ...previousState,
-        playerName: existingStudent.name,
-        paws: existingStudent.paws,
+        studentId: selectedStudent.id,
+        playerName: selectedStudent.name,
+        paws:
+          Number(selectedStudent.paws) || 0,
+        completedActivities,
+        currentScreen:
+          previousState.currentScreen,
       }));
-
-      // 4. Recarrega o histórico para sincronizar os dados atualizados
-      await fetchHistory();
     } catch (error) {
-      console.error("Erro ao registar sessão no MySQL:", error);
-      // RE-LANÇA O ERRO para que o NameInputScreen exiba a mensagem na tela!
+      console.error(
+        "Erro ao selecionar aluno:",
+        error
+      );
+
       throw error;
     }
   };
 
-  /* ─────────────────────────────────────────
-     TRILHAS
-  ───────────────────────────────────────── */
-
-  const selectTrail = (trail: TrailColor) => {
+  /**
+   * Seleciona a trilha.
+   */
+  const selectTrail = (
+    trail: TrailColor
+  ) => {
     setState((previousState) => ({
       ...previousState,
       selectedTrail: trail,
     }));
   };
 
-  /* ─────────────────────────────────────────
-     MATÉRIAS
-  ───────────────────────────────────────── */
-
-  const setSubject = (subject: Subject) => {
+  /**
+   * Define a matéria.
+   */
+  const setSubject = (
+    subject: Subject
+  ) => {
     setState((previousState) => ({
       ...previousState,
       subject,
     }));
   };
 
-  /* ─────────────────────────────────────────
-     NAVEGAÇÃO
-  ───────────────────────────────────────── */
-
-  const goToScreen = (screen: GameScreen) => {
+  /**
+   * Altera a tela atual do jogo.
+   */
+  const goToScreen = (
+    screen: GameScreen
+  ) => {
     setState((previousState) => ({
       ...previousState,
       currentScreen: screen,
     }));
   };
 
-  /* ─────────────────────────────────────────
-     PATINHAS (ADICIONAR PONTOS)
-  ───────────────────────────────────────── */
-
-  const addPaws = (amount: number) => {
-    if (!Number.isFinite(amount)) return;
+  /**
+   * Adiciona ou remove patinhas.
+   *
+   * O valor atualizado é salvo no MySQL através da API.
+   */
+  const addPaws = async (
+    amount: number
+  ) => {
+    if (!Number.isFinite(amount)) {
+      return;
+    }
 
     const delta = Math.round(amount);
 
-    setState((previousState) => {
-      const updatedPaws = Math.max(0, previousState.paws + delta);
+    if (!state.studentId) {
+      console.warn(
+        "Tentativa de adicionar patinhas sem aluno selecionado."
+      );
 
-      // Sincroniza em tempo real com o backend usando o estado mais recente
-      if (previousState.playerName) {
-        fetch(`${API_BASE_URL}/students/paws`, {
+      return;
+    }
+
+    const updatedPaws = Math.max(
+      0,
+      state.paws + delta
+    );
+
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/students/${state.studentId}/paws`,
+        {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({
-            playerName: previousState.playerName,
             paws: updatedPaws,
           }),
-        }).catch((err) => console.error("Erro ao sincronizar patinhas:", err));
+        }
+      );
+
+      const data = await response
+        .json()
+        .catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(
+          data.error ||
+            "Não foi possível atualizar as patinhas."
+        );
       }
 
-      return {
+      setState((previousState) => ({
         ...previousState,
-        paws: updatedPaws,
-      };
-    });
+        paws:
+          Number(data.paws) ||
+          updatedPaws,
+      }));
+
+      /**
+       * Mantém a lista de alunos sincronizada
+       * com o banco.
+       */
+      await refreshStudents();
+    } catch (error) {
+      console.error(
+        "Erro ao atualizar patinhas:",
+        error
+      );
+
+      throw error;
+    }
   };
 
-  /* ─────────────────────────────────────────
-     ATIVIDADES
-  ───────────────────────────────────────── */
+  /**
+   * Registra uma atividade concluída.
+   *
+   * O registro é salvo em student_activities
+   * através da API.
+   */
+  const completeActivity = async (
+    activityId: string
+  ) => {
+    const normalizedId =
+      activityId.trim();
 
-  const completeActivity = (activityId: string) => {
-    const normalizedId = activityId.trim();
-    if (!normalizedId) return;
+    if (!normalizedId) {
+      return;
+    }
 
-    setState((previousState) => {
-      if (previousState.completedActivities.includes(normalizedId)) {
-        return previousState;
-      }
+    if (!state.studentId) {
+      console.warn(
+        "Tentativa de concluir atividade sem aluno selecionado."
+      );
 
-      const updatedActivities = [...previousState.completedActivities, normalizedId];
+      return;
+    }
 
-      // Sincroniza progresso com a API usando o estado mais recente
-      if (previousState.playerName) {
-        fetch(`${API_BASE_URL}/students/activity`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+    /**
+     * Evita uma nova chamada caso a atividade
+     * já tenha sido registrada nesta sessão.
+     */
+    if (
+      state.completedActivities.includes(
+        normalizedId
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/students/${state.studentId}/activities`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
           body: JSON.stringify({
-            playerName: previousState.playerName,
-            completedCount: updatedActivities.length,
+            activityId:
+              normalizedId,
           }),
-        }).catch((err) => console.error("Erro ao sincronizar atividade:", err));
+        }
+      );
+
+      const data = await response
+        .json()
+        .catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(
+          data.error ||
+            "Não foi possível registrar a atividade."
+        );
       }
 
-      return {
-        ...previousState,
-        completedActivities: updatedActivities,
-      };
-    });
-  };
+      setState((previousState) => {
+        /**
+         * Proteção contra duplicidade no estado
+         * mesmo que a API seja chamada novamente.
+         */
+        if (
+          previousState.completedActivities.includes(
+            normalizedId
+          )
+        ) {
+          return previousState;
+        }
 
-  /* ─────────────────────────────────────────
-     SALVAR SESSÃO COMPLETA NA API
-  ───────────────────────────────────────── */
-
-  const saveCurrentSession = async () => {
-    const playerName = state.playerName.trim();
-    if (!playerName) return;
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/students/session`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: playerName,
-          paws: state.paws,
-          completedCount: state.completedActivities.length,
-          date: new Date().toLocaleDateString("pt-BR"),
-        }),
+        return {
+          ...previousState,
+          completedActivities: [
+            ...previousState.completedActivities,
+            normalizedId,
+          ],
+        };
       });
-
-      if (response.ok) {
-        await fetchHistory();
-      } else {
-        console.error("Erro ao salvar sessão no servidor:", response.statusText);
-      }
     } catch (error) {
-      console.error("Erro ao salvar sessão no MySQL:", error);
+      console.error(
+        "Erro ao registrar atividade:",
+        error
+      );
+
+      throw error;
     }
   };
 
-  /* ─────────────────────────────────────────
-     LIMPAR HISTÓRICO
-  ───────────────────────────────────────── */
-
-  const clearHistory = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/students`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        setHistory([]);
-      } else {
-        console.error("Erro ao limpar histórico no servidor.");
+  /**
+   * Finaliza a sessão atual.
+   *
+   * O encerramento é registrado no MySQL.
+   */
+  const saveCurrentSession =
+    async () => {
+      if (!state.studentId) {
+        return;
       }
-    } catch (error) {
-      console.error("Erro ao limpar histórico no MySQL:", error);
-    }
-  };
 
-  /* ─────────────────────────────────────────
-     RESETAR JOGO
-  ───────────────────────────────────────── */
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/students/${state.studentId}/session/finish`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+            body: JSON.stringify({
+              paws: state.paws,
+            }),
+          }
+        );
 
+        const data = await response
+          .json()
+          .catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+              "Não foi possível finalizar a sessão."
+          );
+        }
+
+        /**
+         * Atualiza os dados dos alunos depois
+         * que a sessão foi encerrada.
+         */
+        await refreshStudents();
+      } catch (error) {
+        console.error(
+          "Erro ao finalizar sessão:",
+          error
+        );
+
+        throw error;
+      }
+    };
+
+  /**
+   * Volta o estado do jogo para o estado inicial.
+   *
+   * Não exclui o aluno do banco.
+   * O cadastro continua existindo no MySQL.
+   */
   const resetGame = () => {
     setState({
       ...initialState,
-      completedActivities: [],
     });
   };
 
@@ -332,14 +527,18 @@ export function GameProvider({ children }: { children: ReactNode }) {
       value={{
         state,
         history,
+
         setPlayerName,
+        refreshStudents,
+
         selectTrail,
         setSubject,
         goToScreen,
+
         addPaws,
         completeActivity,
+
         saveCurrentSession,
-        clearHistory,
         resetGame,
       }}
     >
@@ -348,15 +547,14 @@ export function GameProvider({ children }: { children: ReactNode }) {
   );
 }
 
-/* ─────────────────────────────────────────────
-   HOOK PERSONALIZADO
-───────────────────────────────────────────── */
-
 export function useGame(): GameContextType {
-  const context = useContext(GameContext);
+  const context =
+    useContext(GameContext);
 
   if (!context) {
-    throw new Error("useGame deve ser utilizado dentro de GameProvider.");
+    throw new Error(
+      "useGame deve ser utilizado dentro de GameProvider."
+    );
   }
 
   return context;

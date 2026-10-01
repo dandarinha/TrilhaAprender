@@ -1,200 +1,713 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
-import mysql from "mysql2/promise";
-import { db, dbConfig } from "./db";
+import crypto from "crypto";
+import { db } from "./db";
+import { initializeDatabase } from "./database";
 
 const app = express();
-app.disable("etag"); // Desativa cache 304 para garantir dados atualizados em tempo real
 
-const PORT = 3000;
+const PORT = Number(process.env.PORT || 3000);
 
-app.use(cors());
+const FRONTEND_URL =
+  process.env.FRONTEND_URL || "http://localhost:5173";
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  FRONTEND_URL,
+].filter((origin, index, array) => array.indexOf(origin) === index);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Permite requisições sem Origin, como algumas ferramentas locais.
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(
+        new Error("Origem não autorizada pelo CORS.")
+      );
+    },
+  })
+);
+
 app.use(express.json());
 
-/* 0. Inicialização automática do DATABASE e da TABELA */
-async function initDatabase() {
-  try {
-    const tempConnection = await mysql.createConnection(dbConfig);
-    await tempConnection.query(`CREATE DATABASE IF NOT EXISTS trilha_aprender;`);
-    await tempConnection.end();
+/* =========================================================
+   TESTE DA API
+========================================================= */
 
-    await db.query(`
-      CREATE TABLE IF NOT EXISTS students (
-        id VARCHAR(255) PRIMARY KEY,
-        name VARCHAR(255) NOT NULL UNIQUE,
-        paws INT DEFAULT 0,
-        completedCount INT DEFAULT 0,
-        date VARCHAR(50)
-      );
+app.get("/api/health", (_req: Request, res: Response) => {
+  res.json({
+    success: true,
+    message: "API Trilha do Aprender funcionando.",
+  });
+});
+
+/* =========================================================
+   ALUNOS
+========================================================= */
+
+/**
+ * GET /api/students
+ *
+ * Lista todos os alunos cadastrados.
+ */
+app.get("/api/students", async (_req: Request, res: Response) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT
+        id,
+        name,
+        className,
+        paws,
+        createdAt,
+        lastAccess
+      FROM students
+      ORDER BY name ASC
     `);
-    console.log("✅ Base de dados 'trilha_aprender' e Tabela 'students' prontas!");
-  } catch (error) {
-    console.error("❌ Erro crítico ao inicializar a base de dados:", error);
-    process.exit(1);
-  }
-}
 
-/* 1. Buscar todos os alunos (para o Mural) */
-app.get("/api/students", async (_req, res) => {
-  try {
-    const [rows] = await db.query("SELECT * FROM students ORDER BY name ASC");
     res.json(rows);
   } catch (error) {
-    console.error("❌ Erro no GET /api/students:", error);
-    res.status(500).json({ error: "Erro ao buscar alunos." });
+    console.error("Erro ao buscar alunos:", error);
+
+    res.status(500).json({
+      error: "Erro ao buscar alunos.",
+    });
   }
 });
 
-/* 2. ROTA DA PROFESSORA: Cadastrar novo aluno */
-app.post("/api/students", async (req, res) => {
-  const { name } = req.body;
-
-  if (!name || typeof name !== "string" || !name.trim()) {
-    return res.status(400).json({ error: "Nome do aluno é obrigatório." });
-  }
-
-  const trimmedName = name.trim();
-
+/**
+ * POST /api/students
+ *
+ * Cadastro de aluno feito pela Área do Professor.
+ */
+app.post("/api/students", async (req: Request, res: Response) => {
   try {
-    const [existing]: any = await db.query(
-      "SELECT id FROM students WHERE LOWER(name) = LOWER(?)",
-      [trimmedName]
-    );
+    const { name, className } = req.body;
 
-    if (existing.length > 0) {
-      return res.status(400).json({ error: "Este aluno já está cadastrado!" });
+    if (!name || typeof name !== "string" || !name.trim()) {
+      return res.status(400).json({
+        error: "O nome do aluno é obrigatório.",
+      });
     }
 
-    const newId = Date.now().toString();
-    const today = new Date().toLocaleDateString("pt-BR");
+    const studentName = name.trim();
+
+    const [existingRows] = await db.query(
+      `
+        SELECT id
+        FROM students
+        WHERE name = ?
+        LIMIT 1
+      `,
+      [studentName]
+    );
+
+    if ((existingRows as any[]).length > 0) {
+      return res.status(409).json({
+        error: "Já existe um aluno cadastrado com esse nome.",
+      });
+    }
+
+    const studentId = crypto.randomUUID();
 
     await db.query(
-      "INSERT INTO students (id, name, paws, completedCount, date) VALUES (?, ?, 0, 0, ?)",
-      [newId, trimmedName, today]
+      `
+        INSERT INTO students (
+          id,
+          name,
+          className,
+          paws,
+          createdAt,
+          lastAccess
+        )
+        VALUES (?, ?, ?, 0, NOW(), NULL)
+      `,
+      [
+        studentId,
+        studentName,
+        className && typeof className === "string"
+          ? className.trim() || null
+          : null,
+      ]
     );
 
-    console.log(`👩‍🏫 Professora cadastrou o aluno "${trimmedName}" no MySQL!`);
-    return res.status(201).json({ message: "Aluno cadastrado com sucesso!" });
-  } catch (error: any) {
-    if (error.code === "ER_DUP_ENTRY") {
-      return res.status(400).json({ error: "Este aluno já está cadastrado!" });
-    }
-    console.error("❌ Erro ao cadastrar aluno:", error);
-    res.status(500).json({ error: "Erro ao cadastrar aluno no banco de dados." });
-  }
-});
-
-/* 3. ROTA DO ALUNO / SESSÃO: Iniciar e salvar progresso da sessão */
-app.post("/api/students/session", async (req, res) => {
-  const { name, paws, completedCount } = req.body;
-
-  if (!name || typeof name !== "string" || !name.trim()) {
-    return res.status(400).json({ error: "Nome do aluno é obrigatório." });
-  }
-
-  const trimmedName = name.trim();
-
-  try {
-    const [existingRows]: any = await db.query(
-      "SELECT * FROM students WHERE LOWER(name) = LOWER(?)",
-      [trimmedName]
+    const [rows] = await db.query(
+      `
+        SELECT
+          id,
+          name,
+          className,
+          paws,
+          createdAt,
+          lastAccess
+        FROM students
+        WHERE id = ?
+      `,
+      [studentId]
     );
 
-    // Se o aluno não existir, BLOQUEIA a entrada!
-    if (existingRows.length === 0) {
-      return res.status(404).json({ error: "Aluno não cadastrado no sistema." });
-    }
-
-    const student = existingRows[0];
-    const today = new Date().toLocaleDateString("pt-BR");
-
-    // Mantém os valores atuais caso não tenham sido enviados novos na requisição
-    const newPaws = Number.isFinite(paws) ? Math.max(0, Number(paws)) : student.paws;
-    const newCompleted = Number.isFinite(completedCount) ? Math.max(0, Number(completedCount)) : student.completedCount;
-
-    await db.query(
-      "UPDATE students SET date = ?, paws = ?, completedCount = ? WHERE id = ?",
-      [today, newPaws, newCompleted, student.id]
-    );
-
-    return res.status(200).json({ message: "Sessão atualizada com sucesso!" });
+    res.status(201).json((rows as any[])[0]);
   } catch (error) {
-    console.error("❌ Erro ao iniciar/atualizar sessão:", error);
-    res.status(500).json({ error: "Erro ao atualizar sessão." });
+    console.error("Erro ao cadastrar aluno:", error);
+
+    res.status(500).json({
+      error: "Erro ao cadastrar aluno.",
+    });
   }
 });
 
-/* 4. Atualizar patinhas do aluno em tempo real */
-app.patch("/api/students/paws", async (req, res) => {
-  const { playerName, paws } = req.body;
+/**
+ * DELETE /api/students/:studentId
+ *
+ * Exclusão de aluno feita pela Área do Professor.
+ */
+app.delete(
+  "/api/students/:studentId",
+  async (req: Request, res: Response) => {
+    try {
+      const { studentId } = req.params;
 
-  if (!playerName || typeof playerName !== "string" || !playerName.trim()) {
-    return res.status(400).json({ error: "Nome do jogador é obrigatório." });
-  }
+      const [result] = await db.query(
+        `
+          DELETE FROM students
+          WHERE id = ?
+        `,
+        [studentId]
+      );
 
-  const safePaws = Number.isFinite(paws) ? Math.max(0, Number(paws)) : 0;
+      const deleteResult = result as any;
 
-  try {
-    const [result]: any = await db.query(
-      "UPDATE students SET paws = ? WHERE LOWER(name) = LOWER(?)",
-      [safePaws, playerName.trim()]
-    );
+      if (deleteResult.affectedRows === 0) {
+        return res.status(404).json({
+          error: "Aluno não encontrado.",
+        });
+      }
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "Aluno não encontrado." });
+      res.json({
+        success: true,
+        message: "Aluno excluído com sucesso.",
+      });
+    } catch (error) {
+      console.error("Erro ao excluir aluno:", error);
+
+      res.status(500).json({
+        error: "Erro ao excluir aluno.",
+      });
     }
-
-    res.status(200).json({ message: "Patinhas atualizadas com sucesso." });
-  } catch (error) {
-    console.error("❌ Erro no PATCH /api/students/paws:", error);
-    res.status(500).json({ error: "Erro ao atualizar patinhas." });
   }
-});
+);
 
-/* 5. Atualizar atividades concluídas */
-app.patch("/api/students/activity", async (req, res) => {
-  const { playerName, completedCount } = req.body;
+/* =========================================================
+   SESSÕES
+========================================================= */
 
-  if (!playerName || typeof playerName !== "string" || !playerName.trim()) {
-    return res.status(400).json({ error: "Nome do jogador é obrigatório." });
-  }
+/**
+ * POST /api/students/:studentId/session
+ *
+ * Inicia uma nova sessão de jogo.
+ */
+app.post(
+  "/api/students/:studentId/session",
+  async (req: Request, res: Response) => {
+    try {
+      const { studentId } = req.params;
 
-  const safeCompleted = Number.isFinite(completedCount) ? Math.max(0, Number(completedCount)) : 0;
+      const [studentRows] = await db.query(
+        `
+          SELECT id
+          FROM students
+          WHERE id = ?
+          LIMIT 1
+        `,
+        [studentId]
+      );
 
-  try {
-    const [result]: any = await db.query(
-      "UPDATE students SET completedCount = ? WHERE LOWER(name) = LOWER(?)",
-      [safeCompleted, playerName.trim()]
-    );
+      if ((studentRows as any[]).length === 0) {
+        return res.status(404).json({
+          error: "Aluno não encontrado.",
+        });
+      }
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "Aluno não encontrado." });
+      await db.query(
+        `
+          UPDATE game_sessions
+          SET finished_at = NOW()
+          WHERE student_id = ?
+            AND finished_at IS NULL
+        `,
+        [studentId]
+      );
+
+      const [result] = await db.query(
+        `
+          INSERT INTO game_sessions (
+            student_id,
+            paws,
+            started_at,
+            finished_at
+          )
+          VALUES (?, 0, NOW(), NULL)
+        `,
+        [studentId]
+      );
+
+      await db.query(
+        `
+          UPDATE students
+          SET lastAccess = NOW()
+          WHERE id = ?
+        `,
+        [studentId]
+      );
+
+      res.status(201).json({
+        id: (result as any).insertId,
+        studentId,
+        message: "Sessão iniciada.",
+      });
+    } catch (error) {
+      console.error("Erro ao iniciar sessão:", error);
+
+      res.status(500).json({
+        error: "Erro ao iniciar sessão.",
+      });
     }
-
-    res.status(200).json({ message: "Progresso de atividades atualizado com sucesso." });
-  } catch (error) {
-    console.error("❌ Erro no PATCH /api/students/activity:", error);
-    res.status(500).json({ error: "Erro ao atualizar atividades." });
   }
-});
+);
 
-/* 6. Limpar histórico */
-app.delete("/api/students", async (_req, res) => {
+/**
+ * PATCH /api/students/:studentId/session/finish
+ *
+ * Finaliza a sessão atual do aluno.
+ */
+app.patch(
+  "/api/students/:studentId/session/finish",
+  async (req: Request, res: Response) => {
+    try {
+      const { studentId } = req.params;
+      const { paws } = req.body;
+
+      const [studentRows] = await db.query(
+        `
+          SELECT id
+          FROM students
+          WHERE id = ?
+          LIMIT 1
+        `,
+        [studentId]
+      );
+
+      if ((studentRows as any[]).length === 0) {
+        return res.status(404).json({
+          error: "Aluno não encontrado.",
+        });
+      }
+
+      if (paws !== undefined) {
+        const numericPaws = Number(paws);
+
+        if (!Number.isFinite(numericPaws) || numericPaws < 0) {
+          return res.status(400).json({
+            error: "Quantidade de patinhas inválida.",
+          });
+        }
+
+        await db.query(
+          `
+            UPDATE students
+            SET
+              paws = ?,
+              lastAccess = NOW()
+            WHERE id = ?
+          `,
+          [numericPaws, studentId]
+        );
+
+        await db.query(
+          `
+            UPDATE game_sessions
+            SET paws = ?
+            WHERE student_id = ?
+              AND finished_at IS NULL
+          `,
+          [numericPaws, studentId]
+        );
+      } else {
+        await db.query(
+          `
+            UPDATE students
+            SET lastAccess = NOW()
+            WHERE id = ?
+          `,
+          [studentId]
+        );
+      }
+
+      const [result] = await db.query(
+        `
+          UPDATE game_sessions
+          SET finished_at = NOW()
+          WHERE student_id = ?
+            AND finished_at IS NULL
+        `,
+        [studentId]
+      );
+
+      res.json({
+        success: true,
+        finished: (result as any).affectedRows > 0,
+      });
+    } catch (error) {
+      console.error("Erro ao finalizar sessão:", error);
+
+      res.status(500).json({
+        error: "Erro ao finalizar sessão.",
+      });
+    }
+  }
+);
+
+/* =========================================================
+   PATINHAS
+========================================================= */
+
+/**
+ * PATCH /api/students/:studentId/paws
+ *
+ * Atualiza a quantidade atual de patinhas.
+ */
+app.patch(
+  "/api/students/:studentId/paws",
+  async (req: Request, res: Response) => {
+    try {
+      const { studentId } = req.params;
+      const { paws } = req.body;
+
+      const numericPaws = Number(paws);
+
+      if (!Number.isFinite(numericPaws) || numericPaws < 0) {
+        return res.status(400).json({
+          error: "Quantidade de patinhas inválida.",
+        });
+      }
+
+      const [result] = await db.query(
+        `
+          UPDATE students
+          SET
+            paws = ?,
+            lastAccess = NOW()
+          WHERE id = ?
+        `,
+        [numericPaws, studentId]
+      );
+
+      if ((result as any).affectedRows === 0) {
+        return res.status(404).json({
+          error: "Aluno não encontrado.",
+        });
+      }
+
+      await db.query(
+        `
+          UPDATE game_sessions
+          SET paws = ?
+          WHERE student_id = ?
+            AND finished_at IS NULL
+        `,
+        [numericPaws, studentId]
+      );
+
+      res.json({
+        success: true,
+        paws: numericPaws,
+      });
+    } catch (error) {
+      console.error("Erro ao atualizar patinhas:", error);
+
+      res.status(500).json({
+        error: "Erro ao atualizar patinhas.",
+      });
+    }
+  }
+);
+
+/* =========================================================
+   ATIVIDADES
+========================================================= */
+
+/**
+ * GET /api/activities
+ *
+ * Lista as atividades disponíveis.
+ */
+app.get("/api/activities", async (_req: Request, res: Response) => {
   try {
-    await db.query("DELETE FROM students");
-    res.status(200).json({ message: "Histórico apagado com sucesso." });
+    const [rows] = await db.query(`
+      SELECT
+        id,
+        name,
+        trail,
+        subject
+      FROM activities
+      ORDER BY subject, trail, name
+    `);
+
+    res.json(rows);
   } catch (error) {
-    console.error("❌ Erro no DELETE /api/students:", error);
-    res.status(500).json({ error: "Erro ao apagar histórico." });
+    console.error("Erro ao buscar atividades:", error);
+
+    res.status(500).json({
+      error: "Erro ao buscar atividades.",
+    });
   }
 });
 
-/* Inicializa o servidor apenas APÓS criar o banco de dados */
+/**
+ * POST /api/students/:studentId/activities
+ *
+ * Registra uma atividade concluída pelo aluno.
+ */
+app.post(
+  "/api/students/:studentId/activities",
+  async (req: Request, res: Response) => {
+    try {
+      const { studentId } = req.params;
+      const { activityId } = req.body;
+
+      if (!activityId || typeof activityId !== "string") {
+        return res.status(400).json({
+          error: "O activityId é obrigatório.",
+        });
+      }
+
+      const [studentRows] = await db.query(
+        `
+          SELECT id
+          FROM students
+          WHERE id = ?
+          LIMIT 1
+        `,
+        [studentId]
+      );
+
+      if ((studentRows as any[]).length === 0) {
+        return res.status(404).json({
+          error: "Aluno não encontrado.",
+        });
+      }
+
+      const [activityRows] = await db.query(
+        `
+          SELECT id
+          FROM activities
+          WHERE id = ?
+          LIMIT 1
+        `,
+        [activityId]
+      );
+
+      if ((activityRows as any[]).length === 0) {
+        return res.status(404).json({
+          error: "Atividade não encontrada.",
+        });
+      }
+
+      await db.query(
+        `
+          INSERT INTO student_activities (
+            student_id,
+            activity_id,
+            completed_at
+          )
+          VALUES (?, ?, NOW())
+          ON DUPLICATE KEY UPDATE
+            completed_at = VALUES(completed_at)
+        `,
+        [studentId, activityId]
+      );
+
+      await db.query(
+        `
+          UPDATE students
+          SET lastAccess = NOW()
+          WHERE id = ?
+        `,
+        [studentId]
+      );
+
+      const [countRows] = await db.query(
+        `
+          SELECT COUNT(*) AS completedCount
+          FROM student_activities
+          WHERE student_id = ?
+        `,
+        [studentId]
+      );
+
+      res.json({
+        success: true,
+        completedCount: Number(
+          (countRows as any[])[0]?.completedCount ?? 0
+        ),
+      });
+    } catch (error) {
+      console.error("Erro ao registrar atividade:", error);
+
+      res.status(500).json({
+        error: "Erro ao registrar atividade.",
+      });
+    }
+  }
+);
+
+/* =========================================================
+   DESEMPENHO
+========================================================= */
+
+/**
+ * GET /api/students/:studentId/performance
+ *
+ * Retorna o desempenho completo de um aluno.
+ */
+app.get(
+  "/api/students/:studentId/performance",
+  async (req: Request, res: Response) => {
+    try {
+      const { studentId } = req.params;
+
+      const [studentRows] = await db.query(
+        `
+          SELECT
+            id,
+            name,
+            className,
+            paws,
+            createdAt,
+            lastAccess
+          FROM students
+          WHERE id = ?
+          LIMIT 1
+        `,
+        [studentId]
+      );
+
+      const students = studentRows as any[];
+
+      if (students.length === 0) {
+        return res.status(404).json({
+          error: "Aluno não encontrado.",
+        });
+      }
+
+      const student = students[0];
+
+      const [activityRows] = await db.query(
+        `
+          SELECT
+            a.id,
+            a.name,
+            a.trail,
+            a.subject,
+            sa.completed_at
+          FROM student_activities sa
+          INNER JOIN activities a
+            ON a.id = sa.activity_id
+          WHERE sa.student_id = ?
+          ORDER BY sa.completed_at DESC
+        `,
+        [studentId]
+      );
+
+      const activities = activityRows as any[];
+
+      const [sessionRows] = await db.query(
+        `
+          SELECT
+            id,
+            paws,
+            started_at,
+            finished_at
+          FROM game_sessions
+          WHERE student_id = ?
+          ORDER BY started_at DESC
+        `,
+        [studentId]
+      );
+
+      const sessions = sessionRows as any[];
+
+      const completedCount = activities.length;
+      const sessionsCount = sessions.length;
+
+      const trails = new Set(
+        activities.map((activity) => activity.trail)
+      );
+
+      res.json({
+        student,
+        statistics: {
+          completedCount,
+          sessionsCount,
+          trailsCompleted: trails.size,
+        },
+        activities,
+        sessions,
+      });
+    } catch (error) {
+      console.error("Erro ao buscar desempenho:", error);
+
+      res.status(500).json({
+        error: "Erro ao buscar desempenho.",
+      });
+    }
+  }
+);
+
+/* =========================================================
+   INICIALIZAÇÃO
+========================================================= */
+
 async function startServer() {
-  await initDatabase();
-  app.listen(PORT, () => {
-    console.log(`🚀 Servidor Node.js rodando em http://localhost:${PORT}`);
-  });
+  try {
+    /*
+     * Primeiro garante que:
+     * - o banco exista;
+     * - as tabelas existam;
+     * - as atividades iniciais existam.
+     */
+    await initializeDatabase();
+
+    // Testa a conexão com o banco já inicializado.
+    await db.query("SELECT 1");
+
+    console.log("MySQL conectado com sucesso.");
+
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(
+        `API Trilha do Aprender rodando na porta ${PORT}.`
+      );
+      console.log(
+        `Acesso local: http://localhost:${PORT}`
+      );
+      console.log(
+        `Acesso pela rede: http://IP-DA-MAQUINA:${PORT}`
+      );
+    });
+  } catch (error) {
+    console.error(
+      "Não foi possível iniciar a API ou conectar ao MySQL."
+    );
+    console.error(error);
+
+    process.exit(1);
+  }
 }
 
 startServer();

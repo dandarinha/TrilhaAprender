@@ -1,37 +1,60 @@
-import { useState, useCallback } from 'react';
-import { toast } from 'sonner';
+import { useState, useCallback } from "react";
+import { toast } from "sonner";
+import { useGame } from "./GameContext";
 
-export function useGameLogic() {
+export function useGameLogic(activityId?: string) {
+  const {
+    addPaws,
+    completeActivity,
+  } = useGame();
+
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
   const [gameOver, setGameOver] = useState(false);
 
-  const handleCorrect = useCallback(() => {
+  const handleCorrect = useCallback(async () => {
     setScore((s) => s + 1);
+
     try {
-      const total = parseInt(localStorage.getItem('bichoStars') || '0', 10) + 1;
-      localStorage.setItem('bichoStars', String(total));
-      window.dispatchEvent(new Event('bichoStarsChanged'));
-    } catch {}
-    toast.success('Acertou! Ganhou 1 pegada! 🐾', {
-      position: 'top-center',
+      // Cada acerto gera uma patinha no banco
+      await addPaws(1);
+
+      // Se esta tela representa uma atividade cadastrada,
+      // registra a conclusão no banco.
+      if (activityId) {
+        await completeActivity(activityId);
+      }
+    } catch (error) {
+      console.error(
+        "Erro ao salvar progresso da atividade:",
+        error
+      );
+    }
+
+    toast.success("Acertou! Ganhou 1 pegada!", {
+      position: "top-center",
       duration: 1500,
-      className: 'bg-green-500 border-none text-white text-lg font-bold p-4 rounded-2xl shadow-xl'
+      className:
+        "bg-green-500 border-none text-white text-lg font-bold p-4 rounded-2xl shadow-xl",
     });
-  }, []);
+  }, [activityId, addPaws, completeActivity]);
 
   const handleWrong = useCallback(() => {
     setLives((l) => {
       const newLives = l - 1;
+
       if (newLives <= 0) {
         setGameOver(true);
       }
+
       return newLives;
     });
-    toast.error('Ops! Tente de novo! 🍂', {
-      position: 'top-center',
+
+    toast.error("Ops! Tente de novo!", {
+      position: "top-center",
       duration: 1500,
-      className: 'bg-red-500 border-none text-white text-lg font-bold p-4 rounded-2xl shadow-xl'
+      className:
+        "bg-red-500 border-none text-white text-lg font-bold p-4 rounded-2xl shadow-xl",
     });
   }, []);
 
@@ -47,6 +70,6 @@ export function useGameLogic() {
     gameOver,
     handleCorrect,
     handleWrong,
-    resetGame
+    resetGame,
   };
 }
