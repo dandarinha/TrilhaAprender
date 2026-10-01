@@ -1,10 +1,15 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useState,
   type ReactNode,
 } from "react";
+
+/* ============================================================
+   TIPOS
+============================================================ */
 
 export type Student = {
   id: string;
@@ -13,6 +18,7 @@ export type Student = {
   paws: number;
   createdAt: string;
   lastAccess: string | null;
+  playedActivitiesCount?: number;
 };
 
 export type PlayerHistory = Student;
@@ -45,31 +51,71 @@ export interface GameState {
   paws: number;
   currentScreen: GameScreen;
   currentAnimal: string | null;
-  completedActivities: string[];
 }
 
 export interface GameContextType {
   state: GameState;
+
+  /**
+   * Alunos cadastrados pelo professor.
+   */
   history: PlayerHistory[];
 
+  /**
+   * Seleciona um aluno existente e inicia uma sessão.
+   */
   setPlayerName: (name: string) => Promise<void>;
+
+  /**
+   * Atualiza a lista de alunos.
+   */
   refreshStudents: () => Promise<void>;
 
   selectTrail: (trail: TrailColor) => void;
+
   setSubject: (subject: Subject) => void;
+
   goToScreen: (screen: GameScreen) => void;
 
+  /**
+   * Adiciona patinhas.
+   *
+   * O valor enviado ao backend é um DELTA.
+   * Exemplo: addPaws(1) adiciona uma patinha.
+   *
+   * A pontuação oficial permanece no MySQL.
+   */
   addPaws: (amount: number) => Promise<void>;
-  completeActivity: (activityId: string) => Promise<void>;
 
+  /**
+   * Registra uma atividade que foi jogada.
+   *
+   * Não representa conclusão.
+   * A mesma atividade pode ser registrada várias vezes.
+   */
+  playActivity: (activityId: string) => Promise<void>;
+
+  /**
+   * Finaliza somente a sessão atual.
+   */
   saveCurrentSession: () => Promise<void>;
+
+  /**
+   * Limpa somente o estado local.
+   */
   resetGame: () => void;
 }
 
+/* ============================================================
+   CONTEXTO
+============================================================ */
+
 export const GameContext =
-  createContext<GameContextType | undefined>(
-    undefined
-  );
+  createContext<GameContextType | undefined>(undefined);
+
+/* ============================================================
+   ESTADO INICIAL
+============================================================ */
 
 export const initialState: GameState = {
   studentId: null,
@@ -79,11 +125,49 @@ export const initialState: GameState = {
   paws: 0,
   currentScreen: "start",
   currentAnimal: null,
-  completedActivities: [],
 };
 
-const API_BASE_URL =
-  "http://localhost:3000/api";
+/* ============================================================
+   API
+============================================================ */
+
+const API_BASE_URL = "http://localhost:3000/api";
+
+/* ============================================================
+   TIPOS INTERNOS
+============================================================ */
+
+type PerformanceActivity = {
+  id: string;
+  name: string;
+  trail: string;
+  subject: string;
+  played_at: string;
+};
+
+type PerformanceSession = {
+  id: number;
+  paws: number;
+  started_at: string;
+  finished_at: string | null;
+};
+
+type PerformanceResponse = {
+  student: Student;
+
+  statistics?: {
+    playedActivitiesCount?: number;
+    sessionsCount?: number;
+  };
+
+  activities?: PerformanceActivity[];
+
+  sessions?: PerformanceSession[];
+};
+
+/* ============================================================
+   PROVIDER
+============================================================ */
 
 export function GameProvider({
   children,
@@ -97,13 +181,56 @@ export function GameProvider({
     PlayerHistory[]
   >([]);
 
-  /**
-   * Carrega os alunos diretamente da API.
-   *
-   * O cadastro dos alunos NÃO acontece aqui.
-   * Esta função apenas consulta o MySQL através da API.
-   */
-  const refreshStudents = async () => {
+  /* ==========================================================
+     BUSCAR DESEMPENHO
+  ========================================================== */
+
+  const fetchStudentPerformance = useCallback(
+    async (
+      studentId: string
+    ): Promise<PerformanceResponse | null> => {
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/students/${encodeURIComponent(
+            studentId
+          )}/performance`
+        );
+
+        if (!response.ok) {
+          console.error(
+            `Não foi possível carregar o desempenho do aluno ${studentId}.`
+          );
+
+          return null;
+        }
+
+        const performance =
+          (await response.json()) as PerformanceResponse;
+
+        return performance;
+      } catch (error: unknown) {
+        console.error(
+          "Erro ao buscar desempenho do aluno:",
+          error
+        );
+
+        return null;
+      }
+    },
+    []
+  );
+
+  /* ==========================================================
+     ATUALIZAR LISTA DE ALUNOS
+
+     Importante:
+     - /students é a fonte principal;
+     - performance complementa os dados;
+     - atividades são contadas como JOGADAS;
+     - não existe atividade concluída.
+  ========================================================== */
+
+  const refreshStudents = useCallback(async () => {
     try {
       const response = await fetch(
         `${API_BASE_URL}/students`
@@ -115,378 +242,477 @@ export function GameProvider({
         );
       }
 
-      const data: PlayerHistory[] =
-        await response.json();
+      const students =
+        (await response.json()) as Student[];
 
-      setHistory(data);
-    } catch (error) {
-      console.error(
-        "Erro ao carregar alunos:",
-        error
-      );
-    }
-  };
+      const studentsWithPerformance =
+        await Promise.all(
+          students.map(async (student) => {
+            const performance =
+              await fetchStudentPerformance(student.id);
 
-  /**
-   * Carrega os alunos quando o GameProvider é iniciado.
-   */
-  useEffect(() => {
-    refreshStudents();
-  }, []);
+            if (!performance) {
+              return {
+                ...student,
+                paws: Number(student.paws) || 0,
+                playedActivitiesCount: 0,
+              };
+            }
 
-  /**
-   * Seleciona um aluno já cadastrado pelo professor.
-   *
-   * Não cria aluno.
-   * Não salva aluno no localStorage.
-   * A validação é feita com os alunos vindos da API/MySQL.
-   */
-  const setPlayerName = async (
-    name: string
-  ) => {
-    const trimmedName = name.trim();
+            const performancePaws =
+              Number(performance.student?.paws);
 
-    if (!trimmedName) {
-      throw new Error(
-        "Nome do aluno é obrigatório."
-      );
-    }
+            const studentPaws =
+              Number(student.paws);
 
-    const student = history.find(
-      (item) =>
-        item.name.trim().toLowerCase() ===
-        trimmedName.toLowerCase()
-    );
+            const playedActivitiesCount =
+              Number(
+                performance.statistics
+                  ?.playedActivitiesCount
+              );
 
-    if (!student) {
-      throw new Error(
-        "Aluno não cadastrado. Solicite o cadastro à professora."
-      );
-    }
+            return {
+              ...student,
 
-    try {
-      /**
-       * Inicia uma nova sessão para o aluno
-       * já existente no banco.
-       */
-      const response = await fetch(
-        `${API_BASE_URL}/students/${student.id}/session`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+              paws: Number.isFinite(performancePaws)
+                ? performancePaws
+                : Number.isFinite(studentPaws)
+                  ? studentPaws
+                  : 0,
 
-      const data = await response
-        .json()
-        .catch(() => ({}));
-
-      if (!response.ok) {
-        throw new Error(
-          data.error ||
-            "Não foi possível iniciar a sessão."
-        );
-      }
-
-      /**
-       * O endpoint atual retorna apenas os dados
-       * da sessão, não um objeto student.
-       *
-       * Portanto, usamos diretamente o aluno
-       * que já foi encontrado na lista da API.
-       */
-      const selectedStudent = student;
-
-      /**
-       * Atualiza a lista de alunos para refletir
-       * o lastAccess alterado pela sessão.
-       */
-      await refreshStudents();
-
-      /**
-       * Busca as atividades já concluídas
-       * pelo aluno no MySQL.
-       */
-      const performanceResponse =
-        await fetch(
-          `${API_BASE_URL}/students/${student.id}/performance`
+              playedActivitiesCount:
+                Number.isFinite(
+                  playedActivitiesCount
+                )
+                  ? playedActivitiesCount
+                  : 0,
+            };
+          })
         );
 
-      let completedActivities: string[] = [];
+      setHistory(studentsWithPerformance);
 
-      if (performanceResponse.ok) {
-        const performance =
-          await performanceResponse.json();
-
-        completedActivities = Array.isArray(
-          performance.activities
-        )
-          ? performance.activities.map(
-              (activity: {
-                id: string;
-              }) => activity.id
-            )
-          : [];
-      }
-
-      /**
-       * Atualiza o estado da sessão atual.
+      /*
+       * Se o aluno atualmente selecionado ainda existir,
+       * mantém suas patinhas sincronizadas no estado local.
        */
-      setState((previousState) => ({
-        ...previousState,
-        studentId: selectedStudent.id,
-        playerName: selectedStudent.name,
-        paws:
-          Number(selectedStudent.paws) || 0,
-        completedActivities,
-        currentScreen:
-          previousState.currentScreen,
-      }));
-    } catch (error) {
-      console.error(
-        "Erro ao selecionar aluno:",
-        error
-      );
-
-      throw error;
-    }
-  };
-
-  /**
-   * Seleciona a trilha.
-   */
-  const selectTrail = (
-    trail: TrailColor
-  ) => {
-    setState((previousState) => ({
-      ...previousState,
-      selectedTrail: trail,
-    }));
-  };
-
-  /**
-   * Define a matéria.
-   */
-  const setSubject = (
-    subject: Subject
-  ) => {
-    setState((previousState) => ({
-      ...previousState,
-      subject,
-    }));
-  };
-
-  /**
-   * Altera a tela atual do jogo.
-   */
-  const goToScreen = (
-    screen: GameScreen
-  ) => {
-    setState((previousState) => ({
-      ...previousState,
-      currentScreen: screen,
-    }));
-  };
-
-  /**
-   * Adiciona ou remove patinhas.
-   *
-   * O valor atualizado é salvo no MySQL através da API.
-   */
-  const addPaws = async (
-    amount: number
-  ) => {
-    if (!Number.isFinite(amount)) {
-      return;
-    }
-
-    const delta = Math.round(amount);
-
-    if (!state.studentId) {
-      console.warn(
-        "Tentativa de adicionar patinhas sem aluno selecionado."
-      );
-
-      return;
-    }
-
-    const updatedPaws = Math.max(
-      0,
-      state.paws + delta
-    );
-
-    try {
-      const response = await fetch(
-        `${API_BASE_URL}/students/${state.studentId}/paws`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            paws: updatedPaws,
-          }),
-        }
-      );
-
-      const data = await response
-        .json()
-        .catch(() => ({}));
-
-      if (!response.ok) {
-        throw new Error(
-          data.error ||
-            "Não foi possível atualizar as patinhas."
-        );
-      }
-
-      setState((previousState) => ({
-        ...previousState,
-        paws:
-          Number(data.paws) ||
-          updatedPaws,
-      }));
-
-      /**
-       * Mantém a lista de alunos sincronizada
-       * com o banco.
-       */
-      await refreshStudents();
-    } catch (error) {
-      console.error(
-        "Erro ao atualizar patinhas:",
-        error
-      );
-
-      throw error;
-    }
-  };
-
-  /**
-   * Registra uma atividade concluída.
-   *
-   * O registro é salvo em student_activities
-   * através da API.
-   */
-  const completeActivity = async (
-    activityId: string
-  ) => {
-    const normalizedId =
-      activityId.trim();
-
-    if (!normalizedId) {
-      return;
-    }
-
-    if (!state.studentId) {
-      console.warn(
-        "Tentativa de concluir atividade sem aluno selecionado."
-      );
-
-      return;
-    }
-
-    /**
-     * Evita uma nova chamada caso a atividade
-     * já tenha sido registrada nesta sessão.
-     */
-    if (
-      state.completedActivities.includes(
-        normalizedId
-      )
-    ) {
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `${API_BASE_URL}/students/${state.studentId}/activities`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            activityId:
-              normalizedId,
-          }),
-        }
-      );
-
-      const data = await response
-        .json()
-        .catch(() => ({}));
-
-      if (!response.ok) {
-        throw new Error(
-          data.error ||
-            "Não foi possível registrar a atividade."
-        );
-      }
-
       setState((previousState) => {
-        /**
-         * Proteção contra duplicidade no estado
-         * mesmo que a API seja chamada novamente.
-         */
-        if (
-          previousState.completedActivities.includes(
-            normalizedId
-          )
-        ) {
+        if (!previousState.studentId) {
+          return previousState;
+        }
+
+        const currentStudent =
+          studentsWithPerformance.find(
+            (student) =>
+              student.id === previousState.studentId
+          );
+
+        if (!currentStudent) {
           return previousState;
         }
 
         return {
           ...previousState,
-          completedActivities: [
-            ...previousState.completedActivities,
-            normalizedId,
-          ],
+          paws: Number(currentStudent.paws) || 0,
+          playerName: currentStudent.name,
         };
       });
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(
-        "Erro ao registrar atividade:",
+        "Erro ao atualizar lista de alunos:",
         error
       );
 
       throw error;
     }
-  };
+  }, [fetchStudentPerformance]);
 
-  /**
-   * Finaliza a sessão atual.
-   *
-   * O encerramento é registrado no MySQL.
-   */
-  const saveCurrentSession =
-    async () => {
-      if (!state.studentId) {
+  /* ==========================================================
+     CARREGAMENTO INICIAL
+  ========================================================== */
+
+  useEffect(() => {
+    refreshStudents().catch((error: unknown) => {
+      console.error(
+        "Não foi possível carregar os alunos inicialmente:",
+        error
+      );
+    });
+  }, [refreshStudents]);
+
+  /* ==========================================================
+     SELECIONAR ALUNO
+  ========================================================== */
+
+  const setPlayerName = useCallback(
+    async (name: string) => {
+      const trimmedName = name.trim();
+
+      if (!trimmedName) {
+        throw new Error(
+          "Nome do aluno é obrigatório."
+        );
+      }
+
+      /*
+       * O jogo NÃO cadastra alunos.
+       *
+       * Só é permitido selecionar alguém
+       * previamente cadastrado pelo professor.
+       */
+      const student = history.find(
+        (item) =>
+          item.name.trim().toLowerCase() ===
+          trimmedName.toLowerCase()
+      );
+
+      if (!student) {
+        throw new Error(
+          "Aluno não cadastrado. Solicite o cadastro à professora."
+        );
+      }
+
+      try {
+        /* ------------------------------------------------------
+           INICIAR SESSÃO
+        ------------------------------------------------------ */
+
+        const sessionResponse = await fetch(
+          `${API_BASE_URL}/students/${encodeURIComponent(
+            student.id
+          )}/session`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        const sessionData =
+          await sessionResponse
+            .json()
+            .catch(() => ({}));
+
+        if (!sessionResponse.ok) {
+          throw new Error(
+            sessionData.error ||
+              "Não foi possível iniciar a sessão."
+          );
+        }
+
+        /* ------------------------------------------------------
+           BUSCAR DADOS ATUAIS
+        ------------------------------------------------------ */
+
+        const performance =
+          await fetchStudentPerformance(student.id);
+
+        const performancePaws =
+          Number(performance?.student?.paws);
+
+        const currentPaws =
+          Number.isFinite(performancePaws)
+            ? performancePaws
+            : Number(student.paws) || 0;
+
+        /* ------------------------------------------------------
+           ATUALIZAR ESTADO
+        ------------------------------------------------------ */
+
+        setState((previousState) => ({
+          ...previousState,
+
+          studentId: student.id,
+
+          playerName: student.name,
+
+          paws: currentPaws,
+        }));
+
+        /*
+         * Atualiza os dados do mural.
+         *
+         * Não interfere no cadastro.
+         */
+        await refreshStudents();
+      } catch (error: unknown) {
+        console.error(
+          "Erro ao selecionar aluno:",
+          error
+        );
+
+        throw error;
+      }
+    },
+    [
+      history,
+      fetchStudentPerformance,
+      refreshStudents,
+    ]
+  );
+
+  /* ==========================================================
+     SELECIONAR TRILHA
+  ========================================================== */
+
+  const selectTrail = useCallback(
+    (trail: TrailColor) => {
+      setState((previousState) => ({
+        ...previousState,
+        selectedTrail: trail,
+      }));
+    },
+    []
+  );
+
+  /* ==========================================================
+     DEFINIR MATÉRIA
+  ========================================================== */
+
+  const setSubject = useCallback(
+    (subject: Subject) => {
+      setState((previousState) => ({
+        ...previousState,
+        subject,
+      }));
+    },
+    []
+  );
+
+  /* ==========================================================
+     ALTERAR TELA
+  ========================================================== */
+
+  const goToScreen = useCallback(
+    (screen: GameScreen) => {
+      setState((previousState) => ({
+        ...previousState,
+        currentScreen: screen,
+      }));
+    },
+    []
+  );
+
+  /* ==========================================================
+     ADICIONAR PATINHAS
+
+     O frontend envia SOMENTE o delta.
+
+     Exemplo:
+
+       addPaws(1)
+       addPaws(1)
+
+     O backend faz:
+
+       paws = paws + amount
+
+     A API é a fonte oficial da pontuação.
+  ========================================================== */
+
+  const addPaws = useCallback(
+    async (amount: number) => {
+      if (!Number.isFinite(amount)) {
+        return;
+      }
+
+      const delta = Math.round(amount);
+
+      if (delta === 0) {
+        return;
+      }
+
+      const studentId = state.studentId;
+
+      if (!studentId) {
+        console.warn(
+          "Tentativa de adicionar patinhas sem aluno selecionado."
+        );
+
         return;
       }
 
       try {
         const response = await fetch(
-          `${API_BASE_URL}/students/${state.studentId}/session/finish`,
+          `${API_BASE_URL}/students/${encodeURIComponent(
+            studentId
+          )}/paws`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              amount: delta,
+            }),
+          }
+        );
+
+        const data =
+          await response
+            .json()
+            .catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+              "Não foi possível atualizar as patinhas."
+          );
+        }
+
+        const savedPaws = Number(data.paws);
+
+        /*
+         * O backend retorna o valor efetivamente
+         * salvo no banco.
+         */
+        if (Number.isFinite(savedPaws)) {
+          setState((previousState) => {
+            /*
+             * Evita atualizar uma sessão diferente
+             * caso o usuário tenha trocado de perfil
+             * enquanto a requisição estava pendente.
+             */
+            if (
+              previousState.studentId !== studentId
+            ) {
+              return previousState;
+            }
+
+            return {
+              ...previousState,
+              paws: savedPaws,
+            };
+          });
+        }
+      } catch (error: unknown) {
+        console.error(
+          "Erro ao atualizar patinhas:",
+          error
+        );
+
+        throw error;
+      }
+    },
+    [state.studentId]
+  );
+
+  /* ==========================================================
+     REGISTRAR ATIVIDADE JOGADA
+
+     NÃO existe conclusão.
+
+     Cada entrada na atividade pode gerar um registro.
+
+     Exemplo:
+
+       Rimas
+       Rimas
+       Rimas
+       Adição
+  ========================================================== */
+
+  const playActivity = useCallback(
+    async (activityId: string) => {
+      const normalizedId =
+        activityId.trim();
+
+      if (!normalizedId) {
+        return;
+      }
+
+      const studentId = state.studentId;
+
+      if (!studentId) {
+        console.warn(
+          "Tentativa de registrar atividade sem aluno selecionado."
+        );
+
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/students/${encodeURIComponent(
+            studentId
+          )}/activities`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              activityId: normalizedId,
+            }),
+          }
+        );
+
+        const data =
+          await response
+            .json()
+            .catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+              "Não foi possível registrar a atividade jogada."
+          );
+        }
+
+        /*
+         * Não adiciona patinhas.
+         *
+         * Patinhas só são concedidas por handleCorrect().
+         */
+      } catch (error: unknown) {
+        console.error(
+          "Erro ao registrar atividade jogada:",
+          error
+        );
+
+        throw error;
+      }
+    },
+    [state.studentId]
+  );
+
+  /* ==========================================================
+     FINALIZAR SESSÃO
+
+     Apenas a SESSÃO é encerrada.
+
+     O frontend NÃO envia paws.
+     O backend consulta students.paws,
+     que é a fonte oficial da pontuação.
+  ========================================================== */
+
+  const saveCurrentSession = useCallback(
+    async () => {
+      const studentId = state.studentId;
+
+      if (!studentId) {
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/students/${encodeURIComponent(
+            studentId
+          )}/session/finish`,
           {
             method: "PATCH",
             headers: {
               "Content-Type":
                 "application/json",
             },
-            body: JSON.stringify({
-              paws: state.paws,
-            }),
           }
         );
 
-        const data = await response
-          .json()
-          .catch(() => ({}));
+        const data =
+          await response
+            .json()
+            .catch(() => ({}));
 
         if (!response.ok) {
           throw new Error(
@@ -495,12 +721,15 @@ export function GameProvider({
           );
         }
 
-        /**
-         * Atualiza os dados dos alunos depois
-         * que a sessão foi encerrada.
+        /*
+         * Atualiza o mural após o encerramento.
+         *
+         * Não fazemos reset aqui.
+         * Quem decide quando limpar o estado
+         * é o fluxo de troca/saída do jogo.
          */
         await refreshStudents();
-      } catch (error) {
+      } catch (error: unknown) {
         console.error(
           "Erro ao finalizar sessão:",
           error
@@ -508,19 +737,35 @@ export function GameProvider({
 
         throw error;
       }
-    };
+    },
+    [
+      state.studentId,
+      refreshStudents,
+    ]
+  );
 
-  /**
-   * Volta o estado do jogo para o estado inicial.
-   *
-   * Não exclui o aluno do banco.
-   * O cadastro continua existindo no MySQL.
-   */
-  const resetGame = () => {
+  /* ==========================================================
+     RESETAR JOGO
+
+     Somente estado local.
+
+     NÃO:
+       - exclui aluno;
+       - remove patinhas;
+       - remove atividades;
+       - remove sessões;
+       - altera MySQL.
+  ========================================================== */
+
+  const resetGame = useCallback(() => {
     setState({
       ...initialState,
     });
-  };
+  }, []);
+
+  /* ==========================================================
+     CONTEXTO
+  ========================================================== */
 
   return (
     <GameContext.Provider
@@ -536,7 +781,7 @@ export function GameProvider({
         goToScreen,
 
         addPaws,
-        completeActivity,
+        playActivity,
 
         saveCurrentSession,
         resetGame,
@@ -547,9 +792,12 @@ export function GameProvider({
   );
 }
 
+/* ============================================================
+   HOOK
+============================================================ */
+
 export function useGame(): GameContextType {
-  const context =
-    useContext(GameContext);
+  const context = useContext(GameContext);
 
   if (!context) {
     throw new Error(
