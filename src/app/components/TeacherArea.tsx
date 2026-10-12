@@ -176,7 +176,9 @@ export default function TeacherArea() {
       );
 
       setError(
-        error instanceof Error
+        error instanceof TypeError
+          ? "Não foi possível conectar à API. Inicie o servidor com npm run server e confirme o MySQL."
+          : error instanceof Error
           ? error.message
           : "Erro ao carregar os alunos."
       );
@@ -402,7 +404,9 @@ export default function TeacherArea() {
       );
 
       setError(
-        error instanceof Error
+        error instanceof TypeError
+          ? "Não foi possível conectar à API. Inicie o servidor com npm run server e confirme o MySQL."
+          : error instanceof Error
           ? error.message
           : "Erro ao cadastrar aluno."
       );

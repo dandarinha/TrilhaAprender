@@ -13,6 +13,7 @@ const FRONTEND_URL =
 
 const allowedOrigins = [
   "http://localhost:5173",
+  "http://127.0.0.1:5173",
   FRONTEND_URL,
 ].filter(
   (origin, index, array) =>
@@ -80,11 +81,22 @@ app.use(express.json());
 
 app.get(
   "/api/health",
-  (_req: Request, res: Response) => {
-    return res.json({
-      success: true,
-      message: "API Trilha do Aprender funcionando.",
-    });
+  async (_req: Request, res: Response) => {
+    try {
+      await db.query("SELECT 1");
+      return res.json({
+        success: true,
+        database: "connected",
+        message: "API Trilha do Aprender funcionando.",
+      });
+    } catch (error) {
+      console.error("MySQL indisponível no health check:", error);
+      return res.status(503).json({
+        success: false,
+        database: "disconnected",
+        error: "A API está ativa, mas não conseguiu acessar o MySQL.",
+      });
+    }
   }
 );
 
