@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Link } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import {
   ArrowLeft,
   Sun,
@@ -44,13 +44,35 @@ export function GameLayout({
   onRestart,
   children,
 }: GameLayoutProps) {
-  const { isOnline } = useGame();
+  const { isOnline, saveCurrentSession } = useGame();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [endedByBack, setEndedByBack] = React.useState(false);
+  const showEndScreen = gameOver || endedByBack;
   const borderHex = BORDER_HEX[themeColor] ?? '#35b35b';
 
   const curiosity = useMemo(
     () => randomCuriosity(),
-    [gameOver]
+    [showEndScreen]
   );
+
+  const handleBack = () => {
+    if (showEndScreen) return;
+    setEndedByBack(true);
+    void saveCurrentSession();
+  };
+
+  const handleRestart = () => {
+    setEndedByBack(false);
+    onRestart();
+  };
+
+  const handleTrails = () => {
+    const subject = location.pathname.startsWith('/math')
+      ? 'math'
+      : 'portuguese';
+    navigate(`/?trails=${subject}`);
+  };
 
   return (
     <div
@@ -113,8 +135,10 @@ export function GameLayout({
           sm:border-b-4 sm:px-6 sm:py-4
         "
       >
-        <Link
-          to="/"
+        <button
+          type="button"
+          onClick={handleBack}
+          disabled={showEndScreen}
           className="
             flex items-center gap-1.5
             rounded-full border-2 border-[#a9713f]
@@ -127,8 +151,8 @@ export function GameLayout({
           "
         >
           <ArrowLeft size={17} />
-          <span className="hidden sm:inline">Trilhas</span>
-        </Link>
+          <span className="hidden sm:inline">Encerrar</span>
+        </button>
 
         <div className="flex items-center gap-2.5 text-base font-black sm:gap-6 sm:text-2xl">
           <span
@@ -231,7 +255,7 @@ export function GameLayout({
           sm:px-4 sm:py-6
         "
       >
-        {!gameOver ? (
+        {!showEndScreen ? (
           <div
             className="
               flex w-full min-w-0 max-w-3xl
@@ -384,7 +408,7 @@ export function GameLayout({
 
             <div className="flex flex-col gap-2 sm:gap-4">
               <button
-                onClick={onRestart}
+                onClick={handleRestart}
                 className="
                   flex w-full items-center justify-center gap-2
                   rounded-xl border-2 border-white/40
@@ -403,8 +427,9 @@ export function GameLayout({
                 Explorar de novo
               </button>
 
-              <Link
-                to="/"
+              <button
+                type="button"
+                onClick={handleTrails}
                 className="
                   flex w-full items-center justify-center gap-2
                   rounded-xl border-2 border-[#a9713f]
@@ -420,7 +445,7 @@ export function GameLayout({
               >
                 <TreePine size={18} />
                 Voltar às Trilhas
-              </Link>
+              </button>
             </div>
           </motion.div>
         )}

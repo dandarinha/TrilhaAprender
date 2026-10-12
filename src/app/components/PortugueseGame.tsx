@@ -388,6 +388,30 @@ export default function PortugueseGame() {
     const expectedLetter =
       word[wordSearchSelected.length];
 
+    // A palavra só pode ser formada seguindo a ordem e as casas vizinhas
+    // da linha/coluna em que ela foi escondida.
+    if (wordSearchSelected.length > 0) {
+      const gridSize = Math.max(5, word.length + 1);
+      const previousCellIndex = Number(
+        wordSearchSelected[wordSearchSelected.length - 1].replace("cell-", "")
+      );
+      const currentCellIndex = Number(cell.id.replace("cell-", ""));
+      const previousRow = Math.floor(previousCellIndex / gridSize);
+      const previousColumn = previousCellIndex % gridSize;
+      const currentRow = Math.floor(currentCellIndex / gridSize);
+      const currentColumn = currentCellIndex % gridSize;
+      const isAdjacent =
+        Math.abs(previousRow - currentRow) +
+          Math.abs(previousColumn - currentColumn) ===
+        1;
+
+      if (!isAdjacent) {
+        handleWrong();
+        setWordSearchSelected([]);
+        return;
+      }
+    }
+
     if (cell.letter === expectedLetter) {
       const newSelection = [
         ...wordSearchSelected,

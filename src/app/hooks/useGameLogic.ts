@@ -58,6 +58,7 @@ export function useGameLogic() {
     streak,
     accuracy,
     level,
+    progressLevel: level,
     handleCorrect,
     handleWrong,
     resetGame,

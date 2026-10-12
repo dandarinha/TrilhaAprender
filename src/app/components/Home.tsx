@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import {
   Play,
   LogOut,
@@ -432,6 +432,7 @@ export default function Home() {
     resetGame,
     isOnline,
   } = useGame();
+  const location = useLocation();
 
   /*
    * Etapas da navegação:
@@ -452,16 +453,28 @@ export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    const requestedBioma = new URLSearchParams(location.search).get("trails");
+    const shouldReturnToTrails =
+      (requestedBioma === "math" || requestedBioma === "portuguese") &&
+      Boolean(state.studentId);
+
     try {
-      // A retomada exige uma nova seleção para evitar iniciar uma sessão
-      // duplicada com dados possivelmente desatualizados do navegador.
-      localStorage.removeItem("bichoBioma");
+      if (!shouldReturnToTrails) {
+        // A retomada exige uma nova seleção para evitar iniciar uma sessão
+        // duplicada com dados possivelmente desatualizados do navegador.
+        localStorage.removeItem("bichoBioma");
+      }
     } catch {
       setExplorerName("Explorador");
     }
 
+    if (shouldReturnToTrails) {
+      setExplorerName(state.playerName || "Explorador");
+      setBiomaId(requestedBioma === "math" ? "math" : "portuguese");
+      setStep(3);
+    }
     setIsLoaded(true);
-  }, []);
+  }, [location.search, state.playerName, state.studentId]);
 
   const handleLogout = () => {
     if (state.studentId) void saveCurrentSession();
