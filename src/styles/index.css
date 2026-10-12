@@ -451,3 +451,205 @@
     transition-duration: .01ms !important;
   }
 }
+
+
+/* =============================================================
+   NOVA DIREÇÃO DE ARTE — EXPLORADORES DA MATA
+   Infantil, colorida, adesivada e consistente.
+============================================================= */
+
+.adventure-shell {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 15% 12%, rgba(255, 218, 112, .32), transparent 18rem),
+    radial-gradient(circle at 86% 22%, rgba(255, 126, 107, .25), transparent 20rem),
+    linear-gradient(160deg, #176c58 0%, #198b71 48%, #086052 100%) !important;
+}
+
+.adventure-shell::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: '';
+  opacity: .35;
+  background-image: radial-gradient(circle, rgba(255,255,255,.75) 0 2px, transparent 2.5px), radial-gradient(circle, rgba(255,210,91,.5) 0 1.5px, transparent 2px);
+  background-position: 10px 14px, 40px 40px;
+  background-size: 76px 76px, 112px 112px;
+  mask-image: linear-gradient(to bottom, black, transparent 90%);
+}
+
+.adventure-header {
+  border-bottom: 4px solid #f6c85f !important;
+  background: linear-gradient(90deg, #ff776b, #f37b5f 48%, #ef9e4f) !important;
+  box-shadow: 0 5px 0 rgba(117, 52, 39, .3), inset 0 -1px rgba(255,255,255,.35) !important;
+}
+
+.adventure-back {
+  border: 3px solid #fff7dc !important;
+  border-radius: 999px !important;
+  color: #733b35 !important;
+  background: #ffe48b !important;
+  box-shadow: 0 3px 0 #c68142 !important;
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+
+.adventure-back:hover { background: #fff2b6 !important; transform: translateY(-1px); }
+
+.adventure-title {
+  border: 3px solid #fff7dc !important;
+  border-radius: 999px !important;
+  color: #fff7dc !important;
+  background: rgba(116, 54, 46, .5) !important;
+  box-shadow: 0 3px 0 rgba(116, 54, 46, .25) !important;
+}
+
+.adventure-stage {
+  border: 5px solid #fff3cf !important;
+  border-radius: 1.8rem !important;
+  background: linear-gradient(145deg, rgba(255,255,255,.16), transparent 32%), #f9e9bb !important;
+  box-shadow: 0 8px 0 rgba(92, 53, 35, .35), 0 18px 35px rgba(8, 51, 43, .2) !important;
+  color: #254b3b;
+}
+
+.adventure-stage::before {
+  height: 7px !important;
+  left: 10% !important;
+  right: 10% !important;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff776b, #f6c85f, #79c96b, #65b8df) !important;
+  box-shadow: none !important;
+}
+
+.adventure-stage::after { border-color: rgba(86, 139, 96, .28) !important; }
+
+.adventure-finish {
+  border: 5px solid #fff3cf !important;
+  border-radius: 2rem !important;
+  background: linear-gradient(145deg, #fff0b9, #ffe09a) !important;
+  box-shadow: 0 8px 0 rgba(92, 53, 35, .35), 0 18px 35px rgba(8, 51, 43, .2) !important;
+  color: #254b3b;
+}
+
+.adventure-curiosity {
+  border: 3px dashed #f29b52 !important;
+  border-radius: 1.25rem !important;
+  background: #fff8df !important;
+  box-shadow: 0 4px 0 rgba(198, 127, 56, .2) !important;
+  color: #385b48;
+}
+
+.adventure-curiosity p,
+.adventure-curiosity strong { color: #385b48 !important; }
+
+.landing-screen {
+  position: relative;
+  padding: clamp(1rem, 4vw, 2.5rem) .75rem;
+}
+
+.landing-screen::before,
+.landing-screen::after {
+  position: absolute;
+  z-index: -1;
+  width: clamp(5rem, 12vw, 9rem);
+  height: clamp(7rem, 17vw, 12rem);
+  border: 3px solid rgba(255, 216, 111, .42);
+  border-radius: 65% 35% 70% 30%;
+  content: '';
+  transform: rotate(28deg);
+}
+
+.landing-screen::before { left: -1rem; bottom: 13%; }
+.landing-screen::after { right: -1rem; top: 15%; transform: scaleX(-1) rotate(28deg); }
+
+.landing-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  border: 3px solid #fff3cf;
+  border-radius: 999px;
+  padding: .45rem .9rem;
+  color: #6c4b2e;
+  background: #ffe58d;
+  box-shadow: 0 4px 0 #c9904b, 0 8px 18px rgba(60, 53, 27, .18);
+  font-family: var(--font-display);
+  font-size: .7rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  transform: rotate(-2deg);
+}
+
+.landing-title {
+  color: #fff5cf !important;
+  background: none !important;
+  filter: drop-shadow(0 5px 0 #d65d52) drop-shadow(0 8px 0 rgba(99, 45, 34, .22)) !important;
+  letter-spacing: -.04em;
+}
+
+.landing-action {
+  border: 4px solid #fff7dc !important;
+  border-radius: 1.35rem !important;
+  color: #fffdf0 !important;
+  background: linear-gradient(180deg, #77cf6b, #41a95e) !important;
+  box-shadow: 0 7px 0 #27734c, 0 14px 24px rgba(25, 82, 55, .25) !important;
+  font-family: var(--font-display);
+  transform: rotate(1deg);
+}
+
+.landing-action:hover { filter: brightness(1.08) saturate(1.08); }
+
+.habitat-card {
+  min-height: 15rem;
+  border: 4px solid #fff3cf !important;
+  border-radius: 1.75rem !important;
+  box-shadow: 0 8px 0 rgba(76, 53, 36, .28), 0 16px 28px rgba(20, 66, 51, .2) !important;
+  transform: rotate(-.6deg);
+}
+
+.habitat-card:nth-child(2) { transform: rotate(.6deg); }
+.habitat-card:hover { transform: translateY(-5px) rotate(0deg) !important; }
+
+.habitat-emblem {
+  display: flex;
+  width: 6.2rem;
+  height: 6.2rem;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid #fffdf0;
+  border-radius: 42% 58% 54% 46%;
+  background: #fffdf0;
+  box-shadow: 0 6px 0 rgba(76, 53, 36, .18);
+  font-size: 3.6rem;
+  transform: rotate(-4deg);
+}
+
+.path-card {
+  min-height: 9.5rem;
+  border: 4px solid #fff3cf !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 7px 0 rgba(76, 53, 36, .28), 0 14px 24px rgba(20, 66, 51, .18) !important;
+}
+
+.path-card:nth-child(2) { transform: translateY(5px) rotate(1deg); }
+.path-card:nth-child(3) { transform: rotate(-1deg); }
+.path-card:hover { transform: translateY(-5px) rotate(0deg) !important; }
+
+.path-emblem {
+  width: 4rem;
+  height: 4rem;
+  border: 4px solid #fffdf0;
+  border-radius: 1.1rem;
+  background: #fffdf0;
+  box-shadow: 0 4px 0 rgba(76,53,36,.18);
+}
+
+@media (max-width: 640px) {
+  .landing-screen { padding: 1rem .25rem; }
+  .habitat-card { min-height: 13rem; }
+  .path-card { min-height: 8.25rem; }
+  .adventure-stage { border-width: 4px !important; border-radius: 1.25rem !important; }
+  .adventure-title { border-width: 2px !important; }
+}

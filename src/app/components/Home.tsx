@@ -110,7 +110,7 @@ export function StartScreen({
       initial={{ scale: 0.8, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       exit={{ scale: 1.2, opacity: 0 }}
-      className="start-screen relative z-10 flex w-full flex-col items-center justify-center gap-5 text-center sm:gap-8"
+      className="landing-screen relative z-10 flex w-full flex-col items-center justify-center gap-5 text-center sm:gap-8"
     >
       <Link
         to="/professor"
@@ -121,7 +121,7 @@ export function StartScreen({
       </Link>
 
       <div className="space-y-3 sm:space-y-4">
-        <div className="forest-kicker mb-2 sm:mb-4">
+        <div className="landing-badge mb-2 sm:mb-4">
           <Leaf className="text-[#57b85b]" size={18} />
 
           <span className="text-sm font-bold uppercase tracking-widest text-white sm:text-base">
@@ -132,7 +132,7 @@ export function StartScreen({
         </div>
 
         <h1
-          className="forest-title text-4xl font-black sm:text-7xl"
+          className="landing-title text-4xl font-black sm:text-7xl"
           style={{
             fontFamily: "var(--font-display)",
             backgroundImage:
@@ -161,7 +161,7 @@ export function StartScreen({
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={onStart}
-        className="forest-button-primary group relative min-w-52 overflow-hidden rounded-full px-7 py-3.5 text-lg sm:min-w-64 sm:px-10 sm:py-5 sm:text-2xl"
+        className="landing-action group relative min-w-52 overflow-hidden rounded-full px-7 py-3.5 text-lg sm:min-w-64 sm:px-10 sm:py-5 sm:text-2xl"
       >
         <div
           className="relative z-10 flex items-center gap-3 text-2xl font-black uppercase text-white sm:gap-4 sm:text-4xl"
@@ -295,9 +295,9 @@ function BiomasScreen({
             whileHover={{ scale: 1.05, y: -10 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => onSelectBioma(bioma.id)}
-            className={`biome-card relative flex flex-col items-center gap-3 bg-gradient-to-b ${bioma.color} p-5 sm:gap-6 sm:p-10`}
+            className={`habitat-card relative flex flex-col items-center gap-3 bg-gradient-to-b ${bioma.color} p-5 sm:gap-6 sm:p-10`}
           >
-            <div className="biome-emblem">
+            <div className="habitat-emblem">
               {bioma.emoji}
             </div>
 
@@ -388,7 +388,7 @@ function TrailsForBiomaScreen({
           >
             <Link
               to={trail.path}
-              className={`trail-card group relative flex w-full flex-row items-center justify-center gap-3 overflow-hidden bg-gradient-to-b ${trail.color} p-3 sm:flex-col sm:gap-3 sm:p-4`}
+              className={`path-card group relative flex w-full flex-row items-center justify-center gap-3 overflow-hidden bg-gradient-to-b ${trail.color} p-3 sm:flex-col sm:gap-3 sm:p-4`}
             >
               <div className="pointer-events-none absolute inset-0 text-white/20">
                 <Footprints className="absolute -right-3 -top-3 h-16 w-16 -rotate-12 transition-transform duration-300 group-hover:rotate-0 group-hover:scale-110 sm:h-20 sm:w-20" />
@@ -397,7 +397,7 @@ function TrailsForBiomaScreen({
               </div>
 
               <div className="relative z-10 flex flex-row items-center gap-3 sm:flex-col sm:gap-3">
-                <div className="trail-emblem transition-transform duration-300 group-hover:-translate-y-1">
+                <div className="path-emblem transition-transform duration-300 group-hover:-translate-y-1">
                   {trail.icon}
                 </div>
 

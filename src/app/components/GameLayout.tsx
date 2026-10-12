@@ -78,7 +78,7 @@ export function GameLayout({
 
   return (
     <div
-      className={`forest-scene game-layout game-layout--${gameId} relative flex min-h-0 w-full max-w-full flex-col overflow-x-hidden overflow-y-auto text-white`}
+      className={`adventure-shell game-layout game-layout--${gameId} relative flex min-h-0 w-full max-w-full flex-col overflow-x-hidden overflow-y-auto text-white`}
       style={{
         fontFamily: 'var(--font-body)',
         minHeight: '100dvh',
@@ -122,7 +122,7 @@ export function GameLayout({
 
       {/* Header compacto */}
       <header
-        className="
+        className="adventure-header
           relative z-10 flex shrink-0 items-center justify-between
           border-b-2 border-[#6b3f22]
           bg-[#052e1c]/70
@@ -136,7 +136,7 @@ export function GameLayout({
           type="button"
           onClick={handleBack}
           disabled={showEndScreen}
-          className="
+          className="adventure-back
             flex items-center gap-1.5
             rounded-full border-2 border-[#a9713f]
             bg-[#6b3f22]
@@ -267,7 +267,7 @@ export function GameLayout({
               className="flex min-w-0 flex-col items-center gap-1"
             >
               <span
-                className="
+                className="adventure-title
                   inline-flex max-w-full items-center justify-center
                   rounded-full border-2 border-[#a9713f]
                   bg-[#6b3f22]
@@ -291,7 +291,7 @@ export function GameLayout({
 
             {/* Painel principal com altura mínima, não fixa */}
             <div
-              className="game-stage
+              className="adventure-stage game-stage
                 w-full min-w-0
                 max-w-[340px]
                 min-h-[360px]
@@ -324,7 +324,7 @@ export function GameLayout({
               type: 'spring',
               bounce: 0.6,
             }}
-            className="game-stage
+            className="adventure-finish game-stage
               w-full max-w-md
               rounded-2xl border-4 border-[#6b3f22]
               bg-[#14432c] forest-panel
@@ -369,7 +369,7 @@ export function GameLayout({
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="curiosity-card
+              className="adventure-curiosity curiosity-card
                 mb-3 rounded-xl
                 border-2 border-[#35b35b]/60
                 bg-[#0d3d28]
