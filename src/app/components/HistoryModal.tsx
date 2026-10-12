@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { X, Trash2, Award, Calendar } from "lucide-react";
+import { X, Award, Calendar } from "lucide-react";
 
 import { GameContext } from "./GameContext";
 import type { PlayerHistory } from "./GameContext";
@@ -21,21 +21,11 @@ export default function HistoryModal({
     );
   }
 
-  const { history, clearHistory } = context;
+  const { history } = context;
 
   if (!isOpen) {
     return null;
   }
-
-  const handleClearHistory = () => {
-    const confirmed = window.confirm(
-      "Deseja apagar todo o histórico de recordes?"
-    );
-
-    if (confirmed) {
-      clearHistory();
-    }
-  };
 
   return (
     <div
@@ -90,18 +80,18 @@ export default function HistoryModal({
                     <div className="flex flex-wrap items-center gap-3 text-xs font-bold text-zinc-500">
                       <span className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
-                        {player.date}
+                        {new Date(player.createdAt).toLocaleDateString("pt-BR")}
                       </span>
 
                       <span>
-                        🌳 Atividades: {player.completedCount}
+                        🌳 Atividades: {player.playedActivitiesCount ?? 0}
                       </span>
                     </div>
                   </div>
 
                   <div className="ml-3 shrink-0 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-right">
                     <span className="text-lg font-black text-amber-400">
-                      ⭐ {player.stars}
+                      ⭐ {player.paws}
                     </span>
                   </div>
                 </div>
@@ -117,16 +107,9 @@ export default function HistoryModal({
             {history.length === 1 ? "jogador registrado" : "jogadores registrados"}
           </span>
 
-          {history.length > 0 && (
-            <button
-              type="button"
-              onClick={handleClearHistory}
-              className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-bold text-rose-400 transition-colors hover:bg-rose-500/10 hover:text-rose-300"
-            >
-              <Trash2 className="h-4 w-4" />
-              Apagar Tudo
-            </button>
-          )}
+          <span className="text-xs font-bold text-zinc-500">
+            Dados sincronizados com o banco de dados
+          </span>
         </div>
       </div>
     </div>

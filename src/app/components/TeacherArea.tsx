@@ -23,7 +23,11 @@ import {
   X,
 } from "lucide-react";
 
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL =
+  (import.meta as ImportMeta & {
+    env?: { VITE_API_BASE_URL?: string };
+  }).env?.VITE_API_BASE_URL ||
+  "http://localhost:3000/api";
 
 type Student = {
   id: string;
@@ -32,7 +36,7 @@ type Student = {
   paws: number;
   createdAt: string;
   lastAccess: string | null;
-  completedCount?: number;
+  playedActivitiesCount?: number;
 };
 
 type Activity = {
@@ -40,7 +44,7 @@ type Activity = {
   name: string;
   trail: string;
   subject: string;
-  completed_at: string;
+  played_at: string;
 };
 
 type Session = {
@@ -53,9 +57,8 @@ type Session = {
 type StudentPerformance = {
   student: Student;
   statistics: {
-    completedCount: number;
+    playedActivitiesCount: number;
     sessionsCount: number;
-    trailsCompleted: number;
   };
   activities: Activity[];
   sessions: Session[];
@@ -349,8 +352,11 @@ export default function TeacherArea() {
 
       await loadStudents();
 
-      if (data.student?.id) {
-        setSelectedId(data.student.id);
+      // A API retorna o aluno criado diretamente; aceite também o formato
+      // envelopado para manter compatibilidade com versões anteriores.
+      const createdStudent = data?.student ?? data;
+      if (createdStudent?.id) {
+        setSelectedId(createdStudent.id);
       }
     } catch (error) {
       console.error(
@@ -527,9 +533,9 @@ export default function TeacherArea() {
             }
             label="Atividades"
             value={
-              selectedPerformance
-                ?.statistics
-                .completedCount ?? 0
+                selectedPerformance
+                  ?.statistics
+                  .playedActivitiesCount ?? 0
             }
             description={
               selectedStudent
@@ -976,7 +982,7 @@ export default function TeacherArea() {
                     value={
                       selectedPerformance
                         .statistics
-                        .completedCount
+                        .playedActivitiesCount
                     }
                   />
 
@@ -1002,9 +1008,11 @@ export default function TeacherArea() {
                     }
                     label="Trilhas"
                     value={
-                      selectedPerformance
-                        .statistics
-                        .trailsCompleted
+                      new Set(
+                        selectedPerformance.activities.map(
+                          (activity) => activity.trail
+                        )
+                      ).size
                     }
                   />
 
