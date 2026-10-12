@@ -3,6 +3,29 @@
 @import './theme.css';
 
 @layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    background: var(--forest-deep);
+  }
+
+  body {
+    min-width: 320px;
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(87, 184, 91, 0.16), transparent 28rem),
+      radial-gradient(circle at 88% 18%, rgba(42, 125, 225, 0.13), transparent 25rem),
+      linear-gradient(150deg, var(--forest-deep) 0%, var(--forest) 52%, #073522 100%);
+    color: var(--cream);
+  }
+
+  ::selection {
+    color: var(--forest-deep);
+    background: var(--mico-gold);
+  }
+
   :focus-visible {
     outline: 3px solid var(--mico-gold);
     outline-offset: 3px;
@@ -10,6 +33,123 @@
 
   button, a, input, select {
     touch-action: manipulation;
+  }
+}
+
+@layer components {
+  .forest-scene {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(139, 212, 119, 0.18), transparent 42%),
+      radial-gradient(ellipse at -10% 75%, rgba(42, 125, 225, 0.12), transparent 34%),
+      linear-gradient(160deg, #052e1c 0%, #0d3d28 50%, #073522 100%);
+  }
+
+  .forest-scene::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    content: '';
+    opacity: 0.28;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,.25) 0 1px, transparent 1.5px),
+      radial-gradient(circle at 70% 65%, rgba(255,255,255,.18) 0 1px, transparent 1.5px);
+    background-size: 42px 42px, 67px 67px;
+    mask-image: linear-gradient(to bottom, black, transparent 88%);
+  }
+
+  .forest-panel {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: linear-gradient(145deg, rgba(20, 67, 44, 0.92), rgba(5, 46, 28, 0.82));
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22), inset 0 1px rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(14px);
+  }
+
+  .forest-panel-light {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(5, 46, 28, 0.68);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18), inset 0 1px rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+  }
+
+  .forest-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    border: 1px solid rgba(139, 212, 119, 0.45);
+    border-radius: 999px;
+    padding: 0.45rem 0.9rem;
+    color: #d9f4d3;
+    background: rgba(5, 46, 28, 0.7);
+    box-shadow: 0 0 24px rgba(53, 179, 91, 0.16);
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .forest-title {
+    color: transparent;
+    background: linear-gradient(135deg, #ffd166 0%, #8bd477 52%, #8ecbff 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    filter: drop-shadow(0 5px 18px rgba(0, 0, 0, 0.28));
+  }
+
+  .forest-button-primary,
+  .forest-button-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    border-radius: 1rem;
+    padding: 0.75rem 1.2rem;
+    font-family: var(--font-display);
+    font-weight: 800;
+    transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+  }
+
+  .forest-button-primary {
+    color: var(--forest-deep);
+    border: 2px solid rgba(255, 255, 255, 0.72);
+    background: linear-gradient(180deg, #8bd477, #35b35b);
+    box-shadow: 0 5px 0 #1e6b38, 0 12px 24px rgba(53, 179, 91, 0.22);
+  }
+
+  .forest-button-secondary {
+    color: var(--cream);
+    border: 1px solid rgba(169, 113, 63, 0.72);
+    background: linear-gradient(180deg, #80502c, #5a341d);
+    box-shadow: 0 4px 0 #3d2414;
+  }
+
+  .forest-button-primary:hover,
+  .forest-button-secondary:hover {
+    filter: brightness(1.08);
+    transform: translateY(-2px);
+  }
+
+  .forest-button-primary:active,
+  .forest-button-secondary:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .forest-card {
+    border: 2px solid rgba(255, 255, 255, 0.66);
+    border-radius: 1.5rem;
+    box-shadow: 0 7px 0 rgba(0, 0, 0, 0.28), 0 18px 30px rgba(0, 0, 0, 0.16);
+    transition: transform .22s ease, box-shadow .22s ease, filter .22s ease;
+  }
+
+  .forest-card:hover {
+    filter: saturate(1.08);
+    transform: translateY(-5px);
+    box-shadow: 0 11px 0 rgba(0, 0, 0, 0.25), 0 24px 36px rgba(0, 0, 0, 0.2);
   }
 }
 

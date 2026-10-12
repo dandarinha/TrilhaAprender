@@ -76,12 +76,7 @@ export function GameLayout({
 
   return (
     <div
-      className="
-        relative flex min-h-0 w-full max-w-full flex-col
-        overflow-x-hidden overflow-y-auto
-        bg-gradient-to-b from-[#0d3d28] via-[#0b4a2e] to-[#052e1c]
-        text-white
-      "
+      className="forest-scene relative flex min-h-0 w-full max-w-full flex-col overflow-x-hidden overflow-y-auto text-white"
       style={{
         fontFamily: 'var(--font-body)',
         minHeight: '100dvh',
@@ -299,7 +294,7 @@ export function GameLayout({
                 max-w-[340px]
                 min-h-[360px]
                 rounded-2xl border-4
-                bg-[#14432c]/90
+                bg-[#14432c]/90 forest-panel
                 p-3
                 shadow-[0_5px_0_rgba(0,0,0,0.3)]
                 backdrop-blur-md
@@ -330,7 +325,7 @@ export function GameLayout({
             className="
               w-full max-w-md
               rounded-2xl border-4 border-[#6b3f22]
-              bg-[#14432c]
+              bg-[#14432c] forest-panel
               p-3 text-center
               shadow-[0_8px_0_rgba(0,0,0,0.4),0_0_25px_rgba(246,166,35,0.3)]
               sm:rounded-[2rem]

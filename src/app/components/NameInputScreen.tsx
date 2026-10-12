@@ -203,7 +203,7 @@ export function NameInputScreen({
           opacity: 1,
           y: 0,
         }}
-        className="flex flex-col items-center text-center"
+        className="forest-panel-light rounded-3xl p-4 text-center sm:p-6"
       >
         <div className="mb-2 flex items-center gap-2 rounded-full border border-[#57b85b]/40 bg-[#052e1c]/75 px-3.5 py-1.5 shadow-[0_0_18px_rgba(53,179,91,0.16)] backdrop-blur-md">
           <Leaf
@@ -254,7 +254,7 @@ export function NameInputScreen({
           ÁREA DO MURAL
       ======================================================== */}
 
-      <section className="w-full rounded-[22px] border border-white/15 bg-[#052e1c]/65 p-3 shadow-[0_12px_35px_rgba(0,0,0,0.18)] backdrop-blur-md sm:p-4">
+      <section className="forest-panel-light w-full rounded-[22px] p-3 sm:p-4">
 
         {/* ======================================================
             CABEÇALHO DO MURAL

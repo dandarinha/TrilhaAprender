@@ -121,7 +121,7 @@ export function StartScreen({
       </Link>
 
       <div className="space-y-3 sm:space-y-4">
-        <div className="mb-2 inline-flex items-center gap-2 rounded-full border-2 border-[#35b35b]/50 bg-[#052e1c]/60 px-4 py-2 shadow-[0_0_20px_rgba(53,179,91,0.3)] backdrop-blur-sm sm:mb-4 sm:gap-3 sm:px-6">
+        <div className="forest-kicker mb-2 sm:mb-4">
           <Leaf className="text-[#57b85b]" size={18} />
 
           <span className="text-sm font-bold uppercase tracking-widest text-white sm:text-base">
@@ -132,7 +132,7 @@ export function StartScreen({
         </div>
 
         <h1
-          className="text-5xl font-black text-transparent drop-shadow-[0_4px_20px_rgba(0,0,0,0.4)] sm:text-8xl"
+          className="forest-title text-5xl font-black sm:text-8xl"
           style={{
             fontFamily: "var(--font-display)",
             backgroundImage:
@@ -145,7 +145,7 @@ export function StartScreen({
         </h1>
 
         <p
-          className="mx-auto max-w-2xl text-lg font-black text-yellow-200 sm:text-3xl"
+          className="mx-auto max-w-2xl text-lg font-black text-[#ffd166] sm:text-3xl"
           style={{ fontFamily: "var(--font-display)" }}
         >
           Jornada Tropical 🌿
@@ -160,7 +160,7 @@ export function StartScreen({
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={onStart}
-        className="group relative flex items-center justify-center overflow-hidden rounded-full border-4 border-white/50 bg-gradient-to-b from-[#57b85b] to-[#2e7d32] px-8 py-4 shadow-[0_8px_0_rgba(0,0,0,0.35)] active:translate-y-[3px] active:shadow-[0_3px_0_rgba(0,0,0,0.35)] sm:px-12 sm:py-6"
+        className="forest-button-primary group relative min-w-56 overflow-hidden rounded-full px-8 py-4 text-xl sm:min-w-72 sm:px-12 sm:py-6 sm:text-3xl"
       >
         <div
           className="relative z-10 flex items-center gap-3 text-2xl font-black uppercase text-white sm:gap-4 sm:text-4xl"
@@ -294,7 +294,7 @@ function BiomasScreen({
             whileHover={{ scale: 1.05, y: -10 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => onSelectBioma(bioma.id)}
-            className={`relative flex flex-col items-center gap-3 rounded-3xl border-4 border-white bg-gradient-to-b ${bioma.color} p-5 shadow-[0_6px_0_rgba(0,0,0,0.3)] transition-all hover:shadow-[0_10px_0_rgba(0,0,0,0.3)] active:translate-y-[2px] sm:gap-6 sm:p-10`}
+            className={`forest-card relative flex flex-col items-center gap-3 bg-gradient-to-b ${bioma.color} p-5 sm:gap-6 sm:p-10`}
           >
             <div className="rounded-full border-4 border-white bg-white/90 p-3 text-6xl shadow-[0_4px_0_rgba(0,0,0,0.2)] sm:p-4 sm:text-9xl">
               {bioma.emoji}
@@ -338,18 +338,18 @@ function TrailsForBiomaScreen({
       animate={{ scale: 1, opacity: 1 }}
       className="relative z-10 flex w-full max-w-6xl flex-col items-center gap-5 px-4 py-6 sm:gap-8 sm:py-10"
     >
-      <div className="flex w-full items-center justify-between gap-2">
+      <div className="forest-panel-light flex w-full items-center justify-between gap-2 rounded-2xl p-2 sm:p-3">
         <button
           type="button"
           onClick={onBack}
-          className="shrink-0 rounded-full border-2 border-[#35b35b]/40 bg-[#052e1c]/60 p-3 text-white backdrop-blur-sm transition-all hover:bg-[#052e1c]/80 sm:p-4"
+          className="shrink-0 rounded-full border border-[#8bd477]/50 bg-[#052e1c]/70 p-3 text-white transition-all hover:bg-[#0d3d28] sm:p-4"
           aria-label="Voltar para os biomas"
         >
           <ChevronLeft size={24} />
         </button>
 
         <h1
-          className="flex-1 text-center text-xl font-black text-transparent sm:text-5xl"
+          className="forest-title flex-1 text-center text-xl font-black sm:text-5xl"
           style={{
             fontFamily: "var(--font-display)",
             backgroundImage:
@@ -387,7 +387,7 @@ function TrailsForBiomaScreen({
           >
             <Link
               to={trail.path}
-              className={`group relative flex w-full flex-row items-center justify-center gap-4 overflow-hidden rounded-3xl border-4 border-white bg-gradient-to-b ${trail.color} p-4 shadow-[0_6px_0_rgba(0,0,0,0.3)] transition-all hover:translate-y-[-4px] hover:shadow-[0_10px_0_rgba(0,0,0,0.3)] active:translate-y-[2px] sm:flex-col sm:gap-6 sm:p-8`}
+              className={`forest-card group relative flex w-full flex-row items-center justify-center gap-4 overflow-hidden bg-gradient-to-b ${trail.color} p-4 sm:flex-col sm:gap-6 sm:p-8`}
             >
               <div className="pointer-events-none absolute inset-0 text-white/20">
                 <Footprints className="absolute -right-3 -top-3 h-16 w-16 -rotate-12 transition-transform duration-300 group-hover:rotate-0 group-hover:scale-110 sm:h-20 sm:w-20" />
@@ -534,7 +534,7 @@ export default function Home() {
   const isLoggedInScreen = step === 2 || step === 3;
 
   return (
-    <div className="relative flex min-h-screen flex-col overflow-x-hidden overflow-y-auto bg-gradient-to-b from-[#0d3d28] via-[#0b4a2e] to-[#052e1c]">
+    <div className="forest-scene relative flex min-h-screen flex-col overflow-x-hidden overflow-y-auto">
       {/* Vagalumes */}
       <div className="pointer-events-none fixed inset-0 z-0">
         {[...Array(40)].map((_, index) => (
