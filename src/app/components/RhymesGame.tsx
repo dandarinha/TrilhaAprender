@@ -339,6 +339,7 @@ export default function RhymesGame() {
   return (
     <GameLayout
       planetName="Trilha das Rimas"
+      gameId="rhymes"
       themeColor="yellow"
       lives={lives}
       score={score}

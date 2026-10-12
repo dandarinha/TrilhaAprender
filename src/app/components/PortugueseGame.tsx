@@ -461,6 +461,7 @@ export default function PortugueseGame() {
   return (
     <GameLayout
       planetName="Trilha das Palavras"
+      gameId="words"
       themeColor="red"
       lives={lives}
       score={score}

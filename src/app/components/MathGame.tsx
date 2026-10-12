@@ -229,6 +229,7 @@ export function AdditionGame() {
   return (
     <GameLayout
       planetName="Adição na Floresta"
+      gameId="addition"
       themeColor="red"
       lives={lives}
       score={score}
@@ -423,6 +424,7 @@ export function SubtractionGame() {
   return (
     <GameLayout
       planetName="Subtração na Floresta"
+      gameId="subtraction"
       themeColor="blue"
       lives={lives}
       score={score}
@@ -677,6 +679,7 @@ export function CountingGame() {
   return (
     <GameLayout
       planetName="Contagem Relâmpago ⚡"
+      gameId="counting"
       themeColor="yellow"
       lives={lives}
       score={score}

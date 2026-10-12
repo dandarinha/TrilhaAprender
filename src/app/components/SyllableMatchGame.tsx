@@ -413,6 +413,7 @@ export default function SyllableMatchGame() {
   return (
     <GameLayout
       planetName={`Sílaba Inicial — ${currentDifficulty.label} — Letra ${level.consonant}`}
+      gameId="syllables"
       themeColor="blue"
       lives={lives}
       score={score}

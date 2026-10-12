@@ -13,6 +13,7 @@ import { useGame } from './GameContext';
 
 interface GameLayoutProps {
   planetName: string;
+  gameId: string;
   themeColor: string;
   lives: number;
   score: number;
@@ -34,6 +35,7 @@ const BORDER_HEX: Record<string, string> = {
 
 export function GameLayout({
   planetName,
+  gameId,
   themeColor,
   lives,
   score,
@@ -76,7 +78,7 @@ export function GameLayout({
 
   return (
     <div
-      className="forest-scene relative flex min-h-0 w-full max-w-full flex-col overflow-x-hidden overflow-y-auto text-white"
+      className={`forest-scene game-layout game-layout--${gameId} relative flex min-h-0 w-full max-w-full flex-col overflow-x-hidden overflow-y-auto text-white`}
       style={{
         fontFamily: 'var(--font-body)',
         minHeight: '100dvh',
@@ -298,7 +300,7 @@ export function GameLayout({
                 p-2.5
                 shadow-[0_5px_0_rgba(0,0,0,0.3)]
                 backdrop-blur-md
-                overflow-hidden
+                overflow-x-hidden overflow-y-auto
                 sm:max-w-2xl
                 sm:min-h-[440px]
                 sm:rounded-3xl
