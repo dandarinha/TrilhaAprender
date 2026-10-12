@@ -76,10 +76,10 @@ export function GameLayout({
 
   return (
     <div
-      className="forest-scene relative flex min-h-0 w-full max-w-full flex-col overflow-x-hidden overflow-y-auto text-white"
+      className={`forest-scene game-theme-${themeColor} relative flex h-[100dvh] max-h-[100dvh] w-full max-w-full flex-col overflow-hidden text-white`}
       style={{
         fontFamily: 'var(--font-body)',
-        minHeight: '100dvh',
+        height: '100dvh',
       }}
     >
       {/* Vagalumes */}
@@ -127,7 +127,7 @@ export function GameLayout({
           px-2.5 py-2
           shadow-[0_3px_12px_rgba(0,0,0,0.35)]
           backdrop-blur-sm
-          sm:border-b-4 sm:px-6 sm:py-4
+          sm:border-b-4 sm:px-6 sm:py-3
         "
       >
         <button
@@ -245,9 +245,9 @@ export function GameLayout({
         className="
           relative z-10 flex min-h-0 w-full flex-1
           flex-col items-center justify-start
-          px-2 py-4
+          px-2 py-2
           sm:justify-center
-          sm:px-4 sm:py-6
+          sm:px-4 sm:py-4
         "
       >
         {!showEndScreen ? (
@@ -292,18 +292,18 @@ export function GameLayout({
               className="game-stage
                 w-full min-w-0
                 max-w-[340px]
-                min-h-[360px]
+                min-h-[300px]
                 rounded-2xl border-4
                 bg-[#14432c]/90 forest-panel
-                p-3
+                p-2
                 shadow-[0_5px_0_rgba(0,0,0,0.3)]
                 backdrop-blur-md
                 overflow-hidden
                 sm:max-w-2xl
-                sm:min-h-[500px]
+                sm:min-h-[420px]
                 sm:rounded-3xl
                 sm:border-[6px]
-                sm:p-6
+                sm:p-4
                 sm:shadow-[0_10px_0_rgba(0,0,0,0.3)]
               "
               style={{ borderColor: borderHex }}
@@ -326,10 +326,10 @@ export function GameLayout({
               w-full max-w-md
               rounded-2xl border-4 border-[#6b3f22]
               bg-[#14432c] forest-panel
-              p-3 text-center
+              p-2 text-center
               shadow-[0_8px_0_rgba(0,0,0,0.4),0_0_25px_rgba(246,166,35,0.3)]
               sm:rounded-[2rem]
-              sm:border-[6px] sm:p-10
+              sm:border-[6px] sm:p-7
               sm:shadow-[0_16px_0_rgba(0,0,0,0.4),0_0_40px_rgba(246,166,35,0.3)]
             "
           >
