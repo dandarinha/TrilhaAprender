@@ -633,8 +633,8 @@
   box-shadow: 0 7px 0 rgba(76, 53, 36, .28), 0 14px 24px rgba(20, 66, 51, .18) !important;
 }
 
-.path-card:nth-child(2) { transform: translateY(5px) rotate(1deg); }
-.path-card:nth-child(3) { transform: rotate(-1deg); }
+.trail-select-screen .grid > div:nth-child(2) .path-card { transform: translateY(5px) rotate(1deg); }
+.trail-select-screen .grid > div:nth-child(3) .path-card { transform: rotate(-1deg); }
 .path-card:hover { transform: translateY(-5px) rotate(0deg) !important; }
 
 .path-emblem {
@@ -1005,9 +1005,9 @@ body { background: var(--palette-green) !important; }
 .path-card h3,
 .path-card span { color: var(--palette-cream) !important; }
 
-.path-card:nth-child(1) { border-left: 8px solid var(--palette-red) !important; }
-.path-card:nth-child(2) { border-left: 8px solid var(--palette-light-sage) !important; }
-.path-card:nth-child(3) { border-left: 8px solid var(--palette-peach) !important; }
+.trail-select-screen .grid > div:nth-child(1) .path-card { border-left: 8px solid var(--palette-red) !important; }
+.trail-select-screen .grid > div:nth-child(2) .path-card { border-left: 8px solid var(--palette-light-sage) !important; }
+.trail-select-screen .grid > div:nth-child(3) .path-card { border-left: 8px solid var(--palette-peach) !important; }
 
 .path-card .path-emblem,
 .habitat-emblem {
@@ -1415,3 +1415,103 @@ select:disabled { opacity: .62; }
   color: var(--text-black) !important;
   border-color: var(--palette-green) !important;
 }
+
+
+/* =============================================================
+   CONTRASTE DE CENÁRIO
+   Fundo externo escuro + superfícies claras de leitura.
+============================================================= */
+.app-shell,
+.adventure-shell,
+.legacy-start-screen {
+  background:
+    radial-gradient(circle at 15% 10%, rgba(106,152,118,.24), transparent 22rem),
+    radial-gradient(circle at 86% 18%, rgba(185,39,10,.18), transparent 20rem),
+    linear-gradient(155deg, #07391F 0%, #0B4D2B 48%, #052E1C 100%) !important;
+}
+
+/* Entrada e seleções recebem uma clareira opaca para manter o texto preto. */
+.landing-screen,
+.biome-select-screen,
+.trail-select-screen,
+.app-shell .player-screen {
+  border: 3px solid var(--palette-sage) !important;
+  border-radius: 1.75rem !important;
+  background: rgba(255,244,232,.96) !important;
+  box-shadow: 0 10px 0 rgba(3,34,19,.28), 0 20px 42px rgba(3,34,19,.2) !important;
+}
+
+.landing-screen { padding: clamp(1.5rem, 5vw, 3.5rem) 1.25rem !important; }
+
+.app-shell .biome-select-screen > div:first-child,
+.app-shell .trail-select-screen > div:first-child {
+  background: var(--surface-main) !important;
+  border-color: var(--palette-sage) !important;
+}
+
+.app-shell .trail-select-screen > p,
+.app-shell .biome-select-screen > div > p { color: #000000 !important; }
+
+/* Cores semânticas das trilhas: o nome e a cor agora coincidem. */
+.trail-select-screen .grid > div:nth-child(1) .path-card {
+  background: linear-gradient(145deg, #F4A08B, #FFD2B8) !important;
+  border-left-color: #7A200F !important;
+}
+.trail-select-screen .grid > div:nth-child(2) .path-card {
+  background: linear-gradient(145deg, #A7CFDC, #E3F1F4) !important;
+  border-left-color: #1D526A !important;
+}
+.trail-select-screen .grid > div:nth-child(3) .path-card {
+  background: linear-gradient(145deg, #F4C35D, #FFE9A6) !important;
+  border-left-color: #9A6400 !important;
+}
+
+.trail-select-screen .grid > div:nth-child(1) .path-card h3,
+.trail-select-screen .grid > div:nth-child(1) .path-card span,
+.trail-select-screen .grid > div:nth-child(2) .path-card h3,
+.trail-select-screen .grid > div:nth-child(2) .path-card span,
+.trail-select-screen .grid > div:nth-child(3) .path-card h3,
+.trail-select-screen .grid > div:nth-child(3) .path-card span { color: #000000 !important; }
+
+.path-card .inline-flex {
+  background: rgba(255,244,232,.72) !important;
+  border-color: rgba(0,0,0,.25) !important;
+}
+
+/* O mural fica claro, mas seu entorno volta a ser floresta. */
+.app-shell .player-screen > div:first-child button {
+  background: var(--surface-accent) !important;
+  color: #000000 !important;
+}
+
+/* Minigames: header claro, cenário externo escuro, palco de leitura claro. */
+.adventure-header {
+  background: linear-gradient(90deg, #FFB27A, #FFD2B8 52%, #E8F1E8) !important;
+  color: #000000 !important;
+}
+
+.game-layout .game-stage,
+.adventure-finish,
+.adventure-curiosity,
+.curiosity-card {
+  background: linear-gradient(145deg, var(--surface-main), var(--surface-soft)) !important;
+}
+
+/* Área do professor: cenário escuro com painéis claros. */
+.teacher-page {
+  background:
+    radial-gradient(circle at 88% 8%, rgba(106,152,118,.26), transparent 20rem),
+    linear-gradient(155deg, #07391F, #0B4D2B 52%, #052E1C) !important;
+}
+
+.teacher-page .teacher-header,
+.teacher-page .teacher-panel,
+.teacher-page > div > section,
+.teacher-page aside {
+  background: var(--surface-main) !important;
+  color: #000000 !important;
+}
+
+.teacher-page .teacher-header h1,
+.teacher-page .teacher-header span,
+.teacher-page .teacher-header a { color: #000000 !important; }
