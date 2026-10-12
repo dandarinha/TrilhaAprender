@@ -169,7 +169,7 @@ export function NameInputScreen({
       transition={{
         duration: 0.25,
       }}
-      className="relative z-10 flex w-full max-w-6xl flex-col gap-4 px-3 py-4 sm:px-5 sm:py-5"
+      className="player-screen relative z-10 flex w-full max-w-6xl flex-col gap-4 px-3 py-4 sm:px-5 sm:py-5"
     >
       {/* ========================================================
           BARRA SUPERIOR

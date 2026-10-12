@@ -506,7 +506,7 @@ export default function TeacherArea() {
   };
 
   return (
-    <main className="teacher-shell min-h-screen text-[#173B2B]">
+    <main className="teacher-page teacher-shell min-h-screen text-[#173B2B]">
       <div className="mx-auto max-w-[1450px] px-4 py-4 sm:px-5 lg:px-6">
 
         {/* ======================================================

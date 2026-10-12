@@ -17,9 +17,9 @@ export function Button({
   disabled = false
 }: ButtonProps) {
   const variants = {
-    primary: 'bg-[#ff6ec7] text-white shadow-[0_0_20px_rgba(255,110,199,0.5)]',
-    secondary: 'bg-[#00f6ff] text-[#1a0b2e] shadow-[0_0_20px_rgba(0,246,255,0.5)]',
-    accent: 'bg-[#ffd93d] text-[#1a0b2e] shadow-[0_0_20px_rgba(255,217,61,0.5)]',
+    primary: 'border-4 border-[#fff7dc] bg-gradient-to-b from-[#77cf6b] to-[#41a95e] text-white shadow-[0_6px_0_#27734c]',
+    secondary: 'border-4 border-[#fff7dc] bg-[#65b8df] text-[#254b3b] shadow-[0_6px_0_#367b9c]',
+    accent: 'border-4 border-[#fff7dc] bg-[#ffe48b] text-[#733b35] shadow-[0_6px_0_#c68142]',
   };
 
   const sizes = {
@@ -33,7 +33,7 @@ export function Button({
       onClick={onClick}
       disabled={disabled}
       className={`
-        font-display rounded-full transition-all
+        font-display rounded-2xl font-black transition-all
         ${variants[variant]} ${sizes[size]}
         ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 active:scale-95'}
       `}

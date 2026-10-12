@@ -198,7 +198,7 @@ function HeaderBar({
   onLogout: () => void;
 }) {
   return (
-    <div className="flex w-full flex-row items-center justify-between gap-2 border-b-4 border-[#6b3f22] bg-[#052e1c]/80 px-4 py-3 shadow-[0_4px_20px_rgba(0,0,0,0.4)] backdrop-blur-md sm:gap-6 sm:px-8 sm:py-4">
+    <div className="home-header flex w-full flex-row items-center justify-between gap-2 border-b-4 border-[#6b3f22] bg-[#052e1c]/80 px-4 py-3 shadow-[0_4px_20px_rgba(0,0,0,0.4)] backdrop-blur-md sm:gap-6 sm:px-8 sm:py-4">
       <div className="flex min-w-0 items-center gap-2 sm:gap-4">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border-2 border-[#a9713f] bg-gradient-to-b from-[#57b85b] to-[#2e7d32] text-xl sm:h-14 sm:w-14 sm:text-2xl">
           🧭
@@ -265,7 +265,7 @@ function BiomasScreen({
     <motion.div
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      className="relative z-10 flex w-full max-w-5xl flex-col items-center gap-4 px-4 py-4 sm:gap-6 sm:py-6"
+      className="biome-select-screen relative z-10 flex w-full max-w-5xl flex-col items-center gap-4 px-4 py-4 sm:gap-6 sm:py-6"
     >
       <div className="w-full space-y-2 text-center sm:space-y-4">
         <h1
@@ -337,7 +337,7 @@ function TrailsForBiomaScreen({
     <motion.div
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      className="relative z-10 flex w-full max-w-6xl flex-col items-center gap-3 px-4 py-3 sm:gap-5 sm:py-5"
+      className="trail-select-screen relative z-10 flex w-full max-w-6xl flex-col items-center gap-3 px-4 py-3 sm:gap-5 sm:py-5"
     >
       <div className="forest-panel-light flex w-full items-center justify-between gap-2 rounded-2xl p-2 sm:p-3">
         <button
@@ -535,7 +535,7 @@ export default function Home() {
   const isLoggedInScreen = step === 2 || step === 3;
 
   return (
-    <div className="forest-scene relative flex min-h-screen flex-col overflow-x-hidden overflow-y-auto">
+    <div className="app-shell forest-scene relative flex min-h-screen flex-col overflow-x-hidden overflow-y-auto">
       {/* Vagalumes */}
       <div className="pointer-events-none fixed inset-0 z-0">
         {[...Array(40)].map((_, index) => (

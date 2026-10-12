@@ -653,3 +653,265 @@
   .adventure-stage { border-width: 4px !important; border-radius: 1.25rem !important; }
   .adventure-title { border-width: 2px !important; }
 }
+
+
+
+/* =============================================================
+   SISTEMA VISUAL UNIFICADO — AVENTURA TROPICAL
+   Aplicado a todas as páginas e estados do produto.
+============================================================= */
+:root {
+  --brand-green-900: #155447;
+  --brand-green-700: #198b71;
+  --brand-green-500: #63c96b;
+  --brand-coral: #ff776b;
+  --brand-orange: #ef9e4f;
+  --brand-yellow: #ffe48b;
+  --brand-blue: #65b8df;
+  --brand-cream: #fff7dc;
+  --brand-paper: #f9e9bb;
+  --brand-ink: #254b3b;
+  --brand-muted: #6f897a;
+  --brand-shadow: rgba(76, 53, 36, .26);
+  --brand-radius-sm: .75rem;
+  --brand-radius-md: 1.15rem;
+  --brand-radius-lg: 1.75rem;
+  --brand-shadow-card: 0 5px 0 var(--brand-shadow), 0 14px 26px rgba(20, 66, 51, .16);
+}
+
+.app-shell,
+.legacy-start-screen {
+  background:
+    radial-gradient(circle at 12% 9%, rgba(255, 228, 139, .3), transparent 19rem),
+    radial-gradient(circle at 88% 18%, rgba(255, 119, 107, .22), transparent 21rem),
+    linear-gradient(160deg, var(--brand-green-900), var(--brand-green-700) 52%, #086052) !important;
+}
+
+.app-shell .home-header {
+  border-bottom: 4px solid var(--brand-yellow) !important;
+  background: linear-gradient(90deg, var(--brand-coral), #f37b5f 48%, var(--brand-orange)) !important;
+  box-shadow: 0 5px 0 rgba(117, 52, 39, .28) !important;
+}
+
+.app-shell .home-header > div:first-child > div:first-child {
+  border: 3px solid var(--brand-cream) !important;
+  border-radius: 1rem !important;
+  background: var(--brand-green-500) !important;
+  box-shadow: 0 3px 0 #3c9855;
+}
+
+.app-shell .home-header h2 { color: var(--brand-cream) !important; }
+.app-shell .home-header p { color: #fff0bc !important; }
+
+.app-shell .home-header > div:last-child > div {
+  border: 3px solid var(--brand-cream) !important;
+  border-radius: 999px !important;
+  background: var(--brand-yellow) !important;
+  box-shadow: 0 3px 0 #c68142 !important;
+  color: #733b35 !important;
+}
+
+.app-shell .home-header button,
+.app-shell .biome-select-screen button[aria-label],
+.app-shell .trail-select-screen button[aria-label] {
+  border: 3px solid var(--brand-cream) !important;
+  border-radius: 999px !important;
+  background: rgba(116, 54, 46, .58) !important;
+  box-shadow: 0 3px 0 rgba(76, 53, 36, .28) !important;
+}
+
+.app-shell .biome-select-screen h1,
+.app-shell .trail-select-screen h1 {
+  color: var(--brand-cream) !important;
+  background: none !important;
+  filter: drop-shadow(0 4px 0 rgba(91, 51, 38, .28));
+}
+
+.app-shell .biome-select-screen > div:first-child,
+.app-shell .trail-select-screen > div:first-child {
+  border: 3px solid rgba(255,247,220,.7);
+  border-radius: var(--brand-radius-md);
+  padding: .75rem 1rem;
+  background: rgba(255,255,255,.1);
+  box-shadow: 0 4px 0 rgba(76,53,36,.16);
+}
+
+.app-shell .player-screen {
+  width: min(100%, 76rem);
+}
+
+.app-shell .player-screen > div:first-child button {
+  border: 3px solid var(--brand-cream) !important;
+  background: var(--brand-coral) !important;
+  box-shadow: 0 3px 0 #b8564f !important;
+}
+
+.app-shell .player-screen header,
+.app-shell .player-screen section {
+  border: 4px solid var(--brand-cream) !important;
+  border-radius: var(--brand-radius-lg) !important;
+  background: rgba(249, 233, 187, .96) !important;
+  box-shadow: var(--brand-shadow-card) !important;
+}
+
+.app-shell .player-screen header h1,
+.app-shell .player-screen section h2,
+.app-shell .player-screen section h3 {
+  color: var(--brand-ink) !important;
+}
+
+.app-shell .player-screen header p,
+.app-shell .player-screen section p { color: var(--brand-muted) !important; }
+
+.app-shell .player-screen header > div:first-child {
+  border: 3px solid #f29b52 !important;
+  background: var(--brand-yellow) !important;
+  box-shadow: 0 3px 0 #c68142 !important;
+}
+
+.app-shell .player-screen section input {
+  border: 3px solid rgba(25,139,113,.3) !important;
+  border-radius: var(--brand-radius-sm) !important;
+  color: var(--brand-ink) !important;
+  background: #fffdf0 !important;
+}
+
+.app-shell .player-screen section input:focus {
+  border-color: var(--brand-coral) !important;
+  box-shadow: 0 0 0 3px rgba(255,119,107,.16) !important;
+}
+
+.app-shell .player-screen section > div:last-child > button {
+  border: 3px solid var(--brand-cream) !important;
+  border-radius: var(--brand-radius-md) !important;
+  background: linear-gradient(180deg, var(--brand-green-500), #41a95e) !important;
+  box-shadow: 0 4px 0 #27734c !important;
+}
+
+.app-shell .player-screen section > div:last-child > button span {
+  background: var(--brand-yellow) !important;
+  color: #733b35 !important;
+}
+
+.app-shell .player-screen section > div:last-child > button:hover { filter: saturate(1.08) brightness(1.04); }
+
+.teacher-page {
+  --teacher-paper: #fffdf0;
+  --teacher-line: #eadfbd;
+  --teacher-green: #198b71;
+  --teacher-ink: #254b3b;
+  --teacher-accent: #ff776b;
+  background:
+    radial-gradient(circle at 88% 8%, rgba(255,119,107,.16), transparent 20rem),
+    radial-gradient(circle at 12% 70%, rgba(101,184,223,.14), transparent 18rem),
+    #f5edcf !important;
+  color: var(--teacher-ink) !important;
+}
+
+.teacher-page .teacher-header {
+  border: 4px solid var(--brand-cream) !important;
+  border-radius: var(--brand-radius-lg) !important;
+  background: linear-gradient(90deg, var(--brand-green-900), var(--brand-green-700)) !important;
+  box-shadow: var(--brand-shadow-card) !important;
+}
+
+.teacher-page .teacher-header > div > div:first-child > div:first-child {
+  border: 3px solid var(--brand-cream);
+  border-radius: var(--brand-radius-sm);
+  background: var(--brand-yellow) !important;
+  box-shadow: 0 3px 0 #c68142;
+}
+
+.teacher-page .teacher-header a {
+  border: 3px solid var(--brand-cream) !important;
+  border-radius: var(--brand-radius-sm) !important;
+  background: rgba(255,255,255,.16) !important;
+}
+
+.teacher-page .teacher-panel,
+.teacher-page > div > section,
+.teacher-page aside {
+  border: 3px solid var(--teacher-line) !important;
+  border-radius: var(--brand-radius-lg) !important;
+  background: var(--teacher-paper) !important;
+  box-shadow: var(--brand-shadow-card) !important;
+}
+
+.teacher-page input,
+.teacher-page select {
+  border: 2px solid #d9cfae !important;
+  border-radius: var(--brand-radius-sm) !important;
+  background: #fff !important;
+  color: var(--teacher-ink) !important;
+}
+
+.teacher-page input:focus,
+.teacher-page select:focus {
+  border-color: var(--brand-coral) !important;
+  box-shadow: 0 0 0 3px rgba(255,119,107,.14) !important;
+}
+
+.teacher-page button.bg-\[\#2E7547\],
+.teacher-page button[class*="bg-[#2E7547"] {
+  border: 3px solid var(--brand-cream) !important;
+  border-radius: var(--brand-radius-sm) !important;
+  background: linear-gradient(180deg, var(--brand-green-500), #41a95e) !important;
+  box-shadow: 0 4px 0 #27734c;
+}
+
+.teacher-page [class*="bg-[#F6A623"] {
+  border: 3px solid var(--brand-cream);
+  box-shadow: 0 3px 0 #c68142;
+}
+
+.teacher-page [class*="border-red-200"] {
+  border: 3px solid #f4a39a !important;
+  border-radius: var(--brand-radius-sm) !important;
+  background: #fff0ed !important;
+}
+
+.teacher-page h1,
+.teacher-page h2,
+.teacher-page h3,
+.teacher-page strong { font-family: var(--font-display); }
+
+.legacy-start-screen {
+  color: var(--brand-cream);
+}
+
+.legacy-start-screen > a {
+  border: 3px solid var(--brand-cream) !important;
+  border-radius: var(--brand-radius-sm) !important;
+  background: var(--brand-coral) !important;
+  box-shadow: 0 4px 0 #b8564f !important;
+}
+
+.legacy-start-screen h1 span:first-child { color: var(--brand-yellow) !important; }
+.legacy-start-screen h1 span:last-child { color: var(--brand-cream) !important; }
+.legacy-start-screen p { color: #fff0bc !important; }
+
+.legacy-start-screen button,
+.legacy-start-screen button[class*="bg-[#ff6ec7"] {
+  border-radius: var(--brand-radius-md) !important;
+  border: 4px solid var(--brand-cream) !important;
+  box-shadow: 0 6px 0 #27734c !important;
+  background: linear-gradient(180deg, var(--brand-green-500), #41a95e) !important;
+  color: white !important;
+}
+
+/* Estados interativos comuns */
+.app-shell button,
+.teacher-page button,
+.legacy-start-screen button,
+a { transition: border-color .18s ease, background-color .18s ease, box-shadow .18s ease, transform .18s ease, filter .18s ease; }
+
+.app-shell button:disabled,
+.teacher-page button:disabled { filter: grayscale(.25); }
+
+@media (max-width: 640px) {
+  .app-shell .player-screen header,
+  .app-shell .player-screen section,
+  .teacher-page .teacher-panel,
+  .teacher-page > div > section,
+  .teacher-page aside { border-radius: var(--brand-radius-md) !important; }
+}

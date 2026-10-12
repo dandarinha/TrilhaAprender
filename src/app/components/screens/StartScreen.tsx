@@ -9,7 +9,7 @@ export default function StartScreen() {
   const { goToScreen } = useGame();
 
   return (
-    <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4">
+    <div className="legacy-start-screen relative z-10 flex min-h-screen flex-col items-center justify-center px-4">
       {/* Acesso à área do professor */}
       <Link
         to="/professor"
