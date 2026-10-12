@@ -35,31 +35,31 @@ const BIOMAS: {
     name: "Floresta das Sílabas",
     subject: "Português",
     emoji: "🌳",
-    color: "from-[#2e7d32] to-[#57b85b]",
+    color: "from-[#0B4D2B] to-[#6A9876]",
     trails: [
       {
         id: "portuguese",
         name: "Trilha Vermelha",
         subject: "Forme a Palavra",
         path: "/portuguese",
-        color: "from-[#e0402b] to-[#f4795f]",
-        icon: <Footprints size={40} className="text-[#e0402b]" />,
+        color: "from-[#B9270A] to-[#FF9A5C]",
+        icon: <Footprints size={40} className="text-[#B9270A]" />,
       },
       {
         id: "syllable-match",
         name: "Trilha Azul",
         subject: "Sílaba Inicial",
         path: "/syllable-match",
-        color: "from-[#2a7de1] to-[#5aa0ee]",
-        icon: <Footprints size={40} className="text-[#2a7de1]" />,
+        color: "from-[#6A9876] to-[#A7C9B0]",
+        icon: <Footprints size={40} className="text-[#6A9876]" />,
       },
       {
         id: "rhymes",
         name: "Trilha Amarela",
         subject: "Rimas",
         path: "/rhymes",
-        color: "from-[#f6a623] to-[#ffd166]",
-        icon: <Footprints size={40} className="text-[#f6a623]" />,
+        color: "from-[#F45A0A] to-[#FF9A5C]",
+        icon: <Footprints size={40} className="text-[#F45A0A]" />,
       },
     ],
   },
@@ -68,31 +68,31 @@ const BIOMAS: {
     name: "Bosque da Matemática",
     subject: "Matemática",
     emoji: "🌲",
-    color: "from-[#0b6e8f] to-[#2ab7d6]",
+    color: "from-[#0B4D2B] to-[#A7C9B0]",
     trails: [
       {
         id: "addition",
         name: "Trilha Vermelha",
         subject: "Adição",
         path: "/math/addition",
-        color: "from-[#e0402b] to-[#f4795f]",
-        icon: <Footprints size={40} className="text-[#e0402b]" />,
+        color: "from-[#B9270A] to-[#FF9A5C]",
+        icon: <Footprints size={40} className="text-[#B9270A]" />,
       },
       {
         id: "subtraction",
         name: "Trilha Azul",
         subject: "Subtração",
         path: "/math/subtraction",
-        color: "from-[#2a7de1] to-[#5aa0ee]",
-        icon: <Footprints size={40} className="text-[#2a7de1]" />,
+        color: "from-[#6A9876] to-[#A7C9B0]",
+        icon: <Footprints size={40} className="text-[#6A9876]" />,
       },
       {
         id: "counting",
         name: "Trilha Amarela",
         subject: "Contagem",
         path: "/math/counting",
-        color: "from-[#f6a623] to-[#ffd166]",
-        icon: <Footprints size={40} className="text-[#f6a623]" />,
+        color: "from-[#F45A0A] to-[#FF9A5C]",
+        icon: <Footprints size={40} className="text-[#F45A0A]" />,
       },
     ],
   },
@@ -114,7 +114,7 @@ export function StartScreen({
     >
       <Link
         to="/professor"
-        className="absolute -top-12 right-2 z-20 flex items-center gap-2 rounded-2xl border-2 border-[#35b35b]/40 bg-[#052e1c]/90 px-3 py-2.5 text-xs font-black text-white shadow-[0_4px_0_rgba(0,0,0,0.2)] transition-all hover:bg-[#0d3d28] active:translate-y-1 sm:top-4 sm:right-4 sm:px-4 sm:text-sm"
+        className="absolute -top-12 right-2 z-20 flex items-center gap-2 rounded-2xl border-2 border-[#6A9876]/40 bg-[#0B4D2B]/90 px-3 py-2.5 text-xs font-black text-white shadow-[0_4px_0_rgba(0,0,0,0.2)] transition-all hover:bg-[#155A35] active:translate-y-1 sm:top-4 sm:right-4 sm:px-4 sm:text-sm"
         style={{ fontFamily: "var(--font-display)" }}
       >
         👩‍🏫 ÁREA DO PROFESSOR
@@ -122,13 +122,13 @@ export function StartScreen({
 
       <div className="space-y-3 sm:space-y-4">
         <div className="landing-badge mb-2 sm:mb-4">
-          <Leaf className="text-[#57b85b]" size={18} />
+          <Leaf className="text-[#6A9876]" size={18} />
 
           <span className="text-sm font-bold uppercase tracking-widest text-white sm:text-base">
             Aventura na Floresta
           </span>
 
-          <Leaf className="text-[#f6a623]" size={18} />
+          <Leaf className="text-[#F45A0A]" size={18} />
         </div>
 
         <h1
@@ -136,7 +136,7 @@ export function StartScreen({
           style={{
             fontFamily: "var(--font-display)",
             backgroundImage:
-              "linear-gradient(to bottom right, #f6a623, #57b85b, #2a7de1)",
+              "linear-gradient(to bottom right, #F45A0A, #6A9876, #6A9876)",
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
           }}
@@ -145,13 +145,13 @@ export function StartScreen({
         </h1>
 
         <p
-          className="mx-auto max-w-2xl text-base font-black text-[#ffd166] sm:text-2xl"
+          className="mx-auto max-w-2xl text-base font-black text-[#FF9A5C] sm:text-2xl"
           style={{ fontFamily: "var(--font-display)" }}
         >
           Jornada Tropical 🌿
         </p>
 
-        <p className="mx-auto mt-1 max-w-xl text-base font-bold text-[#cde7d5] sm:text-xl">
+        <p className="mx-auto mt-1 max-w-xl text-base font-bold text-[#DCEBDD] sm:text-xl">
           Aprenda as letras junto com os bichos do Brasil!
         </p>
 
@@ -198,9 +198,9 @@ function HeaderBar({
   onLogout: () => void;
 }) {
   return (
-    <div className="home-header flex w-full flex-row items-center justify-between gap-2 border-b-4 border-[#6b3f22] bg-[#052e1c]/80 px-4 py-3 shadow-[0_4px_20px_rgba(0,0,0,0.4)] backdrop-blur-md sm:gap-6 sm:px-8 sm:py-4">
+    <div className="home-header flex w-full flex-row items-center justify-between gap-2 border-b-4 border-[#7A200F] bg-[#0B4D2B]/80 px-4 py-3 shadow-[0_4px_20px_rgba(0,0,0,0.4)] backdrop-blur-md sm:gap-6 sm:px-8 sm:py-4">
       <div className="flex min-w-0 items-center gap-2 sm:gap-4">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border-2 border-[#a9713f] bg-gradient-to-b from-[#57b85b] to-[#2e7d32] text-xl sm:h-14 sm:w-14 sm:text-2xl">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border-2 border-[#F45A0A] bg-gradient-to-b from-[#6A9876] to-[#0B4D2B] text-xl sm:h-14 sm:w-14 sm:text-2xl">
           🧭
         </div>
 
@@ -213,22 +213,22 @@ function HeaderBar({
             {name}! 🌿
           </h2>
 
-          <p className="truncate text-xs font-medium text-[#cde7d5] sm:text-sm">
+          <p className="truncate text-xs font-medium text-[#DCEBDD] sm:text-sm">
             Bem-vindo à floresta!
           </p>
         </div>
       </div>
 
       <div className="flex items-center gap-2 sm:gap-4">
-        <div className="flex shrink-0 items-center gap-1 rounded-full border-4 border-white bg-gradient-to-b from-[#f6a623] to-[#d98a10] px-3 py-2 font-black text-[#5a3410] shadow-[0_4px_0_rgba(0,0,0,0.25)] sm:gap-2 sm:px-4">
+        <div className="flex shrink-0 items-center gap-1 rounded-full border-4 border-white bg-gradient-to-b from-[#F45A0A] to-[#d98a10] px-3 py-2 font-black text-[#7A200F] shadow-[0_4px_0_rgba(0,0,0,0.25)] sm:gap-2 sm:px-4">
           <PawPrint
             size={18}
-            className="fill-[#5a3410] sm:hidden"
+            className="fill-[#7A200F] sm:hidden"
           />
 
           <PawPrint
             size={22}
-            className="hidden fill-[#5a3410] sm:block"
+            className="hidden fill-[#7A200F] sm:block"
           />
 
           <span
@@ -243,7 +243,7 @@ function HeaderBar({
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onLogout}
-          className="flex shrink-0 items-center gap-1 rounded-xl border-2 border-[#a9713f] bg-[#6b3f22] px-3 py-2 text-sm font-bold text-white transition-colors hover:bg-[#7c4a28] sm:gap-2 sm:px-4"
+          className="flex shrink-0 items-center gap-1 rounded-xl border-2 border-[#F45A0A] bg-[#7A200F] px-3 py-2 text-sm font-bold text-white transition-colors hover:bg-[#B9270A] sm:gap-2 sm:px-4"
         >
           <LogOut size={16} />
 
@@ -273,7 +273,7 @@ function BiomasScreen({
           style={{
             fontFamily: "var(--font-display)",
             backgroundImage:
-              "linear-gradient(to bottom right, #f6a623, #57b85b, #2a7de1)",
+              "linear-gradient(to bottom right, #F45A0A, #6A9876, #6A9876)",
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
           }}
@@ -343,7 +343,7 @@ function TrailsForBiomaScreen({
         <button
           type="button"
           onClick={onBack}
-          className="shrink-0 rounded-full border border-[#8bd477]/50 bg-[#052e1c]/70 p-3 text-white transition-all hover:bg-[#0d3d28] sm:p-4"
+          className="shrink-0 rounded-full border border-[#A7C9B0]/50 bg-[#0B4D2B]/70 p-3 text-white transition-all hover:bg-[#155A35] sm:p-4"
           aria-label="Voltar para os biomas"
         >
           <ChevronLeft size={24} />
@@ -354,7 +354,7 @@ function TrailsForBiomaScreen({
           style={{
             fontFamily: "var(--font-display)",
             backgroundImage:
-              "linear-gradient(to bottom right, #f6a623, #57b85b, #2a7de1)",
+              "linear-gradient(to bottom right, #F45A0A, #6A9876, #6A9876)",
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
           }}
@@ -563,7 +563,7 @@ export default function Home() {
       </div>
 
       {/* Dossel superior */}
-      <div className="pointer-events-none fixed left-0 right-0 top-0 z-0 h-16 bg-gradient-to-b from-[#052e1c] to-transparent opacity-80 sm:h-24" />
+      <div className="pointer-events-none fixed left-0 right-0 top-0 z-0 h-16 bg-gradient-to-b from-[#0B4D2B] to-transparent opacity-80 sm:h-24" />
 
       {/* Header fixo quando o aluno já foi selecionado */}
       {isLoggedInScreen && (
@@ -585,7 +585,7 @@ export default function Home() {
       >
         {!isOnline && isLoggedInScreen && (
           <div
-            className="mb-3 rounded-full border border-[#f6a623]/50 bg-[#052e1c]/85 px-4 py-2 text-center text-xs font-black text-[#ffe0a3] shadow-lg"
+            className="mb-3 rounded-full border border-[#F45A0A]/50 bg-[#0B4D2B]/85 px-4 py-2 text-center text-xs font-black text-[#ffe0a3] shadow-lg"
             role="status"
           >
             Você está em modo aventura. O progresso será sincronizado quando a conexão voltar.

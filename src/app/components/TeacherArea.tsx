@@ -506,19 +506,19 @@ export default function TeacherArea() {
   };
 
   return (
-    <main className="teacher-page teacher-shell min-h-screen text-[#173B2B]">
+    <main className="teacher-page teacher-shell min-h-screen text-[#173C2A]">
       <div className="mx-auto max-w-[1450px] px-4 py-4 sm:px-5 lg:px-6">
 
         {/* ======================================================
             HEADER
         ====================================================== */}
 
-        <header className="teacher-header mb-4 rounded-2xl bg-[#174A32] shadow-[0_8px_25px_rgba(23,74,50,0.14)]">
+        <header className="teacher-header mb-4 rounded-2xl bg-[#0B4D2B] shadow-[0_8px_25px_rgba(23,74,50,0.14)]">
           <div className="flex items-center justify-between gap-4 px-5 py-4 sm:px-6">
 
             <div className="flex items-center gap-3">
 
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F6A623] text-[#173B2B]">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F45A0A] text-[#173C2A]">
                 <GraduationCap size={24} />
               </div>
 
@@ -629,11 +629,11 @@ export default function TeacherArea() {
               MURAL DOS EXPLORADORES
           ==================================================== */}
 
-          <aside className="teacher-panel overflow-hidden rounded-2xl bg-[#FFFDF5] text-[#294A37] shadow-[0_6px_20px_rgba(30,70,45,0.06)]">
+          <aside className="teacher-panel overflow-hidden rounded-2xl bg-[#FFFDF5] text-[#173C2A] shadow-[0_6px_20px_rgba(30,70,45,0.06)]">
 
             {/* CABEÇALHO */}
 
-            <div className="border-b border-[#E7E3D4] px-4 py-3.5">
+            <div className="border-b border-[#EBD8C8] px-4 py-3.5">
 
               <div className="flex items-center justify-between gap-3">
 
@@ -642,16 +642,16 @@ export default function TeacherArea() {
                   <div className="flex items-center gap-1.5">
                     <Leaf
                       size={13}
-                      className="text-[#6C9363]"
+                      className="text-[#4F7F60]"
                       fill="currentColor"
                     />
 
-                    <span className="text-[10px] font-black uppercase tracking-wider text-[#6C9363]">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-[#4F7F60]">
                       Mural
                     </span>
                   </div>
 
-                  <h2 className="text-lg font-black text-[#294A37]">
+                  <h2 className="text-lg font-black text-[#173C2A]">
                     Meus Exploradores
                   </h2>
 
@@ -671,7 +671,7 @@ export default function TeacherArea() {
                   className={`flex h-9 w-9 items-center justify-center rounded-lg transition ${
                     showForm
                       ? "bg-[#E7E4D8] text-[#31553F]"
-                      : "bg-[#F6A623] text-[#173B2B] hover:bg-[#FFB83D]"
+                      : "bg-[#F45A0A] text-[#173C2A] hover:bg-[#FFB83D]"
                   }`}
                   aria-label={
                     showForm
@@ -694,15 +694,15 @@ export default function TeacherArea() {
             ================================================== */}
 
             {showForm && (
-              <div className="border-b border-[#E7E3D4] bg-[#F6F3E7] p-4">
+              <div className="border-b border-[#EBD8C8] bg-[#F6F3E7] p-4">
 
                 <div className="mb-3">
 
-                  <p className="text-xs font-black text-[#294A37]">
+                  <p className="text-xs font-black text-[#173C2A]">
                     {editingStudent ? "Editar explorador" : "Novo explorador"}
                   </p>
 
-                  <p className="mt-0.5 text-[10px] font-semibold text-[#89958B]">
+                  <p className="mt-0.5 text-[10px] font-semibold text-[#526A5A]">
                     Preencha os dados do aluno.
                   </p>
 
@@ -724,7 +724,7 @@ export default function TeacherArea() {
                     maxLength={150}
                     required
                     disabled={savingStudent}
-                    className="w-full rounded-lg border border-[#D4D8C8] bg-white px-3 py-2.5 text-xs font-semibold text-[#294A37] outline-none transition placeholder:text-[#9BA69C] focus:border-[#6BA85E] focus:ring-2 focus:ring-[#6BA85E]/10 disabled:opacity-50"
+                    className="w-full rounded-lg border border-[#D4D8C8] bg-white px-3 py-2.5 text-xs font-semibold text-[#173C2A] outline-none transition placeholder:text-[#9BA69C] focus:border-[#6BA85E] focus:ring-2 focus:ring-[#6BA85E]/10 disabled:opacity-50"
                   />
 
                   <select
@@ -736,7 +736,7 @@ export default function TeacherArea() {
                     }
                     required
                     disabled={savingStudent}
-                    className="w-full rounded-lg border border-[#D4D8C8] bg-white px-3 py-2.5 text-xs font-semibold text-[#294A37] outline-none transition focus:border-[#6BA85E] focus:ring-2 focus:ring-[#6BA85E]/10 disabled:opacity-50"
+                    className="w-full rounded-lg border border-[#D4D8C8] bg-white px-3 py-2.5 text-xs font-semibold text-[#173C2A] outline-none transition focus:border-[#6BA85E] focus:ring-2 focus:ring-[#6BA85E]/10 disabled:opacity-50"
                   >
                     <option
                       value=""
@@ -780,7 +780,7 @@ export default function TeacherArea() {
                 BUSCA
             ================================================== */}
 
-            <div className="border-b border-[#E7E3D4] p-3">
+            <div className="border-b border-[#EBD8C8] p-3">
 
               <div className="flex items-center gap-2 rounded-lg border border-[#DDDACC] bg-[#F7F5EC] px-3 py-2">
 
@@ -797,7 +797,7 @@ export default function TeacherArea() {
                     )
                   }
                   placeholder="Buscar aluno..."
-                  className="min-w-0 flex-1 bg-transparent text-xs font-semibold text-[#294A37] outline-none placeholder:text-[#9BA69C]"
+                  className="min-w-0 flex-1 bg-transparent text-xs font-semibold text-[#173C2A] outline-none placeholder:text-[#9BA69C]"
                 />
 
                 {search && (
@@ -818,7 +818,7 @@ export default function TeacherArea() {
                   value={classFilter}
                   onChange={(event) => setClassFilter(event.target.value)}
                   aria-label="Filtrar por ano escolar"
-                  className="min-w-0 rounded-lg border border-[#DDDACC] bg-[#F7F5EC] px-2 py-2 text-[10px] font-bold text-[#294A37] outline-none"
+                  className="min-w-0 rounded-lg border border-[#DDDACC] bg-[#F7F5EC] px-2 py-2 text-[10px] font-bold text-[#173C2A] outline-none"
                 >
                   <option value="">Todos os anos</option>
                   {availableClasses.map((item) => <option key={item} value={item}>{item}</option>)}
@@ -828,13 +828,13 @@ export default function TeacherArea() {
                   value={dateFilter}
                   onChange={(event) => setDateFilter(event.target.value)}
                   aria-label="Filtrar por data de cadastro"
-                  className="min-w-0 rounded-lg border border-[#DDDACC] bg-[#F7F5EC] px-2 py-2 text-[10px] font-bold text-[#294A37] outline-none"
+                  className="min-w-0 rounded-lg border border-[#DDDACC] bg-[#F7F5EC] px-2 py-2 text-[10px] font-bold text-[#173C2A] outline-none"
                 />
               </div>
               <button
                 type="button"
                 onClick={exportCsv}
-                className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg border border-[#C9D7C3] bg-white px-3 py-2 text-[10px] font-black text-[#365842] transition hover:bg-[#F0F6EB]"
+                className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg border border-[#A7C9B0] bg-white px-3 py-2 text-[10px] font-black text-[#365842] transition hover:bg-[#F0F6EB]"
               >
                 <Download size={13} /> Exportar mural filtrado (CSV)
               </button>
@@ -850,7 +850,7 @@ export default function TeacherArea() {
                 <div className="px-3 py-8 text-center text-xs font-bold text-[#7C897F]">
                   <Leaf
                     size={18}
-                    className="mx-auto mb-2 animate-pulse text-[#6C9363]"
+                    className="mx-auto mb-2 animate-pulse text-[#4F7F60]"
                     fill="currentColor"
                   />
 
@@ -872,7 +872,7 @@ export default function TeacherArea() {
                       : "Nenhum explorador cadastrado"}
                   </p>
 
-                  <p className="mt-1 text-[10px] font-semibold text-[#89958B]">
+                  <p className="mt-1 text-[10px] font-semibold text-[#526A5A]">
                     {search.trim()
                       ? "Tente outro nome."
                       : "Cadastre o primeiro aluno."}
@@ -927,7 +927,7 @@ export default function TeacherArea() {
 
                             <span className="min-w-0 flex-1">
 
-                              <span className="block truncate text-xs font-black text-[#294A37]">
+                              <span className="block truncate text-xs font-black text-[#173C2A]">
                                 {student.name}
                               </span>
 
@@ -987,7 +987,7 @@ export default function TeacherArea() {
                     CABEÇALHO
                 ================================================== */}
 
-                <div className="border-b border-[#D9E4D3] bg-[#EAF3E2] px-5 py-4">
+                <div className="border-b border-[#D9E4D3] bg-[#DCEBDD] px-5 py-4">
 
                   <div className="flex items-center justify-between gap-4">
 
@@ -999,11 +999,11 @@ export default function TeacherArea() {
 
                       <div className="min-w-0">
 
-                        <p className="text-[9px] font-black uppercase tracking-[0.16em] text-[#6C9363]">
+                        <p className="text-[9px] font-black uppercase tracking-[0.16em] text-[#4F7F60]">
                           Jornada do explorador
                         </p>
 
-                        <h2 className="truncate text-xl font-black text-[#173B2B]">
+                        <h2 className="truncate text-xl font-black text-[#173C2A]">
                           {
                             selectedPerformance
                               .student.name
@@ -1031,7 +1031,7 @@ export default function TeacherArea() {
                           setClassName(selectedStudent.className ?? "");
                           setShowForm(true);
                         }}
-                        className="flex items-center gap-1 rounded-lg border border-[#C9D7C3] bg-white px-3 py-2 text-[11px] font-black text-[#365842] hover:bg-[#F6F8F1]"
+                        className="flex items-center gap-1 rounded-lg border border-[#A7C9B0] bg-white px-3 py-2 text-[11px] font-black text-[#365842] hover:bg-[#F6F8F1]"
                       >
                         <Edit3 size={14} /> Editar
                       </button>
@@ -1045,7 +1045,7 @@ export default function TeacherArea() {
                             );
                           }
                         }}
-                        className="rounded-lg border border-[#C9D7C3] bg-white px-3 py-2 text-[11px] font-black text-[#365842] hover:bg-[#F6F8F1]"
+                        className="rounded-lg border border-[#A7C9B0] bg-white px-3 py-2 text-[11px] font-black text-[#365842] hover:bg-[#F6F8F1]"
                       >
                         Atualizar
                       </button>
@@ -1058,7 +1058,7 @@ export default function TeacherArea() {
                             null
                           );
                         }}
-                        className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#C9D7C3] bg-white text-[#718070] hover:bg-[#F6F8F1]"
+                        className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#A7C9B0] bg-white text-[#718070] hover:bg-[#F6F8F1]"
                         aria-label="Fechar desempenho"
                       >
                         <X size={15} />
@@ -1073,7 +1073,7 @@ export default function TeacherArea() {
                     MÉTRICAS
                 ================================================== */}
 
-                <div className="grid grid-cols-2 border-b border-[#E7E3D4] md:grid-cols-4">
+                <div className="grid grid-cols-2 border-b border-[#EBD8C8] md:grid-cols-4">
 
                   <CompactMetric
                     icon={
@@ -1153,11 +1153,11 @@ export default function TeacherArea() {
 
                       <div>
 
-                        <p className="text-[9px] font-black uppercase tracking-wide text-[#89958B]">
+                        <p className="text-[9px] font-black uppercase tracking-wide text-[#526A5A]">
                           Último acesso
                         </p>
 
-                        <p className="text-xs font-black text-[#294A37]">
+                        <p className="text-xs font-black text-[#173C2A]">
                           {formatDate(
                             selectedPerformance
                               .student
@@ -1216,11 +1216,11 @@ export default function TeacherArea() {
 
                               <div className="min-w-0">
 
-                                <p className="truncate text-xs font-black text-[#294A37]">
+                                <p className="truncate text-xs font-black text-[#173C2A]">
                                   {activity.name}
                                 </p>
 
-                                <p className="truncate text-[9px] font-semibold text-[#89958B]">
+                                <p className="truncate text-[9px] font-semibold text-[#526A5A]">
                                   {activity.trail}
                                 </p>
 
@@ -1273,14 +1273,14 @@ export default function TeacherArea() {
 
                                 <div className="min-w-0">
 
-                                  <p className="text-[11px] font-black text-[#294A37]">
+                                  <p className="text-[11px] font-black text-[#173C2A]">
                                     Sessão #
                                     {
                                       session.id
                                     }
                                   </p>
 
-                                  <p className="truncate text-[9px] font-semibold text-[#89958B]">
+                                  <p className="truncate text-[9px] font-semibold text-[#526A5A]">
                                     {formatDate(
                                       session.started_at
                                     )}
@@ -1313,7 +1313,7 @@ export default function TeacherArea() {
                       EXCLUSÃO
                   ================================================== */}
 
-                  <div className="mt-5 flex justify-end border-t border-[#E7E3D4] pt-4">
+                  <div className="mt-5 flex justify-end border-t border-[#EBD8C8] pt-4">
 
                     <button
                       type="button"
@@ -1349,7 +1349,7 @@ export default function TeacherArea() {
             RODAPÉ
         ====================================================== */}
 
-        <footer className="flex items-center justify-center gap-2 py-4 text-[10px] font-semibold text-[#89958B]">
+        <footer className="flex items-center justify-center gap-2 py-4 text-[10px] font-semibold text-[#526A5A]">
 
           <Leaf
             size={11}
@@ -1386,7 +1386,7 @@ function CompactSummary({
 }) {
   const styles = {
     green:
-      "bg-[#EAF3E2] border-[#C8DDBE]",
+      "bg-[#DCEBDD] border-[#C8DDBE]",
     orange:
       "bg-[#FFF5DC] border-[#EBD8A9]",
     cream:
@@ -1406,7 +1406,7 @@ function CompactSummary({
 
         <div className="flex items-baseline gap-1.5">
 
-          <strong className="text-2xl font-black text-[#294A37]">
+          <strong className="text-2xl font-black text-[#173C2A]">
             {value}
           </strong>
 
@@ -1440,7 +1440,7 @@ function CompactMetric({
   value: number;
 }) {
   return (
-    <div className="flex items-center gap-2 border-b border-[#E7E3D4] px-4 py-3 md:border-b-0 md:border-r">
+    <div className="flex items-center gap-2 border-b border-[#EBD8C8] px-4 py-3 md:border-b-0 md:border-r">
 
       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#EEF3E9] text-[#4E7655]">
         {icon}
@@ -1448,11 +1448,11 @@ function CompactMetric({
 
       <div>
 
-        <p className="text-[9px] font-black uppercase tracking-wide text-[#89958B]">
+        <p className="text-[9px] font-black uppercase tracking-wide text-[#526A5A]">
           {label}
         </p>
 
-        <strong className="block text-lg font-black leading-tight text-[#294A37]">
+        <strong className="block text-lg font-black leading-tight text-[#173C2A]">
           {value}
         </strong>
 
@@ -1488,11 +1488,11 @@ function CompactSection({
 
         <div>
 
-          <h3 className="text-sm font-black text-[#294A37]">
+          <h3 className="text-sm font-black text-[#173C2A]">
             {title}
           </h3>
 
-          <p className="text-[9px] font-semibold text-[#89958B]">
+          <p className="text-[9px] font-semibold text-[#526A5A]">
             {description}
           </p>
 
@@ -1516,7 +1516,7 @@ function CompactEmpty({
   text: string;
 }) {
   return (
-    <div className="rounded-xl border border-dashed border-[#D8DCCF] bg-[#FAFAF4] px-4 py-5 text-center text-[10px] font-bold text-[#89958B]">
+    <div className="rounded-xl border border-dashed border-[#D8DCCF] bg-[#FAFAF4] px-4 py-5 text-center text-[10px] font-bold text-[#526A5A]">
       <Leaf
         size={14}
         className="mx-auto mb-1.5 text-[#7FA374]"
@@ -1536,15 +1536,15 @@ function EmptyPerformance() {
   return (
     <div className="flex min-h-[500px] flex-col items-center justify-center px-5 text-center">
 
-      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#EAF3E2] text-[#5E8A58]">
+      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#DCEBDD] text-[#5E8A58]">
         <BookOpen size={30} />
       </div>
 
-      <p className="text-[9px] font-black uppercase tracking-[0.18em] text-[#6C9363]">
+      <p className="text-[9px] font-black uppercase tracking-[0.18em] text-[#4F7F60]">
         Jornada do explorador
       </p>
 
-      <h2 className="mt-1 text-xl font-black text-[#294A37]">
+      <h2 className="mt-1 text-xl font-black text-[#173C2A]">
         Selecione um explorador
       </h2>
 
@@ -1570,14 +1570,14 @@ function LoadingPerformance({
   return (
     <div className="flex min-h-[500px] flex-col items-center justify-center px-5 text-center">
 
-      <div className="mb-4 flex h-16 w-16 animate-pulse items-center justify-center rounded-2xl bg-[#EAF3E2] text-[#5E8A58]">
+      <div className="mb-4 flex h-16 w-16 animate-pulse items-center justify-center rounded-2xl bg-[#DCEBDD] text-[#5E8A58]">
         <Leaf
           size={30}
           fill="currentColor"
         />
       </div>
 
-      <h2 className="text-lg font-black text-[#294A37]">
+      <h2 className="text-lg font-black text-[#173C2A]">
         Carregando jornada...
       </h2>
 

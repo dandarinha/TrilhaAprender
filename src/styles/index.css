@@ -5,7 +5,7 @@
 @layer base {
   :root {
     color-scheme: dark;
-    --ui-ink: #173b2b;
+    --ui-ink: #173C2A;
     --ui-cream: #fff8e8;
     --ui-paper: #f7edcf;
     --ui-paper-dark: #e4cf9e;
@@ -24,7 +24,7 @@
     min-width: 320px;
     min-height: 100vh;
     color: var(--cream);
-    background: #052e1c;
+    background: #0B4D2B;
     font-family: var(--font-body);
     font-synthesis: none;
     -webkit-font-smoothing: antialiased;
@@ -57,7 +57,7 @@
       radial-gradient(ellipse 70% 35% at 50% -8%, rgba(173, 224, 129, .24), transparent 72%),
       radial-gradient(ellipse 44% 38% at 0% 76%, rgba(30, 114, 103, .2), transparent 70%),
       radial-gradient(ellipse 42% 35% at 100% 55%, rgba(42, 125, 225, .13), transparent 72%),
-      linear-gradient(150deg, #062c1b 0%, #0b4229 48%, #052e1c 100%);
+      linear-gradient(150deg, #062c1b 0%, #0B4D2B 48%, #0B4D2B 100%);
   }
 
   .forest-scene::before,
@@ -166,7 +166,7 @@
     border: 1px solid rgba(139, 212, 119, .22);
     border-radius: 1rem;
     padding: .6rem .85rem;
-    color: #cde8c6;
+    color: #DCEBDD;
     background: rgba(3, 29, 18, .42);
   }
 
@@ -390,7 +390,7 @@
 
   .hud-pill--score { color: #ffe19a; }
   .hud-pill--life { color: #ffcf86; }
-  .hud-pill--info { color: #bfe5ff; }
+  .hud-pill--info { color: #DCEBDD; }
 
   .curiosity-card {
     border: 2px solid rgba(118,198,95,.65);
@@ -411,7 +411,7 @@
 
   .teacher-header {
     border: 1px solid rgba(255,255,255,.2);
-    background: linear-gradient(135deg, #174a32, #0b3422);
+    background: linear-gradient(135deg, #0B4D2B, #0b3422);
     box-shadow: 0 14px 32px rgba(23,74,50,.22), inset 0 1px rgba(255,255,255,.12);
   }
 
@@ -464,7 +464,7 @@
   background:
     radial-gradient(circle at 15% 12%, rgba(255, 218, 112, .32), transparent 18rem),
     radial-gradient(circle at 86% 22%, rgba(255, 126, 107, .25), transparent 20rem),
-    linear-gradient(160deg, #176c58 0%, #198b71 48%, #086052 100%) !important;
+    linear-gradient(160deg, #0B4D2B 0%, #155A35 48%, #0B4D2B 100%) !important;
 }
 
 .adventure-shell::before {
@@ -481,17 +481,17 @@
 }
 
 .adventure-header {
-  border-bottom: 4px solid #f6c85f !important;
-  background: linear-gradient(90deg, #ff776b, #f37b5f 48%, #ef9e4f) !important;
+  border-bottom: 4px solid #FF9A5C !important;
+  background: linear-gradient(90deg, #B9270A, #FF9A5C 48%, #F45A0A) !important;
   box-shadow: 0 5px 0 rgba(117, 52, 39, .3), inset 0 -1px rgba(255,255,255,.35) !important;
 }
 
 .adventure-back {
-  border: 3px solid #fff7dc !important;
+  border: 3px solid #FFF4E8 !important;
   border-radius: 999px !important;
-  color: #733b35 !important;
-  background: #ffe48b !important;
-  box-shadow: 0 3px 0 #c68142 !important;
+  color: #7A200F !important;
+  background: #FF9A5C !important;
+  box-shadow: 0 3px 0 #B84A16 !important;
   font-family: var(--font-display);
   font-weight: 800;
 }
@@ -499,19 +499,19 @@
 .adventure-back:hover { background: #fff2b6 !important; transform: translateY(-1px); }
 
 .adventure-title {
-  border: 3px solid #fff7dc !important;
+  border: 3px solid #FFF4E8 !important;
   border-radius: 999px !important;
-  color: #fff7dc !important;
+  color: #FFF4E8 !important;
   background: rgba(116, 54, 46, .5) !important;
   box-shadow: 0 3px 0 rgba(116, 54, 46, .25) !important;
 }
 
 .adventure-stage {
-  border: 5px solid #fff3cf !important;
+  border: 5px solid #FFF4E8 !important;
   border-radius: 1.8rem !important;
-  background: linear-gradient(145deg, rgba(255,255,255,.16), transparent 32%), #f9e9bb !important;
+  background: linear-gradient(145deg, rgba(255,255,255,.16), transparent 32%), #FFE4CC !important;
   box-shadow: 0 8px 0 rgba(92, 53, 35, .35), 0 18px 35px rgba(8, 51, 43, .2) !important;
-  color: #254b3b;
+  color: #173C2A;
 }
 
 .adventure-stage::before {
@@ -519,22 +519,22 @@
   left: 10% !important;
   right: 10% !important;
   border-radius: 999px;
-  background: linear-gradient(90deg, #ff776b, #f6c85f, #79c96b, #65b8df) !important;
+  background: linear-gradient(90deg, #B9270A, #FF9A5C, #79c96b, #A7C9B0) !important;
   box-shadow: none !important;
 }
 
 .adventure-stage::after { border-color: rgba(86, 139, 96, .28) !important; }
 
 .adventure-finish {
-  border: 5px solid #fff3cf !important;
+  border: 5px solid #FFF4E8 !important;
   border-radius: 2rem !important;
   background: linear-gradient(145deg, #fff0b9, #ffe09a) !important;
   box-shadow: 0 8px 0 rgba(92, 53, 35, .35), 0 18px 35px rgba(8, 51, 43, .2) !important;
-  color: #254b3b;
+  color: #173C2A;
 }
 
 .adventure-curiosity {
-  border: 3px dashed #f29b52 !important;
+  border: 3px dashed #F45A0A !important;
   border-radius: 1.25rem !important;
   background: #fff8df !important;
   box-shadow: 0 4px 0 rgba(198, 127, 56, .2) !important;
@@ -568,7 +568,7 @@
   display: inline-flex;
   align-items: center;
   gap: .55rem;
-  border: 3px solid #fff3cf;
+  border: 3px solid #FFF4E8;
   border-radius: 999px;
   padding: .45rem .9rem;
   color: #6c4b2e;
@@ -590,11 +590,11 @@
 }
 
 .landing-action {
-  border: 4px solid #fff7dc !important;
+  border: 4px solid #FFF4E8 !important;
   border-radius: 1.35rem !important;
-  color: #fffdf0 !important;
-  background: linear-gradient(180deg, #77cf6b, #41a95e) !important;
-  box-shadow: 0 7px 0 #27734c, 0 14px 24px rgba(25, 82, 55, .25) !important;
+  color: #FFF4E8 !important;
+  background: linear-gradient(180deg, #6A9876, #0B4D2B) !important;
+  box-shadow: 0 7px 0 #063A20, 0 14px 24px rgba(25, 82, 55, .25) !important;
   font-family: var(--font-display);
   transform: rotate(1deg);
 }
@@ -603,7 +603,7 @@
 
 .habitat-card {
   min-height: 15rem;
-  border: 4px solid #fff3cf !important;
+  border: 4px solid #FFF4E8 !important;
   border-radius: 1.75rem !important;
   box-shadow: 0 8px 0 rgba(76, 53, 36, .28), 0 16px 28px rgba(20, 66, 51, .2) !important;
   transform: rotate(-.6deg);
@@ -618,9 +618,9 @@
   height: 6.2rem;
   align-items: center;
   justify-content: center;
-  border: 5px solid #fffdf0;
+  border: 5px solid #FFF4E8;
   border-radius: 42% 58% 54% 46%;
-  background: #fffdf0;
+  background: #FFF4E8;
   box-shadow: 0 6px 0 rgba(76, 53, 36, .18);
   font-size: 3.6rem;
   transform: rotate(-4deg);
@@ -628,7 +628,7 @@
 
 .path-card {
   min-height: 9.5rem;
-  border: 4px solid #fff3cf !important;
+  border: 4px solid #FFF4E8 !important;
   border-radius: 1.25rem !important;
   box-shadow: 0 7px 0 rgba(76, 53, 36, .28), 0 14px 24px rgba(20, 66, 51, .18) !important;
 }
@@ -640,9 +640,9 @@
 .path-emblem {
   width: 4rem;
   height: 4rem;
-  border: 4px solid #fffdf0;
+  border: 4px solid #FFF4E8;
   border-radius: 1.1rem;
-  background: #fffdf0;
+  background: #FFF4E8;
   box-shadow: 0 4px 0 rgba(76,53,36,.18);
 }
 
@@ -662,15 +662,15 @@
 ============================================================= */
 :root {
   --brand-green-900: #155447;
-  --brand-green-700: #198b71;
+  --brand-green-700: #155A35;
   --brand-green-500: #63c96b;
-  --brand-coral: #ff776b;
-  --brand-orange: #ef9e4f;
-  --brand-yellow: #ffe48b;
-  --brand-blue: #65b8df;
-  --brand-cream: #fff7dc;
-  --brand-paper: #f9e9bb;
-  --brand-ink: #254b3b;
+  --brand-coral: #B9270A;
+  --brand-orange: #F45A0A;
+  --brand-yellow: #FF9A5C;
+  --brand-blue: #A7C9B0;
+  --brand-cream: #FFF4E8;
+  --brand-paper: #FFE4CC;
+  --brand-ink: #173C2A;
   --brand-muted: #6f897a;
   --brand-shadow: rgba(76, 53, 36, .26);
   --brand-radius-sm: .75rem;
@@ -684,12 +684,12 @@
   background:
     radial-gradient(circle at 12% 9%, rgba(255, 228, 139, .3), transparent 19rem),
     radial-gradient(circle at 88% 18%, rgba(255, 119, 107, .22), transparent 21rem),
-    linear-gradient(160deg, var(--brand-green-900), var(--brand-green-700) 52%, #086052) !important;
+    linear-gradient(160deg, var(--brand-green-900), var(--brand-green-700) 52%, #0B4D2B) !important;
 }
 
 .app-shell .home-header {
   border-bottom: 4px solid var(--brand-yellow) !important;
-  background: linear-gradient(90deg, var(--brand-coral), #f37b5f 48%, var(--brand-orange)) !important;
+  background: linear-gradient(90deg, var(--brand-coral), #FF9A5C 48%, var(--brand-orange)) !important;
   box-shadow: 0 5px 0 rgba(117, 52, 39, .28) !important;
 }
 
@@ -707,8 +707,8 @@
   border: 3px solid var(--brand-cream) !important;
   border-radius: 999px !important;
   background: var(--brand-yellow) !important;
-  box-shadow: 0 3px 0 #c68142 !important;
-  color: #733b35 !important;
+  box-shadow: 0 3px 0 #B84A16 !important;
+  color: #7A200F !important;
 }
 
 .app-shell .home-header button,
@@ -743,7 +743,7 @@
 .app-shell .player-screen > div:first-child button {
   border: 3px solid var(--brand-cream) !important;
   background: var(--brand-coral) !important;
-  box-shadow: 0 3px 0 #b8564f !important;
+  box-shadow: 0 3px 0 #7A200F !important;
 }
 
 .app-shell .player-screen header,
@@ -764,16 +764,16 @@
 .app-shell .player-screen section p { color: var(--brand-muted) !important; }
 
 .app-shell .player-screen header > div:first-child {
-  border: 3px solid #f29b52 !important;
+  border: 3px solid #F45A0A !important;
   background: var(--brand-yellow) !important;
-  box-shadow: 0 3px 0 #c68142 !important;
+  box-shadow: 0 3px 0 #B84A16 !important;
 }
 
 .app-shell .player-screen section input {
   border: 3px solid rgba(25,139,113,.3) !important;
   border-radius: var(--brand-radius-sm) !important;
   color: var(--brand-ink) !important;
-  background: #fffdf0 !important;
+  background: #FFF4E8 !important;
 }
 
 .app-shell .player-screen section input:focus {
@@ -784,23 +784,23 @@
 .app-shell .player-screen section > div:last-child > button {
   border: 3px solid var(--brand-cream) !important;
   border-radius: var(--brand-radius-md) !important;
-  background: linear-gradient(180deg, var(--brand-green-500), #41a95e) !important;
-  box-shadow: 0 4px 0 #27734c !important;
+  background: linear-gradient(180deg, var(--brand-green-500), #0B4D2B) !important;
+  box-shadow: 0 4px 0 #063A20 !important;
 }
 
 .app-shell .player-screen section > div:last-child > button span {
   background: var(--brand-yellow) !important;
-  color: #733b35 !important;
+  color: #7A200F !important;
 }
 
 .app-shell .player-screen section > div:last-child > button:hover { filter: saturate(1.08) brightness(1.04); }
 
 .teacher-page {
-  --teacher-paper: #fffdf0;
+  --teacher-paper: #FFF4E8;
   --teacher-line: #eadfbd;
-  --teacher-green: #198b71;
-  --teacher-ink: #254b3b;
-  --teacher-accent: #ff776b;
+  --teacher-green: #155A35;
+  --teacher-ink: #173C2A;
+  --teacher-accent: #B9270A;
   background:
     radial-gradient(circle at 88% 8%, rgba(255,119,107,.16), transparent 20rem),
     radial-gradient(circle at 12% 70%, rgba(101,184,223,.14), transparent 18rem),
@@ -819,7 +819,7 @@
   border: 3px solid var(--brand-cream);
   border-radius: var(--brand-radius-sm);
   background: var(--brand-yellow) !important;
-  box-shadow: 0 3px 0 #c68142;
+  box-shadow: 0 3px 0 #B84A16;
 }
 
 .teacher-page .teacher-header a {
@@ -855,13 +855,13 @@
 .teacher-page button[class*="bg-[#2E7547"] {
   border: 3px solid var(--brand-cream) !important;
   border-radius: var(--brand-radius-sm) !important;
-  background: linear-gradient(180deg, var(--brand-green-500), #41a95e) !important;
-  box-shadow: 0 4px 0 #27734c;
+  background: linear-gradient(180deg, var(--brand-green-500), #0B4D2B) !important;
+  box-shadow: 0 4px 0 #063A20;
 }
 
-.teacher-page [class*="bg-[#F6A623"] {
+.teacher-page [class*="bg-[#F45A0A"] {
   border: 3px solid var(--brand-cream);
-  box-shadow: 0 3px 0 #c68142;
+  box-shadow: 0 3px 0 #B84A16;
 }
 
 .teacher-page [class*="border-red-200"] {
@@ -883,7 +883,7 @@
   border: 3px solid var(--brand-cream) !important;
   border-radius: var(--brand-radius-sm) !important;
   background: var(--brand-coral) !important;
-  box-shadow: 0 4px 0 #b8564f !important;
+  box-shadow: 0 4px 0 #7A200F !important;
 }
 
 .legacy-start-screen h1 span:first-child { color: var(--brand-yellow) !important; }
@@ -891,11 +891,11 @@
 .legacy-start-screen p { color: #fff0bc !important; }
 
 .legacy-start-screen button,
-.legacy-start-screen button[class*="bg-[#ff6ec7"] {
+.legacy-start-screen button {
   border-radius: var(--brand-radius-md) !important;
   border: 4px solid var(--brand-cream) !important;
-  box-shadow: 0 6px 0 #27734c !important;
-  background: linear-gradient(180deg, var(--brand-green-500), #41a95e) !important;
+  box-shadow: 0 6px 0 #063A20 !important;
+  background: linear-gradient(180deg, var(--brand-green-500), #0B4D2B) !important;
   color: white !important;
 }
 
@@ -915,3 +915,246 @@ a { transition: border-color .18s ease, background-color .18s ease, box-shadow .
   .teacher-page > div > section,
   .teacher-page aside { border-radius: var(--brand-radius-md) !important; }
 }
+
+
+/* =============================================================
+   PALETA ANEXADA + CONTRASTE
+   Cores-base: vermelho profundo, verde floresta, laranja,
+   verde sálvia, pêssego e verde-claro.
+============================================================= */
+:root {
+  --palette-red: #B9270A;
+  --palette-green: #0B4D2B;
+  --palette-orange: #F45A0A;
+  --palette-sage: #6A9876;
+  --palette-peach: #FF9A5C;
+  --palette-light-sage: #A7C9B0;
+  --palette-cream: #FFF4E8;
+  --palette-ink: #173C2A;
+  --palette-muted-ink: #526A5A;
+  --palette-dark-orange: #C74505;
+}
+
+html,
+body { background: var(--palette-green) !important; }
+
+::selection {
+  color: var(--palette-cream) !important;
+  background: var(--palette-red) !important;
+}
+
+:focus-visible {
+  outline: 3px solid var(--palette-peach) !important;
+  outline-offset: 4px;
+}
+
+/* Fundos com texto claro: sempre usam tons escuros da paleta. */
+.app-shell,
+.legacy-start-screen,
+.adventure-shell {
+  background:
+    radial-gradient(circle at 12% 9%, rgba(167,201,176,.22), transparent 19rem),
+    radial-gradient(circle at 88% 18%, rgba(255,154,92,.18), transparent 21rem),
+    linear-gradient(160deg, var(--palette-green), #155A35 52%, #07391F) !important;
+}
+
+.app-shell .home-header,
+.adventure-header {
+  border-bottom-color: var(--palette-peach) !important;
+  background: linear-gradient(90deg, var(--palette-red), var(--palette-dark-orange) 52%, var(--palette-orange)) !important;
+}
+
+.app-shell .home-header h2,
+.app-shell .home-header p,
+.adventure-header,
+.adventure-header button { color: var(--palette-cream) !important; }
+
+.app-shell .home-header > div:last-child > div {
+  background: var(--palette-peach) !important;
+  color: var(--palette-ink) !important;
+}
+
+.landing-badge {
+  border-color: var(--palette-cream) !important;
+  color: var(--palette-ink) !important;
+  background: var(--palette-peach) !important;
+}
+
+.landing-badge span { color: var(--palette-ink) !important; }
+.landing-title { color: var(--palette-cream) !important; }
+.landing-screen p { color: var(--palette-cream) !important; }
+
+.landing-action,
+.app-shell .player-screen section > div:last-child > button,
+.legacy-start-screen button {
+  border-color: var(--palette-cream) !important;
+  background: linear-gradient(180deg, var(--palette-sage), var(--palette-green)) !important;
+  color: var(--palette-cream) !important;
+}
+
+/* Cards de bioma e trilha: fundo escuro estável para texto claro. */
+.habitat-card,
+.path-card {
+  border-color: var(--palette-cream) !important;
+  background: linear-gradient(135deg, var(--palette-green), var(--palette-sage)) !important;
+  color: var(--palette-cream) !important;
+}
+
+.habitat-card h3,
+.habitat-card p,
+.path-card h3,
+.path-card span { color: var(--palette-cream) !important; }
+
+.path-card:nth-child(1) { border-left: 8px solid var(--palette-red) !important; }
+.path-card:nth-child(2) { border-left: 8px solid var(--palette-light-sage) !important; }
+.path-card:nth-child(3) { border-left: 8px solid var(--palette-peach) !important; }
+
+.path-card .path-emblem,
+.habitat-emblem {
+  background: var(--palette-cream) !important;
+  border-color: var(--palette-cream) !important;
+}
+
+/* Mural do aluno: texto escuro somente sobre superfícies claras. */
+.app-shell .player-screen header,
+.app-shell .player-screen section {
+  background: var(--palette-cream) !important;
+  color: var(--palette-ink) !important;
+  border-color: var(--palette-cream) !important;
+}
+
+.app-shell .player-screen header h1,
+.app-shell .player-screen header p,
+.app-shell .player-screen section h2,
+.app-shell .player-screen section h3,
+.app-shell .player-screen section p { color: var(--palette-ink) !important; }
+
+.app-shell .player-screen header > div:first-child {
+  background: var(--palette-peach) !important;
+  border-color: var(--palette-red) !important;
+  color: var(--palette-ink) !important;
+}
+
+.app-shell .player-screen section input {
+  color: var(--palette-ink) !important;
+  background: #FFFFFF !important;
+  border-color: var(--palette-sage) !important;
+}
+
+.app-shell .player-screen section input::placeholder { color: var(--palette-muted-ink) !important; }
+
+/* HUD e palco: indicadores continuam legíveis mesmo sobre gradientes. */
+.game-layout .game-stage,
+.adventure-stage {
+  background: var(--palette-cream) !important;
+  color: var(--palette-ink) !important;
+  border-color: var(--palette-cream) !important;
+}
+
+.game-layout .hud-pill {
+  border-color: var(--palette-cream) !important;
+  background: var(--palette-green) !important;
+  color: var(--palette-cream) !important;
+}
+
+.game-layout .hud-pill--score,
+.game-layout .hud-pill--life,
+.game-layout .hud-pill--info { color: var(--palette-peach) !important; }
+
+.game-layout .adventure-back {
+  background: var(--palette-peach) !important;
+  color: var(--palette-ink) !important;
+  border-color: var(--palette-cream) !important;
+}
+
+.adventure-curiosity,
+.adventure-finish,
+.curiosity-card {
+  background: var(--palette-cream) !important;
+  color: var(--palette-ink) !important;
+  border-color: var(--palette-orange) !important;
+}
+
+.adventure-curiosity p,
+.adventure-curiosity strong,
+.adventure-finish p,
+.adventure-finish h2,
+.curiosity-card p,
+.curiosity-card strong { color: var(--palette-ink) !important; }
+
+/* Área do professor: superfície clara com texto verde escuro. */
+.teacher-page {
+  background:
+    radial-gradient(circle at 88% 8%, rgba(255,154,92,.18), transparent 20rem),
+    radial-gradient(circle at 12% 70%, rgba(167,201,176,.24), transparent 18rem),
+    var(--palette-cream) !important;
+  color: var(--palette-ink) !important;
+}
+
+.teacher-page .teacher-header {
+  background: linear-gradient(90deg, var(--palette-green), #155A35) !important;
+  border-color: var(--palette-cream) !important;
+}
+
+.teacher-page .teacher-header h1,
+.teacher-page .teacher-header span,
+.teacher-page .teacher-header a { color: var(--palette-cream) !important; }
+
+.teacher-page .teacher-header > div > div:first-child > div:first-child {
+  background: var(--palette-peach) !important;
+  color: var(--palette-ink) !important;
+  border-color: var(--palette-cream) !important;
+}
+
+.teacher-page .teacher-panel,
+.teacher-page > div > section,
+.teacher-page aside {
+  background: var(--palette-cream) !important;
+  color: var(--palette-ink) !important;
+  border-color: var(--palette-light-sage) !important;
+}
+
+.teacher-page h1,
+.teacher-page h2,
+.teacher-page h3,
+.teacher-page p,
+.teacher-page label,
+.teacher-page strong,
+.teacher-page span { color: var(--palette-ink); }
+
+.teacher-page input,
+.teacher-page select {
+  background: #FFFFFF !important;
+  color: var(--palette-ink) !important;
+  border-color: var(--palette-sage) !important;
+}
+
+.teacher-page input::placeholder { color: var(--palette-muted-ink) !important; }
+.teacher-page button { color: var(--palette-ink); }
+.teacher-page button[class*="bg-[#F45A0A"],
+.teacher-page button[class*="bg-[#F6A623"] {
+  background: var(--palette-orange) !important;
+  color: var(--palette-cream) !important;
+}
+
+.teacher-page button[class*="bg-[#2E7547"],
+.teacher-page button[class*="bg-[#0B4D2B"] {
+  background: var(--palette-green) !important;
+  color: var(--palette-cream) !important;
+}
+
+.teacher-page [class*="border-red"],
+.app-shell [class*="border-red"] {
+  border-color: var(--palette-red) !important;
+  background: #FFE4CC !important;
+  color: var(--palette-red) !important;
+}
+
+/* Estados desabilitados permanecem distinguíveis sem perder legibilidade. */
+button:disabled,
+input:disabled,
+select:disabled { opacity: .62; }
+
+.teacher-page .teacher-header h1,
+.teacher-page .teacher-header span,
+.teacher-page .teacher-header a { color: var(--palette-cream) !important; }

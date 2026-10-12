@@ -6,18 +6,18 @@
   --font-body: 'Nunito', sans-serif;
 
   /* Bicho-Alfabeto: Jornada Tropical — Fauna & Flora Brasileira */
-  --forest-deep: #052e1c;      /* dossel escuro */
-  --forest: #0d3d28;           /* mata */
+  --forest-deep: #0B4D2B;      /* dossel escuro */
+  --forest: #155A35;           /* mata */
   --forest-panel: #14432c;     /* painel de folhagem */
   --forest-river: #0b3b4a;     /* rio amazônico */
-  --wood: #6b3f22;             /* madeira / tronco */
-  --wood-light: #a9713f;       /* madeira clara */
-  --leaf: #35b35b;             /* folha viva */
-  --mico-gold: #f6a623;        /* amarelo mico-leão-dourado */
-  --arara-blue: #2a7de1;       /* azul arara */
-  --arara-red: #e0402b;        /* vermelho arara */
-  --boto-pink: #f06fa8;        /* rosa boto */
-  --tucano-orange: #f97316;    /* laranja tucano */
+  --wood: #7A200F;             /* madeira / tronco */
+  --wood-light: #F45A0A;       /* madeira clara */
+  --leaf: #6A9876;             /* folha viva */
+  --mico-gold: #F45A0A;        /* amarelo mico-leão-dourado */
+  --arara-blue: #6A9876;       /* azul arara */
+  --arara-red: #B9270A;        /* vermelho arara */
+  --boto-pink: #FF9A5C;        /* rosa boto */
+  --tucano-orange: #F45A0A;    /* laranja tucano */
   --cream: #fdf6e3;            /* creme / clareira */
   --glow-leaf: rgba(53, 179, 91, 0.5);
   --glow-gold: rgba(246, 166, 35, 0.5);
@@ -36,7 +36,7 @@
   --muted-foreground: #b9d8c2;
   --accent: var(--arara-blue);
   --accent-foreground: var(--cream);
-  --destructive: #d4183d;
+  --destructive: #B9270A;
   --destructive-foreground: #ffffff;
   --border: rgba(53, 179, 91, 0.3);
   --input: transparent;

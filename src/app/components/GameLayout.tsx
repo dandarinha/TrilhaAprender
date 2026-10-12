@@ -26,11 +26,11 @@ interface GameLayoutProps {
 }
 
 const BORDER_HEX: Record<string, string> = {
-  red: '#e0402b',
-  blue: '#2a7de1',
-  yellow: '#f6a623',
-  green: '#35b35b',
-  purple: '#f06fa8',
+  red: '#B9270A',
+  blue: '#6A9876',
+  yellow: '#F45A0A',
+  green: '#6A9876',
+  purple: '#FF9A5C',
 };
 
 export function GameLayout({
@@ -51,7 +51,7 @@ export function GameLayout({
   const navigate = useNavigate();
   const [endedByBack, setEndedByBack] = React.useState(false);
   const showEndScreen = gameOver || endedByBack;
-  const borderHex = BORDER_HEX[themeColor] ?? '#35b35b';
+  const borderHex = BORDER_HEX[themeColor] ?? '#6A9876';
 
   const curiosity = useMemo(
     () => randomCuriosity(),
@@ -115,7 +115,7 @@ export function GameLayout({
         className="
           pointer-events-none absolute bottom-0 left-0 right-0
           z-0 h-16 opacity-70
-          bg-gradient-to-t from-[#052e1c] to-transparent
+          bg-gradient-to-t from-[#0B4D2B] to-transparent
           sm:h-32
         "
       />
@@ -124,8 +124,8 @@ export function GameLayout({
       <header
         className="adventure-header
           relative z-10 flex shrink-0 items-center justify-between
-          border-b-2 border-[#6b3f22]
-          bg-[#052e1c]/70
+          border-b-2 border-[#7A200F]
+          bg-[#0B4D2B]/70
           px-2.5 py-2
           shadow-[0_3px_12px_rgba(0,0,0,0.35)]
           backdrop-blur-sm
@@ -138,12 +138,12 @@ export function GameLayout({
           disabled={showEndScreen}
           className="adventure-back
             flex items-center gap-1.5
-            rounded-full border-2 border-[#a9713f]
-            bg-[#6b3f22]
+            rounded-full border-2 border-[#F45A0A]
+            bg-[#7A200F]
             px-2.5 py-1.5
             text-sm font-bold
             shadow-[0_2px_0_rgba(0,0,0,0.3)]
-            transition-colors hover:bg-[#7c4a28]
+            transition-colors hover:bg-[#B9270A]
             sm:gap-2 sm:px-3 sm:py-2
           "
         >
@@ -155,8 +155,8 @@ export function GameLayout({
           <span
             className={`hud-pill hud-pill--info hidden items-center gap-1 rounded-full border px-2 py-1 text-[10px] font-black sm:inline-flex ${
               isOnline
-                ? 'border-[#57b85b]/50 bg-[#57b85b]/15 text-[#bfe8c5]'
-                : 'border-[#f6a623]/60 bg-[#f6a623]/15 text-[#ffe0a3]'
+                ? 'border-[#6A9876]/50 bg-[#6A9876]/15 text-[#bfe8c5]'
+                : 'border-[#F45A0A]/60 bg-[#F45A0A]/15 text-[#ffe0a3]'
             }`}
             aria-live="polite"
           >
@@ -164,13 +164,13 @@ export function GameLayout({
             {isOnline ? 'Sincronizado' : 'Modo aventura'}
           </span>
           <span
-            className="hud-pill hud-pill--info hidden rounded-full border border-[#2a7de1]/50 bg-[#2a7de1]/15 px-2 py-1 text-[10px] font-black sm:inline-flex"
+            className="hud-pill hud-pill--info hidden rounded-full border border-[#6A9876]/50 bg-[#6A9876]/15 px-2 py-1 text-[10px] font-black sm:inline-flex"
             aria-label={`Nível ${level}, precisão ${accuracy}%`}
           >
             Nível {level} · {accuracy}%
           </span>
           {streak >= 2 && (
-            <span className="hud-pill hud-pill--life hidden rounded-full border border-[#f6a623]/50 bg-[#f6a623]/15 px-2 py-1 text-[10px] font-black sm:inline-flex" aria-live="polite">
+            <span className="hud-pill hud-pill--life hidden rounded-full border border-[#F45A0A]/50 bg-[#F45A0A]/15 px-2 py-1 text-[10px] font-black sm:inline-flex" aria-live="polite">
               Sequência {streak} 🔥
             </span>
           )}
@@ -181,19 +181,19 @@ export function GameLayout({
             animate={{ scale: 1 }}
             className="hud-pill hud-pill--score
               flex items-center gap-1
-              text-[#f6a623]
+              text-[#F45A0A]
               drop-shadow-[0_0_8px_rgba(246,166,35,0.6)]
               sm:gap-2
             "
           >
             <PawPrint
               size={21}
-              className="fill-[#f6a623] sm:hidden"
+              className="fill-[#F45A0A] sm:hidden"
             />
 
             <PawPrint
               size={30}
-              className="hidden fill-[#f6a623] sm:block"
+              className="hidden fill-[#F45A0A] sm:block"
             />
 
             <span
@@ -269,8 +269,8 @@ export function GameLayout({
               <span
                 className="adventure-title
                   inline-flex max-w-full items-center justify-center
-                  rounded-full border-2 border-[#a9713f]
-                  bg-[#6b3f22]
+                  rounded-full border-2 border-[#F45A0A]
+                  bg-[#7A200F]
                   px-3 py-1.5
                   text-center text-sm font-black uppercase
                   tracking-wide
@@ -326,7 +326,7 @@ export function GameLayout({
             }}
             className="adventure-finish game-stage
               w-full max-w-md
-              rounded-2xl border-4 border-[#6b3f22]
+              rounded-2xl border-4 border-[#7A200F]
               bg-[#14432c] forest-panel
               p-3 text-center
               shadow-[0_8px_0_rgba(0,0,0,0.4),0_0_25px_rgba(246,166,35,0.3)]
@@ -348,7 +348,7 @@ export function GameLayout({
               style={{
                 fontFamily: 'var(--font-display)',
                 backgroundImage:
-                  'linear-gradient(to right, #f6a623, #35b35b, #2a7de1)',
+                  'linear-gradient(to right, #F45A0A, #6A9876, #6A9876)',
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
               }}
@@ -358,7 +358,7 @@ export function GameLayout({
 
             <p className="mb-3 text-base font-bold text-white/90 sm:mb-6 sm:text-2xl">
               Você juntou{' '}
-              <strong className="text-xl text-[#f6a623] sm:text-4xl">
+              <strong className="text-xl text-[#F45A0A] sm:text-4xl">
                 {score}
               </strong>{' '}
               pegadas! 🐾
@@ -371,8 +371,8 @@ export function GameLayout({
               transition={{ delay: 0.3 }}
               className="adventure-curiosity curiosity-card
                 mb-3 rounded-xl
-                border-2 border-[#35b35b]/60
-                bg-[#0d3d28]
+                border-2 border-[#6A9876]/60
+                bg-[#155A35]
                 p-2.5 text-left
                 shadow-[0_3px_0_rgba(0,0,0,0.3)]
                 sm:mb-6 sm:rounded-2xl
@@ -385,7 +385,7 @@ export function GameLayout({
                 </span>
 
                 <div>
-                  <p className="text-[9px] font-black uppercase tracking-widest text-[#35b35b] sm:text-xs">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-[#6A9876] sm:text-xs">
                     Você sabia?
                   </p>
 
@@ -409,9 +409,9 @@ export function GameLayout({
                 className="
                   flex w-full items-center justify-center gap-2
                   rounded-xl border-2 border-white/40
-                  bg-gradient-to-b from-[#f6a623] to-[#d98a10]
+                  bg-gradient-to-b from-[#F45A0A] to-[#d98a10]
                   py-2.5 text-base font-black
-                  text-[#052e1c]
+                  text-[#0B4D2B]
                   shadow-[0_3px_0_rgba(0,0,0,0.3)]
                   transition-all hover:brightness-105
                   active:translate-y-[2px]
@@ -429,11 +429,11 @@ export function GameLayout({
                 onClick={handleTrails}
                 className="
                   flex w-full items-center justify-center gap-2
-                  rounded-xl border-2 border-[#a9713f]
-                  bg-[#6b3f22]
+                  rounded-xl border-2 border-[#F45A0A]
+                  bg-[#7A200F]
                   py-2.5 text-base font-black
                   shadow-[0_3px_0_rgba(0,0,0,0.3)]
-                  transition-all hover:bg-[#7c4a28]
+                  transition-all hover:bg-[#B9270A]
                   active:translate-y-[2px]
                   sm:rounded-2xl sm:py-4 sm:text-xl
                   sm:shadow-[0_5px_0_rgba(0,0,0,0.3)]

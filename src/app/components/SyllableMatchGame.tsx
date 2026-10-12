@@ -457,7 +457,7 @@ export default function SyllableMatchGame() {
 
         <div className="flex items-center gap-2 sm:gap-3">
           <h3
-            className="text-base sm:text-2xl font-black text-center text-[#bfe0ff] uppercase tracking-widest"
+            className="text-base sm:text-2xl font-black text-center text-[#DCEBDD] uppercase tracking-widest"
             style={{ fontFamily: 'var(--font-display)' }}
           >
             Ache as figuras da letra
@@ -468,7 +468,7 @@ export default function SyllableMatchGame() {
 
         {/* Placa de madeira com a consoante */}
         <div
-          className="bg-gradient-to-b from-[#a9713f] to-[#6b3f22] text-white font-black text-4xl sm:text-6xl px-6 py-3 sm:px-10 sm:py-5 rounded-3xl border-4 border-[#c99161] shadow-[0_6px_0_rgba(0,0,0,0.35)]"
+          className="bg-gradient-to-b from-[#F45A0A] to-[#7A200F] text-white font-black text-4xl sm:text-6xl px-6 py-3 sm:px-10 sm:py-5 rounded-3xl border-4 border-[#c99161] shadow-[0_6px_0_rgba(0,0,0,0.35)]"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           {level.consonant}
@@ -487,14 +487,14 @@ export default function SyllableMatchGame() {
                   flex items-center gap-1.5 px-3 py-2 sm:px-5 sm:py-3 rounded-2xl border-4 font-black text-xl sm:text-3xl transition-all
                   ${
                     found
-                      ? 'bg-[#0d3d28] text-white/25 border-white/10 shadow-none'
-                      : 'bg-gradient-to-b from-[#57b85b] to-[#2e7d32] text-white border-white shadow-[0_4px_0_rgba(0,0,0,0.3)] drop-shadow-[0_0_10px_rgba(53,179,91,0.6)]'
+                      ? 'bg-[#155A35] text-white/25 border-white/10 shadow-none'
+                      : 'bg-gradient-to-b from-[#6A9876] to-[#0B4D2B] text-white border-white shadow-[0_4px_0_rgba(0,0,0,0.3)] drop-shadow-[0_0_10px_rgba(53,179,91,0.6)]'
                   }
                 `}
                 style={{ fontFamily: 'var(--font-display)' }}
               >
                 {found && (
-                  <Check size={18} className="text-[#57b85b]" />
+                  <Check size={18} className="text-[#6A9876]" />
                 )}
                 {target.syllable}
               </motion.div>
@@ -523,7 +523,7 @@ export default function SyllableMatchGame() {
                 )}
 
                 {isFound && (
-                  <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-10 flex h-6 w-6 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-[#35b35b] text-white border-2 border-white shadow-md">
+                  <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-10 flex h-6 w-6 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-[#6A9876] text-white border-2 border-white shadow-md">
                     <Check size={14} />
                   </div>
                 )}
@@ -547,10 +547,10 @@ export default function SyllableMatchGame() {
                     h-full w-full flex flex-col items-center justify-center gap-2 p-2 sm:p-4 rounded-3xl border-4 transition-all
                     ${
                       isFound
-                        ? 'bg-[#0d3d28] border-[#35b35b]/40 opacity-50'
+                        ? 'bg-[#155A35] border-[#6A9876]/40 opacity-50'
                         : isWrong
-                        ? 'bg-[#e0402b] border-white'
-                        : 'bg-gradient-to-b from-[#2a7de1] to-[#1c5db0] border-white shadow-[0_4px_0_rgba(0,0,0,0.3)] hover:from-[#3a8def]'
+                        ? 'bg-[#B9270A] border-white'
+                        : 'bg-gradient-to-b from-[#6A9876] to-[#0B4D2B] border-white shadow-[0_4px_0_rgba(0,0,0,0.3)] hover:from-[#6A9876]'
                     }
                   `}
                 >
@@ -565,7 +565,7 @@ export default function SyllableMatchGame() {
           })}
         </div>
 
-        <p className="text-[#bfe0ff]/70 text-xs sm:text-base font-bold text-center">
+        <p className="text-[#DCEBDD]/70 text-xs sm:text-base font-bold text-center">
           Clique na figura que começa com cada sílaba do banco! 🌿
         </p>
       </div>

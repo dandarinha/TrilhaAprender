@@ -180,7 +180,7 @@ export function NameInputScreen({
           type="button"
           onClick={handleBack}
           disabled={isSelecting}
-          className="group flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-[#052e1c]/80 text-white shadow-[0_3px_0_rgba(0,0,0,0.22)] backdrop-blur-md transition-all hover:border-[#57b85b]/70 hover:bg-[#0d3d28] active:translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
+          className="group flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-[#0B4D2B]/80 text-white shadow-[0_3px_0_rgba(0,0,0,0.22)] backdrop-blur-md transition-all hover:border-[#6A9876]/70 hover:bg-[#155A35] active:translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
           aria-label="Voltar"
         >
           <ChevronLeft
@@ -205,10 +205,10 @@ export function NameInputScreen({
         }}
         className="forest-panel-light rounded-3xl p-4 text-center sm:p-6"
       >
-        <div className="mb-2 flex items-center gap-2 rounded-full border border-[#57b85b]/40 bg-[#052e1c]/75 px-3.5 py-1.5 shadow-[0_0_18px_rgba(53,179,91,0.16)] backdrop-blur-md">
+        <div className="mb-2 flex items-center gap-2 rounded-full border border-[#6A9876]/40 bg-[#0B4D2B]/75 px-3.5 py-1.5 shadow-[0_0_18px_rgba(53,179,91,0.16)] backdrop-blur-md">
           <Leaf
             size={13}
-            className="text-[#57b85b]"
+            className="text-[#6A9876]"
             fill="currentColor"
           />
 
@@ -224,7 +224,7 @@ export function NameInputScreen({
 
           <Leaf
             size={13}
-            className="text-[#f6a623]"
+            className="text-[#F45A0A]"
             fill="currentColor"
           />
         </div>
@@ -235,7 +235,7 @@ export function NameInputScreen({
             fontFamily:
               "var(--font-display)",
             backgroundImage:
-              "linear-gradient(135deg, #f6a623 0%, #57b85b 55%, #8bd477 100%)",
+              "linear-gradient(135deg, #F45A0A 0%, #6A9876 55%, #A7C9B0 100%)",
             backgroundClip: "text",
             WebkitBackgroundClip:
               "text",
@@ -244,7 +244,7 @@ export function NameInputScreen({
           Quem vai explorar hoje?
         </h1>
 
-        <p className="mt-1 max-w-xl text-xs font-bold text-[#cde7d5] sm:text-sm">
+        <p className="mt-1 max-w-xl text-xs font-bold text-[#DCEBDD] sm:text-sm">
           Encontre seu nome no mural e
           continue sua aventura.
         </p>
@@ -264,7 +264,7 @@ export function NameInputScreen({
 
           <div className="flex items-center gap-2">
 
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#57b85b]/30 bg-[#0d3d28] text-[#57b85b]">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#6A9876]/30 bg-[#155A35] text-[#6A9876]">
               <UserRound size={17} />
             </div>
 
@@ -297,7 +297,7 @@ export function NameInputScreen({
 
                   <Search
                     size={16}
-                    className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#57b85b]"
+                    className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6A9876]"
                   />
 
                   <input
@@ -310,7 +310,7 @@ export function NameInputScreen({
                     }
                     placeholder="Pesquisar nome..."
                     disabled={isSelecting}
-                    className="w-full rounded-xl border border-[#57b85b]/30 bg-[#031f13]/70 py-2.5 pl-10 pr-3 text-xs font-bold text-white outline-none backdrop-blur-md transition placeholder:text-white/35 focus:border-[#f6a623]/80 focus:ring-2 focus:ring-[#f6a623]/10 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="w-full rounded-xl border border-[#6A9876]/30 bg-[#07391F]/70 py-2.5 pl-10 pr-3 text-xs font-bold text-white outline-none backdrop-blur-md transition placeholder:text-white/35 focus:border-[#F45A0A]/80 focus:ring-2 focus:ring-[#F45A0A]/10 disabled:cursor-not-allowed disabled:opacity-50"
                   />
 
                 </div>
@@ -353,9 +353,9 @@ export function NameInputScreen({
               opacity: 1,
               y: 0,
             }}
-            className="flex min-h-[220px] flex-col items-center justify-center rounded-2xl border border-[#57b85b]/25 bg-[#031f13]/45 px-5 py-8"
+            className="flex min-h-[220px] flex-col items-center justify-center rounded-2xl border border-[#6A9876]/25 bg-[#07391F]/45 px-5 py-8"
           >
-            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl border border-[#57b85b]/30 bg-[#0d3d28] text-[#57b85b]">
+            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl border border-[#6A9876]/30 bg-[#155A35] text-[#6A9876]">
               <Leaf
                 size={24}
                 fill="currentColor"
@@ -363,7 +363,7 @@ export function NameInputScreen({
             </div>
 
             <h2
-              className="text-base font-black text-[#f6a623] sm:text-lg"
+              className="text-base font-black text-[#F45A0A] sm:text-lg"
               style={{
                 fontFamily:
                   "var(--font-display)",
@@ -372,7 +372,7 @@ export function NameInputScreen({
               Carregando exploradores...
             </h2>
 
-            <p className="mt-1 text-xs font-bold text-[#cde7d5]">
+            <p className="mt-1 text-xs font-bold text-[#DCEBDD]">
               Buscando os alunos cadastrados.
             </p>
           </motion.div>
@@ -425,19 +425,19 @@ export function NameInputScreen({
                       )
                     }
                     disabled={isSelecting}
-                    className="group relative flex min-h-[112px] flex-col overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-[#174a32] via-[#14512f] to-[#0d3d28] p-3 text-left shadow-[0_4px_0_rgba(0,0,0,0.22)] transition-all hover:border-[#f6a623]/80 hover:shadow-[0_6px_18px_rgba(0,0,0,0.2)] disabled:cursor-wait disabled:opacity-60"
+                    className="group relative flex min-h-[112px] flex-col overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-[#0B4D2B] via-[#155A35] to-[#155A35] p-3 text-left shadow-[0_4px_0_rgba(0,0,0,0.22)] transition-all hover:border-[#F45A0A]/80 hover:shadow-[0_6px_18px_rgba(0,0,0,0.2)] disabled:cursor-wait disabled:opacity-60"
                   >
                     {/* ==================================================
                         DECORAÇÃO
                     ================================================== */}
 
-                    <div className="pointer-events-none absolute -right-7 -top-7 h-20 w-20 rounded-full bg-[#57b85b]/10 transition-transform duration-300 group-hover:scale-125" />
+                    <div className="pointer-events-none absolute -right-7 -top-7 h-20 w-20 rounded-full bg-[#6A9876]/10 transition-transform duration-300 group-hover:scale-125" />
 
-                    <div className="pointer-events-none absolute -bottom-8 -left-8 h-20 w-20 rounded-full bg-[#f6a623]/5" />
+                    <div className="pointer-events-none absolute -bottom-8 -left-8 h-20 w-20 rounded-full bg-[#F45A0A]/5" />
 
                     <Leaf
                       size={35}
-                      className="pointer-events-none absolute right-2 top-2 rotate-12 text-[#57b85b]/10 transition-transform duration-300 group-hover:rotate-45"
+                      className="pointer-events-none absolute right-2 top-2 rotate-12 text-[#6A9876]/10 transition-transform duration-300 group-hover:rotate-45"
                       fill="currentColor"
                     />
 
@@ -449,7 +449,7 @@ export function NameInputScreen({
 
                       <div className="mb-2 flex items-center justify-between gap-2">
 
-                        <span className="inline-flex items-center rounded-md border border-[#8bd477]/20 bg-[#8bd477]/10 px-2 py-1 text-[8px] font-black uppercase tracking-wider text-[#BDE6B0]">
+                        <span className="inline-flex items-center rounded-md border border-[#A7C9B0]/20 bg-[#A7C9B0]/10 px-2 py-1 text-[8px] font-black uppercase tracking-wider text-[#BDE6B0]">
                           Explorador
                         </span>
 
@@ -458,7 +458,7 @@ export function NameInputScreen({
                         <span className="flex items-center gap-1 text-[9px] font-bold text-[#D7EBDD]">
                           <PawPrint
                             size={11}
-                            className="text-[#f6a623]"
+                            className="text-[#F45A0A]"
                           />
 
                           {paws}
@@ -494,7 +494,7 @@ export function NameInputScreen({
                         Pronto para explorar?
                       </span>
 
-                      <span className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-[#f6a623] px-2.5 py-1.5 text-[9px] font-black uppercase tracking-wide text-[#173B2B] shadow-[0_2px_0_rgba(0,0,0,0.2)] transition-all group-hover:bg-[#ffb83d]">
+                      <span className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-[#F45A0A] px-2.5 py-1.5 text-[9px] font-black uppercase tracking-wide text-[#173C2A] shadow-[0_2px_0_rgba(0,0,0,0.2)] transition-all group-hover:bg-[#ffb83d]">
 
                         <PawPrint size={12} />
 
@@ -528,10 +528,10 @@ export function NameInputScreen({
               opacity: 1,
               y: 0,
             }}
-            className="flex min-h-[220px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#57b85b]/30 bg-[#031f13]/45 px-5 py-8 text-center"
+            className="flex min-h-[220px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#6A9876]/30 bg-[#07391F]/45 px-5 py-8 text-center"
           >
 
-            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl border border-[#57b85b]/25 bg-[#0d3d28] text-[#57b85b]">
+            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl border border-[#6A9876]/25 bg-[#155A35] text-[#6A9876]">
               {search.trim() ? (
                 <Search size={22} />
               ) : (
@@ -540,7 +540,7 @@ export function NameInputScreen({
             </div>
 
             <h2
-              className="text-base font-black text-[#f6a623] sm:text-lg"
+              className="text-base font-black text-[#F45A0A] sm:text-lg"
               style={{
                 fontFamily:
                   "var(--font-display)",
@@ -551,7 +551,7 @@ export function NameInputScreen({
                 : "Nenhum explorador cadastrado"}
             </h2>
 
-            <p className="mt-1 max-w-md text-xs font-bold text-[#cde7d5]">
+            <p className="mt-1 max-w-md text-xs font-bold text-[#DCEBDD]">
               {search.trim()
                 ? "Tente pesquisar por outro nome."
                 : "Peça ao professor para cadastrar seu nome antes de começar."}
@@ -570,7 +570,7 @@ export function NameInputScreen({
 
         <Leaf
           size={11}
-          className="text-[#57b85b]"
+          className="text-[#6A9876]"
           fill="currentColor"
         />
 
@@ -578,7 +578,7 @@ export function NameInputScreen({
 
         <Leaf
           size={11}
-          className="text-[#f6a623]"
+          className="text-[#F45A0A]"
           fill="currentColor"
         />
 

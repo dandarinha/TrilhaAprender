@@ -37,7 +37,7 @@ export default function HistoryModal({
       <div className="flex max-h-[85vh] w-full max-w-md flex-col rounded-3xl border-4 border-slate-700 bg-slate-900 p-6 shadow-2xl">
         {/* Cabeçalho */}
         <div className="mb-4 flex items-center justify-between border-b-2 border-slate-800 pb-3">
-          <div className="flex items-center gap-2 text-[#bfe0ff]">
+          <div className="flex items-center gap-2 text-[#DCEBDD]">
             <Award className="h-6 w-6 text-amber-400" />
 
             <h2

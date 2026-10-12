@@ -17,9 +17,9 @@ export function Button({
   disabled = false
 }: ButtonProps) {
   const variants = {
-    primary: 'border-4 border-[#fff7dc] bg-gradient-to-b from-[#77cf6b] to-[#41a95e] text-white shadow-[0_6px_0_#27734c]',
-    secondary: 'border-4 border-[#fff7dc] bg-[#65b8df] text-[#254b3b] shadow-[0_6px_0_#367b9c]',
-    accent: 'border-4 border-[#fff7dc] bg-[#ffe48b] text-[#733b35] shadow-[0_6px_0_#c68142]',
+    primary: 'border-4 border-[#FFF4E8] bg-gradient-to-b from-[#6A9876] to-[#0B4D2B] text-white shadow-[0_6px_0_#063A20]',
+    secondary: 'border-4 border-[#FFF4E8] bg-[#A7C9B0] text-[#173C2A] shadow-[0_6px_0_#0B4D2B]',
+    accent: 'border-4 border-[#FFF4E8] bg-[#FF9A5C] text-[#7A200F] shadow-[0_6px_0_#B84A16]',
   };
 
   const sizes = {

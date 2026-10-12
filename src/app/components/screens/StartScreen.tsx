@@ -13,7 +13,7 @@ export default function StartScreen() {
       {/* Acesso à área do professor */}
       <Link
         to="/professor"
-        className="absolute right-4 top-4 z-20 flex items-center gap-2 rounded-2xl border-2 border-[#35b35b]/40 bg-[#052e1c]/80 px-4 py-2.5 text-sm font-black text-white shadow-[0_4px_0_rgba(0,0,0,0.2)] transition-all hover:bg-[#0d3d28] active:translate-y-1"
+        className="absolute right-4 top-4 z-20 flex items-center gap-2 rounded-2xl border-2 border-[#6A9876]/40 bg-[#0B4D2B]/80 px-4 py-2.5 text-sm font-black text-white shadow-[0_4px_0_rgba(0,0,0,0.2)] transition-all hover:bg-[#155A35] active:translate-y-1"
         style={{ fontFamily: "var(--font-display)" }}
       >
         👩‍🏫 ÁREA DO PROFESSOR
@@ -26,14 +26,14 @@ export default function StartScreen() {
         transition={{ type: "spring", duration: 1 }}
         className="mb-8 flex items-center gap-4"
       >
-        <Leaf className="h-16 w-16 text-[#57b85b]" />
+        <Leaf className="h-16 w-16 text-[#6A9876]" />
 
         <PawPrint
-          className="h-24 w-24 text-[#f6a623]"
+          className="h-24 w-24 text-[#F45A0A]"
           strokeWidth={2}
         />
 
-        <Leaf className="h-16 w-16 text-[#2a7de1]" />
+        <Leaf className="h-16 w-16 text-[#6A9876]" />
       </motion.div>
 
       {/* Título do jogo */}
@@ -43,13 +43,13 @@ export default function StartScreen() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
-        <span className="text-[#57b85b] drop-shadow-[0_0_10px_rgba(87,184,91,0.8)]">
+        <span className="text-[#6A9876] drop-shadow-[0_0_10px_rgba(87,184,91,0.8)]">
           Trilha
         </span>
 
         <br />
 
-        <span className="text-[#f6a623] drop-shadow-[0_0_10px_rgba(246,166,35,0.8)]">
+        <span className="text-[#F45A0A] drop-shadow-[0_0_10px_rgba(246,166,35,0.8)]">
           do Aprender
         </span>
       </motion.h1>
