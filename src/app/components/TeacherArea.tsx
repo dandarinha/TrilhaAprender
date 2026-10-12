@@ -506,14 +506,14 @@ export default function TeacherArea() {
   };
 
   return (
-    <main className="forest-scene min-h-screen text-[#173B2B]">
+    <main className="teacher-shell min-h-screen text-[#173B2B]">
       <div className="mx-auto max-w-[1450px] px-4 py-4 sm:px-5 lg:px-6">
 
         {/* ======================================================
             HEADER
         ====================================================== */}
 
-        <header className="forest-panel mb-4 rounded-2xl bg-[#174A32] shadow-[0_8px_25px_rgba(23,74,50,0.14)]">
+        <header className="teacher-header mb-4 rounded-2xl bg-[#174A32] shadow-[0_8px_25px_rgba(23,74,50,0.14)]">
           <div className="flex items-center justify-between gap-4 px-5 py-4 sm:px-6">
 
             <div className="flex items-center gap-3">
@@ -629,7 +629,7 @@ export default function TeacherArea() {
               MURAL DOS EXPLORADORES
           ==================================================== */}
 
-          <aside className="forest-panel-light overflow-hidden rounded-2xl bg-[#FFFDF5] text-[#294A37] shadow-[0_6px_20px_rgba(30,70,45,0.06)]">
+          <aside className="teacher-panel overflow-hidden rounded-2xl bg-[#FFFDF5] text-[#294A37] shadow-[0_6px_20px_rgba(30,70,45,0.06)]">
 
             {/* CABEÇALHO */}
 

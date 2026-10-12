@@ -5,6 +5,15 @@
 @layer base {
   :root {
     color-scheme: dark;
+    --ui-ink: #173b2b;
+    --ui-cream: #fff8e8;
+    --ui-paper: #f7edcf;
+    --ui-paper-dark: #e4cf9e;
+    --ui-moss: #2f754a;
+    --ui-leaf: #76c65f;
+    --ui-gold: #f5b642;
+    --ui-wood: #704323;
+    --ui-shadow: rgba(10, 39, 24, 0.34);
   }
 
   html {
@@ -14,11 +23,11 @@
   body {
     min-width: 320px;
     min-height: 100vh;
-    background:
-      radial-gradient(circle at 12% 8%, rgba(87, 184, 91, 0.16), transparent 28rem),
-      radial-gradient(circle at 88% 18%, rgba(42, 125, 225, 0.13), transparent 25rem),
-      linear-gradient(150deg, var(--forest-deep) 0%, var(--forest) 52%, #073522 100%);
     color: var(--cream);
+    background: #052e1c;
+    font-family: var(--font-body);
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
@@ -26,140 +35,319 @@
     background: var(--mico-gold);
   }
 
-  :focus-visible {
-    outline: 3px solid var(--mico-gold);
-    outline-offset: 3px;
-  }
-
   button, a, input, select {
     touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--mico-gold);
+    outline-offset: 4px;
   }
 }
 
 @layer components {
+  /* ==========================================================
+     CENÁRIO PRINCIPAL — uma clareira vista de cima
+  ========================================================== */
   .forest-scene {
     position: relative;
     isolation: isolate;
     overflow: hidden;
     background:
-      radial-gradient(ellipse at 50% -10%, rgba(139, 212, 119, 0.18), transparent 42%),
-      radial-gradient(ellipse at -10% 75%, rgba(42, 125, 225, 0.12), transparent 34%),
-      linear-gradient(160deg, #052e1c 0%, #0d3d28 50%, #073522 100%);
+      radial-gradient(ellipse 70% 35% at 50% -8%, rgba(173, 224, 129, .24), transparent 72%),
+      radial-gradient(ellipse 44% 38% at 0% 76%, rgba(30, 114, 103, .2), transparent 70%),
+      radial-gradient(ellipse 42% 35% at 100% 55%, rgba(42, 125, 225, .13), transparent 72%),
+      linear-gradient(150deg, #062c1b 0%, #0b4229 48%, #052e1c 100%);
   }
 
-  .forest-scene::before {
+  .forest-scene::before,
+  .forest-scene::after {
     position: absolute;
-    inset: 0;
     z-index: -1;
     pointer-events: none;
     content: '';
-    opacity: 0.28;
+  }
+
+  .forest-scene::before {
+    inset: 0;
+    opacity: .34;
     background-image:
-      radial-gradient(circle at 20% 30%, rgba(255,255,255,.25) 0 1px, transparent 1.5px),
-      radial-gradient(circle at 70% 65%, rgba(255,255,255,.18) 0 1px, transparent 1.5px);
-    background-size: 42px 42px, 67px 67px;
-    mask-image: linear-gradient(to bottom, black, transparent 88%);
+      radial-gradient(circle at 13% 18%, rgba(255,255,255,.42) 0 1px, transparent 1.5px),
+      radial-gradient(circle at 67% 39%, rgba(255,255,255,.3) 0 1px, transparent 1.5px),
+      radial-gradient(circle at 84% 78%, rgba(255,255,255,.22) 0 1px, transparent 1.5px);
+    background-size: 47px 47px, 73px 73px, 91px 91px;
+    mask-image: linear-gradient(to bottom, black, transparent 90%);
   }
 
-  .forest-panel {
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: linear-gradient(145deg, rgba(20, 67, 44, 0.92), rgba(5, 46, 28, 0.82));
-    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22), inset 0 1px rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(14px);
+  .forest-scene::after {
+    right: -12rem;
+    bottom: -14rem;
+    width: 34rem;
+    height: 34rem;
+    border: 2rem solid rgba(118, 198, 95, .06);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4rem rgba(118, 198, 95, .035), 0 0 0 8rem rgba(118, 198, 95, .025);
   }
 
-  .forest-panel-light {
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    background: rgba(5, 46, 28, 0.68);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18), inset 0 1px rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
+  .menu-hero {
+    position: relative;
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 2rem;
+    padding: clamp(1.5rem, 5vw, 3.75rem);
+    background:
+      linear-gradient(135deg, rgba(10, 62, 38, .8), rgba(5, 46, 28, .54)),
+      radial-gradient(circle at 50% 0%, rgba(246, 166, 35, .12), transparent 45%);
+    box-shadow: 0 28px 70px rgba(0,0,0,.25), inset 0 1px rgba(255,255,255,.12);
+    backdrop-filter: blur(16px);
+  }
+
+  .menu-hero::before {
+    position: absolute;
+    top: 1rem;
+    left: 7%;
+    right: 7%;
+    height: 1px;
+    content: '';
+    background: linear-gradient(90deg, transparent, rgba(139, 212, 119, .7), transparent);
   }
 
   .forest-kicker {
     display: inline-flex;
     align-items: center;
-    gap: 0.55rem;
-    border: 1px solid rgba(139, 212, 119, 0.45);
+    gap: .55rem;
+    border: 1px solid rgba(139, 212, 119, .52);
     border-radius: 999px;
-    padding: 0.45rem 0.9rem;
-    color: #d9f4d3;
-    background: rgba(5, 46, 28, 0.7);
-    box-shadow: 0 0 24px rgba(53, 179, 91, 0.16);
+    padding: .45rem .9rem;
+    color: #e0f7d7;
+    background: rgba(4, 35, 22, .7);
+    box-shadow: 0 0 25px rgba(53,179,91,.14);
     font-family: var(--font-display);
-    font-size: 0.72rem;
+    font-size: .7rem;
     font-weight: 800;
-    letter-spacing: 0.14em;
+    letter-spacing: .15em;
     text-transform: uppercase;
   }
 
   .forest-title {
     color: transparent;
-    background: linear-gradient(135deg, #ffd166 0%, #8bd477 52%, #8ecbff 100%);
+    background: linear-gradient(135deg, #ffe08b 0%, #9bdf79 48%, #a7d9ff 100%);
     background-clip: text;
     -webkit-background-clip: text;
-    filter: drop-shadow(0 5px 18px rgba(0, 0, 0, 0.28));
+    filter: drop-shadow(0 7px 18px rgba(0,0,0,.32));
   }
 
-  .forest-button-primary,
-  .forest-button-secondary {
-    display: inline-flex;
+  .menu-stat {
+    display: flex;
+    min-width: 7rem;
+    flex-direction: column;
+    align-items: center;
+    gap: .1rem;
+    border: 1px solid rgba(139, 212, 119, .22);
+    border-radius: 1rem;
+    padding: .6rem .85rem;
+    color: #cde8c6;
+    background: rgba(3, 29, 18, .42);
+  }
+
+  .menu-stat strong {
+    color: var(--ui-gold);
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+  }
+
+  .menu-stat span {
+    font-size: .65rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  /* ==========================================================
+     BIOMAS E TRILHAS — placas de parque e caminhos
+  ========================================================== */
+  .biome-card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 19rem;
+    border: 2px solid rgba(255,255,255,.72);
+    border-radius: 2rem;
+    box-shadow: 0 8px 0 rgba(0,0,0,.25), 0 22px 38px rgba(0,0,0,.18);
+    transition: transform .24s ease, box-shadow .24s ease, filter .24s ease;
+  }
+
+  .biome-card::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    content: '';
+    background: linear-gradient(145deg, rgba(255,255,255,.25), transparent 34%, rgba(0,0,0,.18));
+  }
+
+  .biome-card::after {
+    position: absolute;
+    right: -2.5rem;
+    bottom: -5rem;
+    z-index: -1;
+    width: 14rem;
+    height: 14rem;
+    border: 1.4rem solid rgba(255,255,255,.12);
+    border-radius: 50%;
+    content: '';
+  }
+
+  .biome-card:hover {
+    filter: saturate(1.08);
+    transform: translateY(-7px) rotate(-.6deg);
+    box-shadow: 0 13px 0 rgba(0,0,0,.22), 0 28px 44px rgba(0,0,0,.22);
+  }
+
+  .biome-emblem {
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.65rem;
-    border-radius: 1rem;
-    padding: 0.75rem 1.2rem;
-    font-family: var(--font-display);
-    font-weight: 800;
-    transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+    width: 7.5rem;
+    height: 7.5rem;
+    border: 6px solid rgba(255,255,255,.9);
+    border-radius: 2.4rem 2.4rem 3.2rem 3.2rem;
+    background: rgba(255,255,255,.9);
+    box-shadow: inset 0 -8px rgba(0,0,0,.06), 0 7px 0 rgba(0,0,0,.14);
+    font-size: 4.6rem;
   }
 
-  .forest-button-primary {
-    color: var(--forest-deep);
-    border: 2px solid rgba(255, 255, 255, 0.72);
-    background: linear-gradient(180deg, #8bd477, #35b35b);
-    box-shadow: 0 5px 0 #1e6b38, 0 12px 24px rgba(53, 179, 91, 0.22);
+  .trail-card {
+    position: relative;
+    min-height: 14rem;
+    border: 2px solid rgba(255,255,255,.78);
+    border-radius: 1.6rem;
+    box-shadow: 0 7px 0 rgba(0,0,0,.25), 0 18px 30px rgba(0,0,0,.15);
+    transition: transform .22s ease, box-shadow .22s ease;
   }
 
-  .forest-button-secondary {
-    color: var(--cream);
-    border: 1px solid rgba(169, 113, 63, 0.72);
-    background: linear-gradient(180deg, #80502c, #5a341d);
-    box-shadow: 0 4px 0 #3d2414;
-  }
-
-  .forest-button-primary:hover,
-  .forest-button-secondary:hover {
-    filter: brightness(1.08);
-    transform: translateY(-2px);
-  }
-
-  .forest-button-primary:active,
-  .forest-button-secondary:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
-  }
-
-  .forest-card {
-    border: 2px solid rgba(255, 255, 255, 0.66);
-    border-radius: 1.5rem;
-    box-shadow: 0 7px 0 rgba(0, 0, 0, 0.28), 0 18px 30px rgba(0, 0, 0, 0.16);
-    transition: transform .22s ease, box-shadow .22s ease, filter .22s ease;
-  }
-
-  .forest-card:hover {
-    filter: saturate(1.08);
+  .trail-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 11px 0 rgba(0, 0, 0, 0.25), 0 24px 36px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 11px 0 rgba(0,0,0,.22), 0 24px 34px rgba(0,0,0,.2);
   }
+
+  .trail-card::after {
+    position: absolute;
+    right: .8rem;
+    bottom: .8rem;
+    width: 4rem;
+    height: 1rem;
+    border-bottom: 3px dotted rgba(255,255,255,.55);
+    content: '';
+    transform: rotate(-8deg);
+  }
+
+  .trail-emblem {
+    display: grid;
+    width: 5rem;
+    height: 5rem;
+    place-items: center;
+    border: 4px solid rgba(255,255,255,.88);
+    border-radius: 1.5rem;
+    background: rgba(255,255,255,.92);
+    box-shadow: 0 5px 0 rgba(0,0,0,.15);
+  }
+
+  /* ==========================================================
+     COMPONENTES COMPARTILHADOS DOS MINIGAMES — HUD + palco
+  ========================================================== */
+  .game-stage {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 1.8rem;
+    background: linear-gradient(145deg, rgba(28, 79, 52, .94), rgba(8, 49, 30, .96));
+    box-shadow: 0 22px 46px rgba(0,0,0,.25), inset 0 1px rgba(255,255,255,.1);
+  }
+
+  .game-stage::before {
+    position: absolute;
+    top: 0;
+    left: 8%;
+    right: 8%;
+    height: 3px;
+    content: '';
+    background: linear-gradient(90deg, transparent, var(--stage-accent, #76c65f), transparent);
+    box-shadow: 0 0 18px var(--stage-accent, #76c65f);
+  }
+
+  .game-hud {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+  }
+
+  .hud-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    min-height: 2.15rem;
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: .85rem;
+    padding: .35rem .62rem;
+    background: rgba(3, 29, 18, .48);
+    color: #e8f7e2;
+    box-shadow: inset 0 1px rgba(255,255,255,.07);
+    font-family: var(--font-display);
+    font-size: .7rem;
+    font-weight: 800;
+  }
+
+  .hud-pill--score { color: #ffe19a; }
+  .hud-pill--life { color: #ffcf86; }
+  .hud-pill--info { color: #bfe5ff; }
+
+  .curiosity-card {
+    border: 2px solid rgba(118,198,95,.65);
+    border-radius: 1.4rem;
+    background: linear-gradient(145deg, rgba(10, 65, 38, .96), rgba(4, 43, 26, .96));
+    box-shadow: 0 12px 30px rgba(0,0,0,.22), inset 0 1px rgba(255,255,255,.1);
+  }
+
+  /* ==========================================================
+     SUPERFÍCIES DA ÁREA DO PROFESSOR
+  ========================================================== */
+  .teacher-shell {
+    color: var(--ui-ink);
+    background:
+      radial-gradient(circle at 90% 10%, rgba(118,198,95,.18), transparent 22rem),
+      linear-gradient(135deg, #f5efd9 0%, #e7edda 100%);
+  }
+
+  .teacher-header {
+    border: 1px solid rgba(255,255,255,.2);
+    background: linear-gradient(135deg, #174a32, #0b3422);
+    box-shadow: 0 14px 32px rgba(23,74,50,.22), inset 0 1px rgba(255,255,255,.12);
+  }
+
+  .teacher-panel {
+    border: 1px solid #d9d5c2;
+    background: rgba(255,253,245,.93);
+    box-shadow: 0 12px 28px rgba(30,70,45,.1);
+  }
+}
+
+@media (max-width: 640px) {
+  .menu-hero { border-radius: 1.35rem; }
+  .biome-card { min-height: 15rem; border-radius: 1.4rem; }
+  .biome-emblem { width: 5.8rem; height: 5.8rem; font-size: 3.4rem; }
+  .trail-card { min-height: 10rem; border-radius: 1.25rem; }
+  .trail-emblem { width: 3.9rem; height: 3.9rem; border-radius: 1.1rem; }
+  .game-stage { border-radius: 1.25rem; }
+  .hud-pill { min-height: 1.9rem; padding: .25rem .45rem; font-size: .62rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
+    animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
+    transition-duration: .01ms !important;
   }
 }

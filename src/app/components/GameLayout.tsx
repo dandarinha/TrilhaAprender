@@ -151,7 +151,7 @@ export function GameLayout({
 
         <div className="flex items-center gap-2.5 text-base font-black sm:gap-6 sm:text-2xl">
           <span
-            className={`hidden items-center gap-1 rounded-full border px-2 py-1 text-[10px] font-black sm:inline-flex ${
+            className={`hud-pill hud-pill--info hidden items-center gap-1 rounded-full border px-2 py-1 text-[10px] font-black sm:inline-flex ${
               isOnline
                 ? 'border-[#57b85b]/50 bg-[#57b85b]/15 text-[#bfe8c5]'
                 : 'border-[#f6a623]/60 bg-[#f6a623]/15 text-[#ffe0a3]'
@@ -162,13 +162,13 @@ export function GameLayout({
             {isOnline ? 'Sincronizado' : 'Modo aventura'}
           </span>
           <span
-            className="hidden rounded-full border border-[#2a7de1]/50 bg-[#2a7de1]/15 px-2 py-1 text-[10px] font-black text-[#c9e3ff] sm:inline-flex"
+            className="hud-pill hud-pill--info hidden rounded-full border border-[#2a7de1]/50 bg-[#2a7de1]/15 px-2 py-1 text-[10px] font-black sm:inline-flex"
             aria-label={`Nível ${level}, precisão ${accuracy}%`}
           >
             Nível {level} · {accuracy}%
           </span>
           {streak >= 2 && (
-            <span className="hidden rounded-full border border-[#f6a623]/50 bg-[#f6a623]/15 px-2 py-1 text-[10px] font-black text-[#ffe0a3] sm:inline-flex" aria-live="polite">
+            <span className="hud-pill hud-pill--life hidden rounded-full border border-[#f6a623]/50 bg-[#f6a623]/15 px-2 py-1 text-[10px] font-black sm:inline-flex" aria-live="polite">
               Sequência {streak} 🔥
             </span>
           )}
@@ -177,7 +177,7 @@ export function GameLayout({
             key={score}
             initial={{ scale: 1.5 }}
             animate={{ scale: 1 }}
-            className="
+            className="hud-pill hud-pill--score
               flex items-center gap-1
               text-[#f6a623]
               drop-shadow-[0_0_8px_rgba(246,166,35,0.6)]
@@ -205,7 +205,7 @@ export function GameLayout({
 
           {/* Vidas */}
           <div
-            className="flex items-center gap-0.5 sm:gap-1"
+            className="hud-pill hud-pill--life flex items-center gap-0.5 sm:gap-1"
             role="status"
             aria-label={`${lives} de 3 vidas restantes`}
             aria-live="polite"
@@ -289,7 +289,7 @@ export function GameLayout({
 
             {/* Painel principal com altura mínima, não fixa */}
             <div
-              className="
+              className="game-stage
                 w-full min-w-0
                 max-w-[340px]
                 min-h-[360px]
@@ -322,7 +322,7 @@ export function GameLayout({
               type: 'spring',
               bounce: 0.6,
             }}
-            className="
+            className="game-stage
               w-full max-w-md
               rounded-2xl border-4 border-[#6b3f22]
               bg-[#14432c] forest-panel
@@ -367,7 +367,7 @@ export function GameLayout({
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="
+              className="curiosity-card
                 mb-3 rounded-xl
                 border-2 border-[#35b35b]/60
                 bg-[#0d3d28]
