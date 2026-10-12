@@ -110,7 +110,7 @@ export function StartScreen({
       initial={{ scale: 0.8, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       exit={{ scale: 1.2, opacity: 0 }}
-      className="menu-hero relative z-10 flex w-full flex-col items-center justify-center gap-8 text-center sm:gap-14"
+      className="start-screen relative z-10 flex w-full flex-col items-center justify-center gap-5 text-center sm:gap-8"
     >
       <Link
         to="/professor"
@@ -132,7 +132,7 @@ export function StartScreen({
         </div>
 
         <h1
-          className="forest-title text-5xl font-black sm:text-8xl"
+          className="forest-title text-4xl font-black sm:text-7xl"
           style={{
             fontFamily: "var(--font-display)",
             backgroundImage:
@@ -145,7 +145,7 @@ export function StartScreen({
         </h1>
 
         <p
-          className="mx-auto max-w-2xl text-lg font-black text-[#ffd166] sm:text-3xl"
+          className="mx-auto max-w-2xl text-base font-black text-[#ffd166] sm:text-2xl"
           style={{ fontFamily: "var(--font-display)" }}
         >
           Jornada Tropical 🌿
@@ -155,18 +155,13 @@ export function StartScreen({
           Aprenda as letras junto com os bichos do Brasil!
         </p>
 
-        <div className="mt-5 flex flex-wrap justify-center gap-2 sm:mt-7 sm:gap-3">
-          <div className="menu-stat"><strong>2</strong><span>biomas</span></div>
-          <div className="menu-stat"><strong>6</strong><span>trilhas</span></div>
-          <div className="menu-stat"><strong>🐾</strong><span>aventuras</span></div>
-        </div>
       </div>
 
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={onStart}
-        className="forest-button-primary group relative min-w-56 overflow-hidden rounded-full px-8 py-4 text-xl sm:min-w-72 sm:px-12 sm:py-6 sm:text-3xl"
+        className="forest-button-primary group relative min-w-52 overflow-hidden rounded-full px-7 py-3.5 text-lg sm:min-w-64 sm:px-10 sm:py-5 sm:text-2xl"
       >
         <div
           className="relative z-10 flex items-center gap-3 text-2xl font-black uppercase text-white sm:gap-4 sm:text-4xl"
@@ -270,7 +265,7 @@ function BiomasScreen({
     <motion.div
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      className="relative z-10 flex w-full max-w-5xl flex-col items-center gap-5 px-4 py-6 sm:gap-10 sm:py-10"
+      className="relative z-10 flex w-full max-w-5xl flex-col items-center gap-4 px-4 py-4 sm:gap-6 sm:py-6"
     >
       <div className="w-full space-y-2 text-center sm:space-y-4">
         <h1
@@ -342,7 +337,7 @@ function TrailsForBiomaScreen({
     <motion.div
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      className="relative z-10 flex w-full max-w-6xl flex-col items-center gap-5 px-4 py-6 sm:gap-8 sm:py-10"
+      className="relative z-10 flex w-full max-w-6xl flex-col items-center gap-3 px-4 py-3 sm:gap-5 sm:py-5"
     >
       <div className="forest-panel-light flex w-full items-center justify-between gap-2 rounded-2xl p-2 sm:p-3">
         <button
@@ -371,13 +366,13 @@ function TrailsForBiomaScreen({
       </div>
 
       <p
-        className="text-base font-black text-white/80 sm:text-xl"
+        className="text-sm font-black text-white/80 sm:text-lg"
         style={{ fontFamily: "var(--font-display)" }}
       >
         Escolha sua Trilha!
       </p>
 
-      <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-6">
+      <div className="grid w-full grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-4">
         {bioma.trails.map((trail, index) => (
           <motion.div
             key={trail.id}
@@ -393,7 +388,7 @@ function TrailsForBiomaScreen({
           >
             <Link
               to={trail.path}
-              className={`trail-card group relative flex w-full flex-row items-center justify-center gap-4 overflow-hidden bg-gradient-to-b ${trail.color} p-4 sm:flex-col sm:gap-6 sm:p-8`}
+              className={`trail-card group relative flex w-full flex-row items-center justify-center gap-3 overflow-hidden bg-gradient-to-b ${trail.color} p-3 sm:flex-col sm:gap-3 sm:p-4`}
             >
               <div className="pointer-events-none absolute inset-0 text-white/20">
                 <Footprints className="absolute -right-3 -top-3 h-16 w-16 -rotate-12 transition-transform duration-300 group-hover:rotate-0 group-hover:scale-110 sm:h-20 sm:w-20" />
@@ -401,7 +396,7 @@ function TrailsForBiomaScreen({
                 <Footprints className="absolute -bottom-3 -left-3 h-16 w-16 rotate-45 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110 sm:h-20 sm:w-20" />
               </div>
 
-              <div className="relative z-10 flex flex-row items-center gap-4 sm:flex-col sm:gap-6">
+              <div className="relative z-10 flex flex-row items-center gap-3 sm:flex-col sm:gap-3">
                 <div className="trail-emblem transition-transform duration-300 group-hover:-translate-y-1">
                   {trail.icon}
                 </div>
@@ -410,12 +405,12 @@ function TrailsForBiomaScreen({
                   className="text-left sm:text-center"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  <h3 className="mb-1 text-lg font-black text-white sm:text-2xl">
+                  <h3 className="mb-1 text-base font-black text-white sm:text-xl">
                     {trail.name}
                   </h3>
 
                   <div className="inline-flex items-center justify-center gap-1 rounded-full border-2 border-white/40 bg-black/25 px-3 py-1 text-white sm:gap-2 sm:px-4 sm:py-2">
-                    <span className="text-xs font-bold sm:text-lg">
+                    <span className="text-[11px] font-bold sm:text-base">
                       {trail.subject}
                     </span>
                   </div>

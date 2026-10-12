@@ -111,6 +111,27 @@
     background: linear-gradient(90deg, transparent, rgba(139, 212, 119, .7), transparent);
   }
 
+  .start-screen {
+    position: relative;
+    padding: clamp(1rem, 4vw, 2.5rem) .75rem;
+  }
+
+  .start-screen::before,
+  .start-screen::after {
+    position: absolute;
+    bottom: 8%;
+    z-index: -1;
+    width: clamp(4rem, 11vw, 8rem);
+    height: clamp(7rem, 18vw, 11rem);
+    border: 2px solid rgba(118,198,95,.16);
+    border-radius: 80% 20% 80% 20%;
+    content: '';
+    transform: rotate(28deg);
+  }
+
+  .start-screen::before { left: -1rem; }
+  .start-screen::after { right: -1rem; transform: scaleX(-1) rotate(28deg); }
+
   .forest-kicker {
     display: inline-flex;
     align-items: center;
@@ -169,7 +190,7 @@
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    min-height: 19rem;
+    min-height: 15rem;
     border: 2px solid rgba(255,255,255,.72);
     border-radius: 2rem;
     box-shadow: 0 8px 0 rgba(0,0,0,.25), 0 22px 38px rgba(0,0,0,.18);
@@ -206,18 +227,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 7.5rem;
-    height: 7.5rem;
+    width: 6rem;
+    height: 6rem;
     border: 6px solid rgba(255,255,255,.9);
     border-radius: 2.4rem 2.4rem 3.2rem 3.2rem;
     background: rgba(255,255,255,.9);
     box-shadow: inset 0 -8px rgba(0,0,0,.06), 0 7px 0 rgba(0,0,0,.14);
-    font-size: 4.6rem;
+    font-size: 3.7rem;
   }
 
   .trail-card {
     position: relative;
-    min-height: 14rem;
+    min-height: 9.5rem;
     border: 2px solid rgba(255,255,255,.78);
     border-radius: 1.6rem;
     box-shadow: 0 7px 0 rgba(0,0,0,.25), 0 18px 30px rgba(0,0,0,.15);
@@ -242,11 +263,11 @@
 
   .trail-emblem {
     display: grid;
-    width: 5rem;
-    height: 5rem;
+    width: 4rem;
+    height: 4rem;
     place-items: center;
     border: 4px solid rgba(255,255,255,.88);
-    border-radius: 1.5rem;
+    border-radius: 1.15rem;
     background: rgba(255,255,255,.92);
     box-shadow: 0 5px 0 rgba(0,0,0,.15);
   }
@@ -259,9 +280,9 @@
     isolation: isolate;
     overflow: hidden;
     border: 1px solid rgba(255,255,255,.18);
-    border-radius: 1.8rem;
+    border-radius: 1.35rem;
     background: linear-gradient(145deg, rgba(28, 79, 52, .94), rgba(8, 49, 30, .96));
-    box-shadow: 0 22px 46px rgba(0,0,0,.25), inset 0 1px rgba(255,255,255,.1);
+    box-shadow: 0 14px 30px rgba(0,0,0,.22), inset 0 1px rgba(255,255,255,.1);
   }
 
   .game-stage::before {
@@ -285,15 +306,15 @@
     display: inline-flex;
     align-items: center;
     gap: .35rem;
-    min-height: 2.15rem;
+    min-height: 1.85rem;
     border: 1px solid rgba(255,255,255,.16);
     border-radius: .85rem;
-    padding: .35rem .62rem;
+    padding: .25rem .5rem;
     background: rgba(3, 29, 18, .48);
     color: #e8f7e2;
     box-shadow: inset 0 1px rgba(255,255,255,.07);
     font-family: var(--font-display);
-    font-size: .7rem;
+    font-size: .64rem;
     font-weight: 800;
   }
 
@@ -333,9 +354,10 @@
 
 @media (max-width: 640px) {
   .menu-hero { border-radius: 1.35rem; }
+  .start-screen { padding: 1rem .25rem; }
   .biome-card { min-height: 15rem; border-radius: 1.4rem; }
   .biome-emblem { width: 5.8rem; height: 5.8rem; font-size: 3.4rem; }
-  .trail-card { min-height: 10rem; border-radius: 1.25rem; }
+  .trail-card { min-height: 8.5rem; border-radius: 1.1rem; }
   .trail-emblem { width: 3.9rem; height: 3.9rem; border-radius: 1.1rem; }
   .game-stage { border-radius: 1.25rem; }
   .hud-pill { min-height: 1.9rem; padding: .25rem .45rem; font-size: .62rem; }
