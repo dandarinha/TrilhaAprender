@@ -61,6 +61,9 @@ export default function RhymesGame() {
     handleCorrect,
     handleWrong,
     resetGame,
+    progressLevel,
+    accuracy,
+    streak,
   } = useGameLogic();
 
   const { playActivity } = useGame();
@@ -339,6 +342,9 @@ export default function RhymesGame() {
       themeColor="yellow"
       lives={lives}
       score={score}
+      level={progressLevel}
+      accuracy={accuracy}
+      streak={streak}
       gameOver={gameOver}
       onRestart={() => {
         resetGame();

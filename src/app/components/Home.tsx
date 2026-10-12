@@ -189,35 +189,13 @@ export function StartScreen({
 
 function HeaderBar({
   name,
+  paws,
   onLogout,
 }: {
   name: string;
+  paws: number;
   onLogout: () => void;
 }) {
-  const [totalPaws, setTotalPaws] = useState(0);
-
-  useEffect(() => {
-    const read = () => {
-      try {
-        setTotalPaws(
-          parseInt(localStorage.getItem("bichoStars") || "0", 10),
-        );
-      } catch {
-        setTotalPaws(0);
-      }
-    };
-
-    read();
-
-    window.addEventListener("bichoStarsChanged", read);
-    window.addEventListener("storage", read);
-
-    return () => {
-      window.removeEventListener("bichoStarsChanged", read);
-      window.removeEventListener("storage", read);
-    };
-  }, []);
-
   return (
     <div className="flex w-full flex-row items-center justify-between gap-2 border-b-4 border-[#6b3f22] bg-[#052e1c]/80 px-4 py-3 shadow-[0_4px_20px_rgba(0,0,0,0.4)] backdrop-blur-md sm:gap-6 sm:px-8 sm:py-4">
       <div className="flex min-w-0 items-center gap-2 sm:gap-4">
@@ -256,7 +234,7 @@ function HeaderBar({
             className="text-base sm:text-xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            {totalPaws}
+            {paws}
           </span>
         </div>
 
@@ -450,9 +428,9 @@ function TrailsForBiomaScreen({
 export default function Home() {
   const {
     state,
-    setPlayerName,
     saveCurrentSession,
     resetGame,
+    isOnline,
   } = useGame();
 
   /*
@@ -475,53 +453,25 @@ export default function Home() {
 
   useEffect(() => {
     try {
-      const savedName = localStorage.getItem("bichoName");
-
-      const savedBioma = localStorage.getItem(
-        "bichoBioma",
-      ) as "portuguese" | "math" | null;
-
-      if (savedName) {
-        setExplorerName(savedName);
-        setPlayerName(savedName);
-      }
-
-      /*
-       * Se já existir um aluno salvo e um bioma salvo,
-       * o jogo retorna diretamente para a seleção de biomas.
-       */
-      if (
-        savedName &&
-        (savedBioma === "portuguese" || savedBioma === "math")
-      ) {
-        setBiomaId(savedBioma);
-        setStep(2);
-      }
+      // A retomada exige uma nova seleção para evitar iniciar uma sessão
+      // duplicada com dados possivelmente desatualizados do navegador.
+      localStorage.removeItem("bichoBioma");
     } catch {
       setExplorerName("Explorador");
     }
 
     setIsLoaded(true);
-  }, [setPlayerName]);
+  }, []);
 
   const handleLogout = () => {
-    if (
-      state.playerName.trim() &&
-      (state.stars > 0 ||
-        state.completedActivities.length > 0)
-    ) {
-      saveCurrentSession();
-    }
+    if (state.studentId) void saveCurrentSession();
 
     try {
       localStorage.removeItem("bichoName");
       localStorage.removeItem("bichoBioma");
-      localStorage.removeItem("bichoStars");
     } catch {
       // Evita que um erro do localStorage interrompa a troca de aluno.
     }
-
-    window.dispatchEvent(new Event("bichoStarsChanged"));
 
     resetGame();
     setExplorerName("Explorador");
@@ -531,6 +481,11 @@ export default function Home() {
 
   const handleStudentSelected = (name: string) => {
     setExplorerName(name);
+    try {
+      localStorage.setItem("bichoName", name);
+    } catch {
+      // O jogo continua funcionando se o armazenamento estiver indisponível.
+    }
     setBiomaId(null);
     setStep(2);
   };
@@ -601,6 +556,7 @@ export default function Home() {
         <div className="sticky top-0 z-20 w-full">
           <HeaderBar
             name={explorerName}
+            paws={state.paws}
             onLogout={handleLogout}
           />
         </div>
@@ -613,6 +569,14 @@ export default function Home() {
             : "min-h-screen justify-center"
         }`}
       >
+        {!isOnline && isLoggedInScreen && (
+          <div
+            className="mb-3 rounded-full border border-[#f6a623]/50 bg-[#052e1c]/85 px-4 py-2 text-center text-xs font-black text-[#ffe0a3] shadow-lg"
+            role="status"
+          >
+            Você está em modo aventura. O progresso será sincronizado quando a conexão voltar.
+          </div>
+        )}
         <AnimatePresence mode="wait">
           {/* Tela inicial */}
           {step === 0 && (

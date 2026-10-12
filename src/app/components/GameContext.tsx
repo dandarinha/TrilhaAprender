@@ -55,6 +55,7 @@ export interface GameState {
 
 export interface GameContextType {
   state: GameState;
+  isOnline: boolean;
 
   /**
    * Alunos cadastrados pelo professor.
@@ -181,6 +182,12 @@ export function GameProvider({
   const [state, setState] =
     useState<GameState>(initialState);
 
+  const [isOnline, setIsOnline] = useState(
+    () =>
+      typeof navigator === "undefined" ||
+      navigator.onLine
+  );
+
   const [history, setHistory] = useState<
     PlayerHistory[]
   >([]);
@@ -248,6 +255,8 @@ export function GameProvider({
 
       const students =
         (await response.json()) as Student[];
+
+      setIsOnline(true);
 
       const studentsWithPerformance =
         await Promise.all(
@@ -322,6 +331,7 @@ export function GameProvider({
         };
       });
     } catch (error: unknown) {
+      setIsOnline(false);
       console.error(
         "Erro ao atualizar lista de alunos:",
         error
@@ -330,6 +340,30 @@ export function GameProvider({
       throw error;
     }
   }, [fetchStudentPerformance]);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
+
+  useEffect(() => {
+    const studentId = state.studentId;
+    if (!studentId) return;
+    const finishOnExit = () => {
+      void fetch(
+        `${API_BASE_URL}/students/${encodeURIComponent(studentId)}/session/finish`,
+        { method: "PATCH", keepalive: true }
+      );
+    };
+    window.addEventListener("pagehide", finishOnExit);
+    return () => window.removeEventListener("pagehide", finishOnExit);
+  }, [state.studentId]);
 
   /* ==========================================================
      CARREGAMENTO INICIAL
@@ -591,6 +625,13 @@ export function GameProvider({
           });
         }
       } catch (error: unknown) {
+        try {
+          const key = `trilha_pending_paws_${studentId}`;
+          const pending = Number(localStorage.getItem(key) || 0);
+          localStorage.setItem(key, String(pending + delta));
+        } catch {
+          // O jogo continua funcionando mesmo sem armazenamento local.
+        }
         console.error(
           "Erro ao atualizar patinhas:",
           error
@@ -601,6 +642,27 @@ export function GameProvider({
     },
     [state.studentId]
   );
+
+  useEffect(() => {
+    const studentId = state.studentId;
+    if (!isOnline || !studentId) return;
+    const key = `trilha_pending_paws_${studentId}`;
+    const pending = Number(localStorage.getItem(key) || 0);
+    if (!Number.isInteger(pending) || pending <= 0) return;
+    void fetch(`${API_BASE_URL}/students/${encodeURIComponent(studentId)}/paws`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: pending }),
+    }).then(async (response) => {
+      if (!response.ok) return;
+      const data = await response.json().catch(() => ({}));
+      localStorage.removeItem(key);
+      const savedPaws = Number(data.paws);
+      if (Number.isFinite(savedPaws)) {
+        setState((current) => current.studentId === studentId ? { ...current, paws: savedPaws } : current);
+      }
+    }).catch(() => undefined);
+  }, [isOnline, state.studentId]);
 
   /* ==========================================================
      REGISTRAR ATIVIDADE JOGADA
@@ -670,6 +732,14 @@ export function GameProvider({
          * Patinhas só são concedidas por handleCorrect().
          */
       } catch (error: unknown) {
+        try {
+          const key = `trilha_pending_activities_${studentId}`;
+          const pending = JSON.parse(localStorage.getItem(key) || "[]") as string[];
+          pending.push(normalizedId);
+          localStorage.setItem(key, JSON.stringify(pending.slice(-50)));
+        } catch {
+          // A atividade ainda pode ser jogada se o armazenamento estiver indisponível.
+        }
         console.error(
           "Erro ao registrar atividade jogada:",
           error
@@ -680,6 +750,29 @@ export function GameProvider({
     },
     [state.studentId]
   );
+
+  useEffect(() => {
+    const studentId = state.studentId;
+    if (!isOnline || !studentId) return;
+    const key = `trilha_pending_activities_${studentId}`;
+    let pending: string[];
+    try {
+      pending = JSON.parse(localStorage.getItem(key) || "[]") as string[];
+    } catch {
+      pending = [];
+    }
+    if (pending.length === 0) return;
+    void Promise.all(pending.map((activityId) => fetch(
+      `${API_BASE_URL}/students/${encodeURIComponent(studentId)}/activities`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ activityId }),
+      }
+    ))).then((responses) => {
+      if (responses.every((response) => response.ok)) localStorage.removeItem(key);
+    }).catch(() => undefined);
+  }, [isOnline, state.studentId]);
 
   /* ==========================================================
      FINALIZAR SESSÃO
@@ -775,6 +868,7 @@ export function GameProvider({
     <GameContext.Provider
       value={{
         state,
+        isOnline,
         history,
 
         setPlayerName,

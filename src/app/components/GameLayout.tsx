@@ -9,12 +9,16 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { randomCuriosity } from '../lib/curiosities';
+import { useGame } from './GameContext';
 
 interface GameLayoutProps {
   planetName: string;
   themeColor: string;
   lives: number;
   score: number;
+  level?: number;
+  accuracy?: number;
+  streak?: number;
   gameOver: boolean;
   onRestart: () => void;
   children: React.ReactNode;
@@ -33,10 +37,14 @@ export function GameLayout({
   themeColor,
   lives,
   score,
+  level = 1,
+  accuracy = 0,
+  streak = 0,
   gameOver,
   onRestart,
   children,
 }: GameLayoutProps) {
+  const { isOnline } = useGame();
   const borderHex = BORDER_HEX[themeColor] ?? '#35b35b';
 
   const curiosity = useMemo(
@@ -123,6 +131,28 @@ export function GameLayout({
         </Link>
 
         <div className="flex items-center gap-2.5 text-base font-black sm:gap-6 sm:text-2xl">
+          <span
+            className={`hidden items-center gap-1 rounded-full border px-2 py-1 text-[10px] font-black sm:inline-flex ${
+              isOnline
+                ? 'border-[#57b85b]/50 bg-[#57b85b]/15 text-[#bfe8c5]'
+                : 'border-[#f6a623]/60 bg-[#f6a623]/15 text-[#ffe0a3]'
+            }`}
+            aria-live="polite"
+          >
+            <span aria-hidden="true">{isOnline ? '●' : '○'}</span>
+            {isOnline ? 'Sincronizado' : 'Modo aventura'}
+          </span>
+          <span
+            className="hidden rounded-full border border-[#2a7de1]/50 bg-[#2a7de1]/15 px-2 py-1 text-[10px] font-black text-[#c9e3ff] sm:inline-flex"
+            aria-label={`Nível ${level}, precisão ${accuracy}%`}
+          >
+            Nível {level} · {accuracy}%
+          </span>
+          {streak >= 2 && (
+            <span className="hidden rounded-full border border-[#f6a623]/50 bg-[#f6a623]/15 px-2 py-1 text-[10px] font-black text-[#ffe0a3] sm:inline-flex" aria-live="polite">
+              Sequência {streak} 🔥
+            </span>
+          )}
           {/* Pontuação */}
           <motion.div
             key={score}
@@ -145,13 +175,22 @@ export function GameLayout({
               className="hidden fill-[#f6a623] sm:block"
             />
 
-            <span style={{ fontFamily: 'var(--font-display)' }}>
+            <span
+              style={{ fontFamily: 'var(--font-display)' }}
+              aria-live="polite"
+              aria-label={`Pontuação: ${score} patinhas`}
+            >
               {score}
             </span>
           </motion.div>
 
           {/* Vidas */}
-          <div className="flex items-center gap-0.5 sm:gap-1">
+          <div
+            className="flex items-center gap-0.5 sm:gap-1"
+            role="status"
+            aria-label={`${lives} de 3 vidas restantes`}
+            aria-live="polite"
+          >
             {[...Array(3)].map((_, i) => (
               <motion.div
                 key={i}

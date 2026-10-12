@@ -11,6 +11,7 @@ export function SpeakButton({ text, label = 'Ouvir', size = 24, className = '' }
       whileTap={{ scale: 0.95 }}
       onClick={(e) => { e.stopPropagation(); speak(text); }}
       aria-label={label}
+      title={label}
       className={`inline-flex items-center justify-center gap-2 text-slate-400 hover:text-slate-600 bg-white/50 hover:bg-white/80 rounded-full p-2 transition-colors ${className}`}
     >
       <Volume2 size={size * 0.8} />

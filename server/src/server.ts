@@ -211,6 +211,50 @@ app.post(
   }
 );
 
+app.patch(
+  "/api/students/:studentId",
+  async (req: Request, res: Response) => {
+    try {
+      const studentId = getStudentId(req.params.studentId);
+      const { name, className } = req.body ?? {};
+      const cleanName = typeof name === "string" ? name.trim() : "";
+      const cleanClass = typeof className === "string" ? className.trim() : "";
+
+      if (!studentId || cleanName.length < 2 || cleanName.length > 150) {
+        return res.status(400).json({ error: "Informe um nome válido para o aluno." });
+      }
+      if (cleanClass.length > 100) {
+        return res.status(400).json({ error: "O ano escolar é muito longo." });
+      }
+
+      const [conflicts] = await db.query(
+        `SELECT id FROM students WHERE name = ? AND id <> ? LIMIT 1`,
+        [cleanName, studentId]
+      );
+      if ((conflicts as any[]).length > 0) {
+        return res.status(409).json({ error: "Já existe outro aluno com esse nome." });
+      }
+
+      const [result] = await db.query(
+        `UPDATE students SET name = ?, className = ? WHERE id = ?`,
+        [cleanName, cleanClass || null, studentId]
+      );
+      if ((result as any).affectedRows === 0) {
+        return res.status(404).json({ error: "Aluno não encontrado." });
+      }
+
+      const [rows] = await db.query(
+        `SELECT id, name, className, paws, createdAt, lastAccess FROM students WHERE id = ? LIMIT 1`,
+        [studentId]
+      );
+      return res.json((rows as any[])[0]);
+    } catch (error) {
+      console.error("Erro ao editar aluno:", error);
+      return res.status(500).json({ error: "Erro ao editar aluno." });
+    }
+  }
+);
+
 app.delete(
   "/api/students/:studentId",
   async (

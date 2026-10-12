@@ -12,6 +12,8 @@ import {
   CheckCircle2,
   ChevronRight,
   ClipboardList,
+  Download,
+  Edit3,
   GraduationCap,
   Leaf,
   PawPrint,
@@ -108,7 +110,10 @@ export default function TeacherArea() {
   const [className, setClassName] = useState("");
 
   const [search, setSearch] = useState("");
+  const [classFilter, setClassFilter] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [editingStudent, setEditingStudent] = useState<Student | null>(null);
 
   const [loadingStudents, setLoadingStudents] =
     useState(true);
@@ -250,16 +255,48 @@ export default function TeacherArea() {
   const filteredStudents = useMemo(() => {
     const term = normalize(search);
 
-    if (!term) return students;
+    const byClass = classFilter
+      ? students.filter((student) => student.className === classFilter)
+      : students;
+    const byDate = dateFilter
+      ? byClass.filter((student) => student.createdAt.slice(0, 10) === dateFilter)
+      : byClass;
 
-    return students.filter((student) =>
+    if (!term) return byDate;
+
+    return byDate.filter((student) =>
       normalize(
         `${student.name} ${
           student.className ?? ""
         }`
       ).includes(term)
     );
-  }, [students, search]);
+  }, [students, search, classFilter, dateFilter]);
+
+  const availableClasses = useMemo(
+    () => Array.from(new Set(students.map((student) => student.className).filter(Boolean))) as string[],
+    [students]
+  );
+
+  const exportCsv = useCallback(() => {
+    const header = ["Nome", "Ano escolar", "Patinhas", "Atividades", "Último acesso"];
+    const rows = filteredStudents.map((student) => [
+      student.name,
+      student.className ?? "",
+      String(student.paws ?? 0),
+      String(student.playedActivitiesCount ?? 0),
+      formatDate(student.lastAccess),
+    ]);
+    const csv = [header, ...rows]
+      .map((row) => row.map((value) => `"${value.replaceAll('"', '""')}"`).join(","))
+      .join("\n");
+    const url = URL.createObjectURL(new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" }));
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "relatorio-trilha-do-aprender.csv";
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }, [filteredStudents]);
 
   /*
    * ============================================================
@@ -369,6 +406,37 @@ export default function TeacherArea() {
           ? error.message
           : "Erro ao cadastrar aluno."
       );
+    } finally {
+      setSavingStudent(false);
+    }
+  };
+
+  const handleEditStudent = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!editingStudent) return;
+    const cleanName = name.trim();
+    const cleanClass = className.trim();
+    if (cleanName.length < 2 || !cleanClass) {
+      setError("Informe nome e ano escolar para editar o explorador.");
+      return;
+    }
+    setSavingStudent(true);
+    setError("");
+    try {
+      const response = await fetch(`${API_BASE_URL}/students/${editingStudent.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: cleanName, className: cleanClass }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data?.error || "Não foi possível editar o aluno.");
+      setEditingStudent(null);
+      setName("");
+      setClassName("");
+      await loadStudents();
+      if (selectedId) await loadPerformance(selectedId);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Erro ao editar aluno.");
     } finally {
       setSavingStudent(false);
     }
@@ -591,6 +659,9 @@ export default function TeacherArea() {
                     setShowForm(
                       (value) => !value
                     );
+                    setEditingStudent(null);
+                    setName("");
+                    setClassName("");
                     setError("");
                   }}
                   className={`flex h-9 w-9 items-center justify-center rounded-lg transition ${
@@ -624,7 +695,7 @@ export default function TeacherArea() {
                 <div className="mb-3">
 
                   <p className="text-xs font-black text-[#294A37]">
-                    Novo explorador
+                    {editingStudent ? "Editar explorador" : "Novo explorador"}
                   </p>
 
                   <p className="mt-0.5 text-[10px] font-semibold text-[#89958B]">
@@ -634,7 +705,7 @@ export default function TeacherArea() {
                 </div>
 
                 <form
-                  onSubmit={handleSubmit}
+                  onSubmit={editingStudent ? handleEditStudent : handleSubmit}
                   className="space-y-2.5"
                 >
 
@@ -692,7 +763,9 @@ export default function TeacherArea() {
 
                     {savingStudent
                       ? "Salvando..."
-                      : "Cadastrar aluno"}
+                      : editingStudent
+                        ? "Salvar alterações"
+                        : "Cadastrar aluno"}
                   </button>
 
                 </form>
@@ -736,6 +809,31 @@ export default function TeacherArea() {
                 )}
 
               </div>
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                <select
+                  value={classFilter}
+                  onChange={(event) => setClassFilter(event.target.value)}
+                  aria-label="Filtrar por ano escolar"
+                  className="min-w-0 rounded-lg border border-[#DDDACC] bg-[#F7F5EC] px-2 py-2 text-[10px] font-bold text-[#294A37] outline-none"
+                >
+                  <option value="">Todos os anos</option>
+                  {availableClasses.map((item) => <option key={item} value={item}>{item}</option>)}
+                </select>
+                <input
+                  type="date"
+                  value={dateFilter}
+                  onChange={(event) => setDateFilter(event.target.value)}
+                  aria-label="Filtrar por data de cadastro"
+                  className="min-w-0 rounded-lg border border-[#DDDACC] bg-[#F7F5EC] px-2 py-2 text-[10px] font-bold text-[#294A37] outline-none"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={exportCsv}
+                className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg border border-[#C9D7C3] bg-white px-3 py-2 text-[10px] font-black text-[#365842] transition hover:bg-[#F0F6EB]"
+              >
+                <Download size={13} /> Exportar mural filtrado (CSV)
+              </button>
             </div>
 
             {/* ==================================================
@@ -923,6 +1021,20 @@ export default function TeacherArea() {
                       <button
                         type="button"
                         onClick={() => {
+                          if (!selectedStudent) return;
+                          setEditingStudent(selectedStudent);
+                          setName(selectedStudent.name);
+                          setClassName(selectedStudent.className ?? "");
+                          setShowForm(true);
+                        }}
+                        className="flex items-center gap-1 rounded-lg border border-[#C9D7C3] bg-white px-3 py-2 text-[11px] font-black text-[#365842] hover:bg-[#F6F8F1]"
+                      >
+                        <Edit3 size={14} /> Editar
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
                           if (selectedId) {
                             loadPerformance(
                               selectedId
@@ -1074,14 +1186,14 @@ export default function TeacherArea() {
                         size={17}
                       />
                     }
-                    title="Atividades concluídas"
-                    description="Desafios já realizados"
+                    title="Atividades jogadas"
+                    description="Explorações registradas na trilha"
                   >
 
                     {selectedPerformance
                       .activities.length ===
                     0 ? (
-                      <CompactEmpty text="Nenhuma atividade concluída ainda." />
+                          <CompactEmpty text="Nenhuma atividade jogada ainda." />
                     ) : (
                       <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
 

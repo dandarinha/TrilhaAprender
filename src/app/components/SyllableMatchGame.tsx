@@ -308,6 +308,9 @@ export default function SyllableMatchGame() {
     handleCorrect,
     handleWrong,
     resetGame,
+    progressLevel,
+    accuracy,
+    streak,
   } = useGameLogic();
 
   const [levelIndex, setLevelIndex] = useState(0);
@@ -413,6 +416,9 @@ export default function SyllableMatchGame() {
       themeColor="blue"
       lives={lives}
       score={score}
+      level={progressLevel}
+      accuracy={accuracy}
+      streak={streak}
       gameOver={gameOver}
       onRestart={() => {
         resetGame();

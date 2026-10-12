@@ -131,6 +131,9 @@ export function AdditionGame() {
     handleCorrect,
     handleWrong,
     resetGame,
+    progressLevel,
+    accuracy,
+    streak,
   } = useGameLogic();
 
   const [round, setRound] = useState(0);
@@ -229,6 +232,9 @@ export function AdditionGame() {
       themeColor="red"
       lives={lives}
       score={score}
+      level={progressLevel}
+      accuracy={accuracy}
+      streak={streak}
       gameOver={gameOver}
       onRestart={handleRestart}
     >
@@ -319,6 +325,9 @@ export function SubtractionGame() {
     handleCorrect,
     handleWrong,
     resetGame,
+    progressLevel,
+    accuracy,
+    streak,
   } = useGameLogic();
 
   const [round, setRound] = useState(0);
@@ -417,6 +426,9 @@ export function SubtractionGame() {
       themeColor="blue"
       lives={lives}
       score={score}
+      level={progressLevel}
+      accuracy={accuracy}
+      streak={streak}
       gameOver={gameOver}
       onRestart={handleRestart}
     >
@@ -526,6 +538,9 @@ export function CountingGame() {
     handleCorrect,
     handleWrong,
     resetGame,
+    progressLevel,
+    accuracy,
+    streak,
   } = useGameLogic();
 
   const [round, setRound] = useState(0);
@@ -665,6 +680,9 @@ export function CountingGame() {
       themeColor="yellow"
       lives={lives}
       score={score}
+      level={progressLevel}
+      accuracy={accuracy}
+      streak={streak}
       gameOver={gameOver}
       onRestart={handleRestart}
     >
