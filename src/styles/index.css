@@ -1515,3 +1515,211 @@ select:disabled { opacity: .62; }
 .teacher-page .teacher-header h1,
 .teacher-page .teacher-header span,
 .teacher-page .teacher-header a { color: #000000 !important; }
+
+
+/* =============================================================
+   MURAL DE EXPLORADORES — RESPONSIVIDADE E REDESIGN
+   Evita largura excedente, corte lateral e conflitos de estilos.
+============================================================= */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.app-shell,
+.app-shell > div,
+.app-shell .explorer-screen,
+.app-shell .explorer-board,
+.app-shell .explorer-grid,
+.app-shell .explorer-card {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.app-shell .explorer-screen {
+  width: min(100%, 76rem) !important;
+  margin-inline: auto;
+  overflow: visible;
+}
+
+.app-shell .explorer-header,
+.app-shell .explorer-board {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Tela: clareira central com moldura escura, sem aparência de painel gigante. */
+.app-shell .explorer-screen {
+  padding: clamp(.75rem, 2.5vw, 1.25rem) !important;
+  border: 3px solid #6A9876 !important;
+  border-radius: 1.5rem !important;
+  background: rgba(255,244,232,.98) !important;
+  box-shadow: 0 8px 0 rgba(3,34,19,.3), 0 18px 34px rgba(3,34,19,.22) !important;
+}
+
+.app-shell .explorer-header {
+  padding: clamp(.85rem, 2vw, 1.35rem) !important;
+  border: 2px solid #FF9A5C !important;
+  border-radius: 1.15rem !important;
+  background: linear-gradient(135deg, #FFF4E8, #FFE4CC) !important;
+  box-shadow: 0 3px 0 rgba(185,39,10,.2) !important;
+}
+
+.app-shell .explorer-header > div:first-child {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  background: #A7C9B0 !important;
+  border-color: #6A9876 !important;
+  color: #000000 !important;
+}
+
+.app-shell .explorer-header > div:first-child span,
+.app-shell .explorer-header > div:first-child svg { color: #000000 !important; }
+
+.app-shell .explorer-header h1 {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  color: #0B4D2B !important;
+  background: none !important;
+  -webkit-text-fill-color: #0B4D2B !important;
+  text-shadow: none !important;
+}
+
+.app-shell .explorer-header p { color: #000000 !important; }
+
+.app-shell .explorer-board {
+  padding: clamp(.75rem, 2vw, 1rem) !important;
+  border: 2px solid #A7C9B0 !important;
+  border-radius: 1.15rem !important;
+  background: #FFF4E8 !important;
+  box-shadow: none !important;
+}
+
+.app-shell .explorer-board > div:first-child {
+  min-width: 0;
+  align-items: stretch;
+}
+
+.app-shell .explorer-board > div:first-child > div:first-child {
+  min-width: 0;
+}
+
+.app-shell .explorer-board > div:first-child > div:first-child > div:first-child {
+  background: #E8F1E8 !important;
+  border-color: #A7C9B0 !important;
+  color: #0B4D2B !important;
+}
+
+.app-shell .explorer-board h2,
+.app-shell .explorer-board p,
+.app-shell .explorer-board label { color: #000000 !important; }
+
+.app-shell .explorer-board input {
+  width: 100%;
+  min-width: 0;
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  border: 2px solid #6A9876 !important;
+}
+
+.app-shell .explorer-board input::placeholder { color: rgba(0,0,0,.58) !important; }
+
+.app-shell .explorer-grid {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+  .app-shell .explorer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+  .app-shell .explorer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1280px) {
+  .app-shell .explorer-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* Card de explorador: compacto, sem elementos saindo da largura disponível. */
+.app-shell .explorer-card {
+  min-height: 10rem;
+  padding: .8rem !important;
+  border: 2px solid #B9270A !important;
+  border-radius: 1.1rem !important;
+  background: linear-gradient(145deg, #FFD2B8, #FFB27A) !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 0 rgba(122,32,15,.28), 0 8px 14px rgba(11,77,43,.1) !important;
+}
+
+.app-shell .explorer-card:hover {
+  border-color: #0B4D2B !important;
+  background: linear-gradient(145deg, #FFB27A, #FF9A5C) !important;
+}
+
+.app-shell .explorer-card > div,
+.app-shell .explorer-card h2,
+.app-shell .explorer-card p,
+.app-shell .explorer-card span { min-width: 0; }
+
+.app-shell .explorer-card h2 {
+  max-width: 100%;
+  overflow: hidden;
+  color: #000000 !important;
+  font-size: clamp(1rem, 2vw, 1.15rem) !important;
+  line-height: 1.15 !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-shell .explorer-card p { color: #000000 !important; }
+
+.app-shell .explorer-card > div:nth-last-child(1) {
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: .45rem;
+}
+
+.app-shell .explorer-card > div:nth-last-child(1) > span:first-child {
+  max-width: 58%;
+  overflow: hidden;
+  color: #000000 !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-shell .explorer-card > div:nth-last-child(1) > span:last-child {
+  background: #FFF4E8 !important;
+  color: #000000 !important;
+  border: 2px solid #B9270A;
+  box-shadow: 0 2px 0 rgba(122,32,15,.22) !important;
+}
+
+.app-shell .explorer-card > div:nth-last-child(1) > span:last-child svg,
+.app-shell .explorer-card > div:nth-child(2) svg { color: #B9270A !important; }
+
+.app-shell .explorer-card > div:first-of-type > div > span:first-child {
+  background: #E8F1E8 !important;
+  border-color: #6A9876 !important;
+  color: #000000 !important;
+}
+
+.app-shell .explorer-card > div:first-of-type > div > span:last-child { color: #000000 !important; }
+
+.app-shell .explorer-board [class*="min-h-[220px"] {
+  background: #E8F1E8 !important;
+  border-color: #6A9876 !important;
+}
+
+@media (max-width: 639px) {
+  .app-shell .explorer-screen { gap: .7rem !important; }
+  .app-shell .explorer-board > div:first-child { gap: .7rem !important; }
+  .app-shell .explorer-card { min-height: 9.25rem; }
+}

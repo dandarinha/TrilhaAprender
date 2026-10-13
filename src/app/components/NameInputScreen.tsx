@@ -169,7 +169,7 @@ export function NameInputScreen({
       transition={{
         duration: 0.25,
       }}
-      className="player-screen relative z-10 flex w-full max-w-6xl flex-col gap-4 px-3 py-4 sm:px-5 sm:py-5"
+      className="player-screen explorer-screen relative z-10 flex w-full max-w-6xl min-w-0 flex-col gap-4 px-3 py-4 sm:px-5 sm:py-5"
     >
       {/* ========================================================
           BARRA SUPERIOR
@@ -203,7 +203,7 @@ export function NameInputScreen({
           opacity: 1,
           y: 0,
         }}
-        className="forest-panel-light rounded-3xl p-4 text-center sm:p-6"
+        className="forest-panel-light explorer-header rounded-3xl p-4 text-center sm:p-6"
       >
         <div className="mb-2 flex items-center gap-2 rounded-full border border-[#6A9876]/40 bg-[#0B4D2B]/75 px-3.5 py-1.5 shadow-[0_0_18px_rgba(53,179,91,0.16)] backdrop-blur-md">
           <Leaf
@@ -254,7 +254,7 @@ export function NameInputScreen({
           ÁREA DO MURAL
       ======================================================== */}
 
-      <section className="forest-panel-light w-full rounded-[22px] p-3 sm:p-4">
+      <section className="forest-panel-light explorer-board w-full min-w-0 rounded-[22px] p-3 sm:p-4">
 
         {/* ======================================================
             CABEÇALHO DO MURAL
@@ -382,7 +382,7 @@ export function NameInputScreen({
              CARDS DOS ALUNOS
           ==================================================== */
 
-          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="explorer-grid grid w-full min-w-0 grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 
             {visibleStudents.map(
               (student, index) => {
@@ -425,7 +425,7 @@ export function NameInputScreen({
                       )
                     }
                     disabled={isSelecting}
-                    className="group relative flex min-h-[112px] flex-col overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-[#0B4D2B] via-[#155A35] to-[#155A35] p-3 text-left shadow-[0_4px_0_rgba(0,0,0,0.22)] transition-all hover:border-[#F45A0A]/80 hover:shadow-[0_6px_18px_rgba(0,0,0,0.2)] disabled:cursor-wait disabled:opacity-60"
+                    className="explorer-card group relative flex min-h-[112px] min-w-0 w-full flex-col overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-[#0B4D2B] via-[#155A35] to-[#155A35] p-3 text-left shadow-[0_4px_0_rgba(0,0,0,0.22)] transition-all hover:border-[#F45A0A]/80 hover:shadow-[0_6px_18px_rgba(0,0,0,0.2)] disabled:cursor-wait disabled:opacity-60"
                   >
                     {/* ==================================================
                         DECORAÇÃO
