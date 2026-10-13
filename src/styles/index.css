@@ -1723,3 +1723,79 @@ body,
   .app-shell .explorer-board > div:first-child { gap: .7rem !important; }
   .app-shell .explorer-card { min-height: 9.25rem; }
 }
+
+
+/* =============================================================
+   MURAL — HIERARQUIA COLORIDA COM CONTRASTE
+   O grid se adapta à quantidade real de exploradores.
+============================================================= */
+.app-shell .explorer-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)) !important;
+  justify-content: start;
+  align-items: stretch;
+}
+
+.app-shell .explorer-card {
+  min-height: 11.5rem;
+  padding: 1rem !important;
+  background: linear-gradient(145deg, #FFD2B8 0%, #FFB27A 100%) !important;
+}
+
+/* Títulos e destaques usam cores escuras da paleta sobre fundos claros. */
+.app-shell .explorer-header h1 {
+  background: linear-gradient(100deg, #0B4D2B 0%, #B9270A 52%, #D98B05 100%) !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+}
+
+.app-shell .explorer-board h2 { color: #0B4D2B !important; }
+.app-shell .explorer-board > div:first-child > div:first-child > div:first-child svg {
+  color: #B9270A !important;
+}
+
+.app-shell .explorer-card > div:first-of-type > div > span:first-child {
+  background: #F4A08B !important;
+  border-color: #B9270A !important;
+  color: #7A200F !important;
+}
+
+.app-shell .explorer-card > div:first-of-type > div > span:last-child {
+  color: #0B4D2B !important;
+}
+
+.app-shell .explorer-card h2 {
+  color: #0B4D2B !important;
+  font-size: clamp(1.08rem, 2.2vw, 1.3rem) !important;
+}
+
+.app-shell .explorer-card p {
+  color: #173C2A !important;
+}
+
+.app-shell .explorer-card > div:nth-last-child(1) > span:first-child {
+  color: #7A200F !important;
+}
+
+.app-shell .explorer-card > div:nth-last-child(1) > span:last-child {
+  background: #0B4D2B !important;
+  color: #FFF4E8 !important;
+  border-color: #063A20 !important;
+}
+
+.app-shell .explorer-card > div:nth-last-child(1) > span:last-child svg {
+  color: #FF9A5C !important;
+}
+
+/* O texto de apoio permanece preto para não competir com os destaques. */
+.app-shell .explorer-header p,
+.app-shell .explorer-board > div:first-child p,
+.app-shell .explorer-board input,
+.app-shell .explorer-board input::placeholder { color: #000000 !important; }
+
+@media (max-width: 639px) {
+  .app-shell .explorer-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
