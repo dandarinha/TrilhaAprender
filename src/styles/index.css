@@ -1860,3 +1860,86 @@ body,
 
   .app-shell .explorer-card { max-width: 20rem !important; }
 }
+
+/* =============================================================
+   CONTRASTE FINAL — LETREIROS DO MURAL
+   Destaques cromáticos escuros sobre superfícies claras.
+============================================================= */
+.app-shell .explorer-screen { color: #000000 !important; }
+.app-shell .explorer-screen > div:first-child button {
+  background: #B9270A !important;
+  border-color: #7A200F !important;
+  color: #FFF4E8 !important;
+  box-shadow: 0 3px 0 #7A200F !important;
+}
+.app-shell .explorer-screen > div:first-child button svg { color: #FFF4E8 !important; }
+.app-shell .explorer-header {
+  border-color: #6A9876 !important;
+  background: linear-gradient(135deg, #FFF4E8 0%, #FFE4CC 100%) !important;
+}
+.app-shell .explorer-header > div:first-child {
+  background: #7A200F !important;
+  border-color: #B9270A !important;
+  color: #FFF4E8 !important;
+  box-shadow: 0 2px 0 rgba(122,32,15,.3) !important;
+}
+.app-shell .explorer-header > div:first-child span,
+.app-shell .explorer-header > div:first-child svg { color: #FFF4E8 !important; }
+.app-shell .explorer-header h1 {
+  color: #0B4D2B !important;
+  background: linear-gradient(100deg, #0B4D2B 0%, #7A200F 52%, #D98B05 100%) !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+}
+.app-shell .explorer-header p,
+.app-shell .explorer-board > div:first-child p { color: #173C2A !important; }
+.app-shell .explorer-board {
+  border-color: #6A9876 !important;
+  background: #FFF4E8 !important;
+}
+.app-shell .explorer-board > div:first-child > div:first-child > div:first-child {
+  background: #E8F1E8 !important;
+  border-color: #6A9876 !important;
+}
+.app-shell .explorer-board h2 { color: #0B4D2B !important; }
+.app-shell .explorer-board input {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  border-color: #2F754A !important;
+}
+.app-shell .explorer-board input::placeholder { color: #526A5A !important; }
+.app-shell .explorer-card {
+  background: linear-gradient(145deg, #FFD2B8 0%, #FFB27A 100%) !important;
+  border-color: #B9270A !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 0 rgba(122,32,15,.32), 0 8px 14px rgba(11,77,43,.12) !important;
+}
+.app-shell .explorer-card:hover {
+  background: linear-gradient(145deg, #FFB27A 0%, #FF9A5C 100%) !important;
+  border-color: #0B4D2B !important;
+}
+.app-shell .explorer-card > div:first-of-type > div:first-child > span:first-child {
+  background: #F4A08B !important;
+  border-color: #7A200F !important;
+  color: #7A200F !important;
+}
+.app-shell .explorer-card > div:first-of-type > div:first-child > span:last-child {
+  background: #7A200F !important;
+  border-color: #7A200F !important;
+  color: #FFF4E8 !important;
+  box-shadow: 0 2px 0 rgba(122,32,15,.25) !important;
+}
+.app-shell .explorer-card > div:first-of-type > div:first-child > span:last-child svg { color: #FFB27A !important; }
+.app-shell .explorer-card h2 { color: #0B4D2B !important; text-shadow: none !important; }
+.app-shell .explorer-card p { color: #173C2A !important; }
+.app-shell .explorer-card > div:nth-last-child(1) > span:first-child { color: #7A200F !important; }
+.app-shell .explorer-card > div:nth-last-child(1) > span:last-child {
+  background: #0B4D2B !important;
+  border-color: #063A20 !important;
+  color: #FFF4E8 !important;
+  box-shadow: 0 3px 0 #063A20 !important;
+}
+.app-shell .explorer-card > div:nth-last-child(1) > span:last-child svg { color: #FFB27A !important; }
+.app-shell .explorer-screen > div:last-child { color: #173C2A !important; }
