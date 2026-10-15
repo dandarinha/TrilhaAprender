@@ -2180,3 +2180,117 @@ body,
   .app-shell .adventure-curiosity { padding: .7rem !important; margin-bottom: .7rem !important; }
   .app-shell .adventure-finish button { min-height: 2.75rem; padding-block: .65rem !important; }
 }
+
+/* =============================================================
+   ÁREA DO PROFESSOR — CABEÇALHO DE DESEMPENHO
+   Identidade, ações e informações não competem pelo mesmo espaço.
+============================================================= */
+.teacher-performance-header-inner {
+  min-width: 0;
+}
+
+.teacher-performance-identity {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.teacher-performance-identity-copy {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.teacher-performance-identity-copy h2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.teacher-performance-actions {
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.teacher-performance-actions button {
+  min-height: 2.25rem;
+  white-space: nowrap;
+}
+
+.teacher-performance-panel .grid > * {
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .teacher-performance-header {
+    padding: .85rem !important;
+  }
+
+  .teacher-performance-header-inner {
+    align-items: stretch !important;
+    flex-direction: column;
+    gap: .8rem !important;
+  }
+
+  .teacher-performance-identity {
+    width: 100%;
+    gap: .65rem !important;
+  }
+
+  .teacher-performance-identity > div:first-child {
+    width: 2.75rem !important;
+    height: 2.75rem !important;
+    border-radius: .85rem !important;
+  }
+
+  .teacher-performance-identity-copy p:first-child {
+    font-size: .56rem !important;
+    line-height: 1.1;
+  }
+
+  .teacher-performance-identity-copy h2 {
+    max-width: 100%;
+    font-size: 1.05rem !important;
+    line-height: 1.15 !important;
+  }
+
+  .teacher-performance-identity-copy p:last-child {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    font-size: .72rem !important;
+    line-height: 1.2;
+  }
+
+  .teacher-performance-actions {
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 2.5rem;
+    gap: .5rem !important;
+  }
+
+  .teacher-performance-actions button {
+    width: 100%;
+    justify-content: center;
+    min-width: 0;
+    padding: .55rem .5rem !important;
+    font-size: .68rem !important;
+  }
+
+  .teacher-performance-actions button:last-child {
+    padding-inline: 0 !important;
+  }
+
+  .teacher-performance-panel > div:last-child {
+    padding: .85rem !important;
+  }
+
+  .teacher-performance-panel > div:last-child > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: .55rem !important;
+    padding: .75rem !important;
+  }
+
+  .teacher-performance-panel > div:last-child > div:first-child > span {
+    align-self: flex-start;
+  }
+}

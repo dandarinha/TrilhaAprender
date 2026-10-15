@@ -972,7 +972,7 @@ export default function TeacherArea() {
               PAINEL DE DESEMPENHO
           ==================================================== */}
 
-          <section className="min-w-0 overflow-hidden rounded-2xl border border-[#D9D5C2] bg-[#FFFDF5] shadow-[0_6px_20px_rgba(30,70,45,0.06)]">
+          <section className="teacher-performance-panel min-w-0 overflow-hidden rounded-2xl border border-[#D9D5C2] bg-[#FFFDF5] shadow-[0_6px_20px_rgba(30,70,45,0.06)]">
 
             {!selectedStudent ? (
               <EmptyPerformance />
@@ -987,17 +987,17 @@ export default function TeacherArea() {
                     CABEÇALHO
                 ================================================== */}
 
-                <div className="border-b border-[#D9E4D3] bg-[#DCEBDD] px-5 py-4">
+                <div className="teacher-performance-header border-b border-[#D9E4D3] bg-[#DCEBDD] px-5 py-4">
 
-                  <div className="flex items-center justify-between gap-4">
+                  <div className="teacher-performance-header-inner flex items-center justify-between gap-4">
 
-                    <div className="flex min-w-0 items-center gap-3">
+                    <div className="teacher-performance-identity flex min-w-0 items-center gap-3">
 
                       <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#2E7547] text-white">
                         <UserRound size={22} />
                       </div>
 
-                      <div className="min-w-0">
+                      <div className="teacher-performance-identity-copy min-w-0">
 
                         <p className="text-[9px] font-black uppercase tracking-[0.16em] text-[#4F7F60]">
                           Jornada do explorador
@@ -1020,7 +1020,7 @@ export default function TeacherArea() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="teacher-performance-actions flex items-center gap-2">
 
                       <button
                         type="button"
