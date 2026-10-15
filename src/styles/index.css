@@ -2294,3 +2294,13 @@ body,
     align-self: flex-start;
   }
 }
+
+/* Título dos biomas: destaque cromático sem branco sobre a clareira. */
+.app-shell .biome-select-screen > div:first-child h1 {
+  color: #0B4D2B !important;
+  background: linear-gradient(100deg, #0B4D2B 0%, #7A200F 52%, #9A6400 100%) !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: 0 2px 0 rgba(255,244,232,.85) !important;
+}
