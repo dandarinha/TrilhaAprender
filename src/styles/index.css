@@ -2304,3 +2304,14 @@ body,
   -webkit-text-fill-color: transparent !important;
   text-shadow: 0 2px 0 rgba(255,244,232,.85) !important;
 }
+
+/* Título de biomas: cor sólida para máxima leitura sobre a clareira. */
+.app-shell .biome-select-screen > div:first-child h1 {
+  color: #063A20 !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: #063A20 !important;
+  text-shadow: 0 2px 0 rgba(255,244,232,.9) !important;
+}
