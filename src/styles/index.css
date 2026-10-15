@@ -1943,3 +1943,240 @@ body,
 }
 .app-shell .explorer-card > div:nth-last-child(1) > span:last-child svg { color: #FFB27A !important; }
 .app-shell .explorer-screen > div:last-child { color: #173C2A !important; }
+
+/* =============================================================
+   CONTRASTE E MOBILE — CAMADA FINAL
+   Texto claro somente em superfícies escuras; texto escuro em
+   cartões, painéis e gradientes claros.
+============================================================= */
+
+/* Superfícies claras do fluxo de entrada */
+.app-shell .explorer-header,
+.app-shell .explorer-board,
+.app-shell .forest-panel-light,
+.app-shell .player-screen {
+  color: #000000;
+}
+
+.app-shell .explorer-header p,
+.app-shell .explorer-board p,
+.app-shell .explorer-board label,
+.app-shell .forest-panel-light p {
+  color: #173C2A !important;
+}
+
+/* Mural: elimina classes legadas de branco sobre fundo creme. */
+.app-shell .explorer-board h2 { color: #0B4D2B !important; }
+.app-shell .explorer-board input {
+  color: #000000 !important;
+  background: #FFFFFF !important;
+}
+.app-shell .explorer-board input::placeholder { color: #526A5A !important; }
+
+/* Cartões de exploração têm fundo pêssego: letras escuras e legíveis. */
+.app-shell .explorer-card h2 { color: #0B4D2B !important; }
+.app-shell .explorer-card p,
+.app-shell .explorer-card > div:nth-last-child(1) > span:first-child {
+  color: #173C2A !important;
+}
+.app-shell .explorer-card > div:first-of-type > div:first-child > span:first-child {
+  color: #7A200F !important;
+}
+
+/* Tela de biomas: conteúdo em uma placa clara para funcionar em ambos os gradientes. */
+.app-shell .habitat-card > div:last-child {
+  border-radius: 1rem;
+  padding: .55rem .75rem;
+  background: rgba(255,244,232,.9);
+  box-shadow: 0 3px 0 rgba(3,34,19,.2);
+}
+.app-shell .habitat-card h3,
+.app-shell .habitat-card p {
+  color: #173C2A !important;
+  text-shadow: none !important;
+}
+
+/* Trilhas: painel interno claro evita branco sobre amarelo/azul claro. */
+.app-shell .path-card > div.relative {
+  border-radius: 1rem;
+  padding: .45rem .6rem;
+  background: rgba(255,244,232,.92);
+  box-shadow: 0 3px 0 rgba(3,34,19,.2);
+}
+.app-shell .path-card h3 { color: #173C2A !important; }
+.app-shell .path-card > div.relative > div:last-child {
+  border-color: #6A9876 !important;
+  background: #FFF4E8 !important;
+  color: #173C2A !important;
+}
+.app-shell .path-card > div.relative > div:last-child span { color: #173C2A !important; }
+
+/* Títulos continuam coloridos, mas nunca dependem de branco para leitura. */
+.app-shell .biome-select-screen > div:first-child h1,
+.app-shell .trail-select-screen h1,
+.app-shell .landing-title {
+  text-shadow: 0 2px 0 rgba(255,244,232,.7);
+}
+
+/* Controles escuros preservam texto creme porque há contraste suficiente. */
+.app-shell .explorer-screen > div:first-child button,
+.app-shell .trail-select-screen > div:first-child button,
+.app-shell .home-header button {
+  color: #FFF4E8 !important;
+}
+
+/* Mobile: menos moldura e espaço desperdiçado, sem diminuir áreas de toque. */
+@media (max-width: 640px) {
+  .app-shell {
+    padding-inline: .5rem !important;
+  }
+
+  .app-shell .landing-screen,
+  .app-shell .biome-select-screen,
+  .app-shell .trail-select-screen,
+  .app-shell .player-screen {
+    gap: .75rem !important;
+    padding: .75rem .5rem !important;
+  }
+
+  .app-shell .landing-screen { min-height: calc(100dvh - 1rem); }
+  .app-shell .landing-screen > div { gap: .5rem !important; }
+  .app-shell .landing-title { font-size: clamp(2.25rem, 13vw, 3.5rem) !important; line-height: .98 !important; }
+  .app-shell .landing-action { min-width: 11rem !important; padding: .75rem 1.25rem !important; }
+  .app-shell .landing-action > div { font-size: 1.45rem !important; }
+  .app-shell .landing-screen > a {
+    position: static !important;
+    align-self: flex-end;
+    margin-bottom: .25rem;
+    font-size: .65rem !important;
+    padding: .5rem .7rem !important;
+  }
+
+  .app-shell .biome-select-screen h1,
+  .app-shell .trail-select-screen h1 { font-size: clamp(1.55rem, 8vw, 2.25rem) !important; }
+  .app-shell .biome-select-screen > div:last-child { gap: .75rem !important; }
+  .app-shell .habitat-card { min-height: 11rem !important; padding: .85rem !important; border-radius: 1.25rem !important; }
+  .app-shell .habitat-emblem { width: 4.25rem !important; height: 4.25rem !important; font-size: 2.4rem !important; }
+  .app-shell .habitat-card > div:last-child { padding: .4rem .55rem; }
+  .app-shell .habitat-card h3 { font-size: 1.1rem !important; }
+  .app-shell .habitat-card p { font-size: .8rem !important; }
+
+  .app-shell .trail-select-screen > div:first-child { padding: .45rem !important; }
+  .app-shell .trail-select-screen > div:first-child button { padding: .6rem !important; }
+  .app-shell .trail-select-screen > p { font-size: .8rem !important; }
+  .app-shell .trail-select-screen > div:last-child { gap: .65rem !important; }
+  .app-shell .path-card { min-height: 5.5rem !important; padding: .55rem !important; }
+  .app-shell .path-card > div.relative { gap: .55rem !important; padding: .35rem .45rem !important; }
+  .app-shell .path-emblem { width: 2.75rem !important; height: 2.75rem !important; }
+  .app-shell .path-card h3 { font-size: .85rem !important; }
+  .app-shell .path-card > div.relative > div:last-child { padding: .25rem .5rem !important; }
+  .app-shell .path-card > div.relative > div:last-child span { font-size: .65rem !important; }
+
+  .app-shell .explorer-header { padding: .8rem !important; border-radius: 1rem !important; }
+  .app-shell .explorer-header h1 { font-size: clamp(1.65rem, 8vw, 2.25rem) !important; }
+  .app-shell .explorer-header p { font-size: .72rem !important; }
+  .app-shell .explorer-board { padding: .7rem !important; border-radius: 1rem !important; }
+  .app-shell .explorer-board > div:first-child { gap: .65rem !important; margin-bottom: .7rem !important; }
+  .app-shell .explorer-card { min-height: 10.5rem !important; padding: .8rem !important; }
+
+  .app-shell .home-header { padding: .65rem .75rem !important; }
+  .app-shell .home-header > div:first-child { gap: .5rem !important; }
+  .app-shell .home-header > div:first-child > div:first-child { width: 2.45rem !important; height: 2.45rem !important; }
+  .app-shell .home-header h2 { font-size: .78rem !important; }
+  .app-shell .home-header p { font-size: .62rem !important; }
+  .app-shell .home-header > div:last-child { gap: .4rem !important; }
+  .app-shell .home-header > div:last-child > div { padding: .35rem .55rem !important; border-width: 2px !important; }
+  .app-shell .home-header > div:last-child button { padding: .45rem .55rem !important; }
+}
+
+/* =============================================================
+   MINIGAMES — CONTRASTE DE SUPERFÍCIES E USO MOBILE
+============================================================= */
+/* O palco é escuro; portanto textos claros permanecem legíveis. */
+.app-shell .game-layout .game-stage,
+.app-shell .adventure-stage,
+.game-layout .game-stage,
+.adventure-stage {
+  background: linear-gradient(145deg, #173D2B 0%, #0B4D2B 58%, #07391F 100%) !important;
+  color: #FFF4E8 !important;
+  border-color: #6A9876 !important;
+}
+
+/* Quando um componente abrir uma placa clara, sua tipografia fica escura. */
+.game-layout .game-stage [class*="bg-white"],
+.game-layout .game-stage [class*="bg-[#FFF4E8"],
+.game-layout .game-stage [class*="bg-cream"] {
+  color: #173C2A !important;
+}
+
+/* Amarelo claro exige texto escuro, mesmo em botões de resposta. */
+.game-layout .game-stage button[class*="from-yellow"],
+.game-layout .game-stage button[class*="bg-yellow"] {
+  color: #173C2A !important;
+}
+
+/* Mobile: HUD não comprime o título nem cria transbordamento horizontal. */
+@media (max-width: 640px) {
+  .app-shell .game-layout {
+    min-height: 100dvh !important;
+  }
+
+  .app-shell .game-layout > header {
+    min-height: 3.25rem;
+    padding: .45rem .6rem !important;
+  }
+
+  .app-shell .game-layout > header > div:last-child {
+    gap: .3rem !important;
+  }
+
+  .app-shell .game-layout .hud-pill {
+    min-height: 1.65rem !important;
+    padding: .2rem .38rem !important;
+    font-size: .58rem !important;
+  }
+
+  .app-shell .game-layout .hud-pill svg { width: 1rem; height: 1rem; }
+
+  .app-shell .game-layout > main {
+    padding: .6rem .45rem 1rem !important;
+  }
+
+  .app-shell .game-layout > main > div {
+    gap: .55rem !important;
+  }
+
+  .app-shell .game-layout .adventure-title {
+    max-width: calc(100vw - 2rem);
+    padding: .35rem .65rem !important;
+    font-size: .72rem !important;
+  }
+
+  .app-shell .game-layout .game-stage,
+  .app-shell .game-layout .adventure-stage {
+    max-width: calc(100vw - 1rem) !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: calc(100dvh - 8rem) !important;
+    padding: .7rem !important;
+    border-width: 3px !important;
+    border-radius: 1rem !important;
+  }
+
+  .app-shell .game-layout--addition .game-stage,
+  .app-shell .game-layout--subtraction .game-stage,
+  .app-shell .game-layout--counting .game-stage { min-height: 22rem !important; }
+  .app-shell .game-layout--words .game-stage { min-height: 25rem !important; }
+  .app-shell .game-layout--rhymes .game-stage { min-height: 23rem !important; }
+  .app-shell .game-layout--syllables .game-stage { min-height: 24rem !important; }
+
+  .app-shell .adventure-finish {
+    max-width: calc(100vw - 1rem) !important;
+    padding: .9rem !important;
+    border-width: 3px !important;
+  }
+
+  .app-shell .adventure-finish p { margin-bottom: .65rem !important; }
+  .app-shell .adventure-curiosity { padding: .7rem !important; margin-bottom: .7rem !important; }
+  .app-shell .adventure-finish button { min-height: 2.75rem; padding-block: .65rem !important; }
+}
