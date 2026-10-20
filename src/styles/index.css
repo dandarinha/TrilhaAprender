@@ -2381,3 +2381,29 @@ body,
   opacity: 1 !important;
   text-shadow: 0 1px 0 rgba(0, 0, 0, .28);
 }
+
+/* Tela final: curiosidade clara com toda a leitura em preto. */
+.game-layout .adventure-finish h2 {
+  color: #0B4D2B !important;
+  -webkit-text-fill-color: #0B4D2B !important;
+  background: none !important;
+  background-image: none !important;
+  text-shadow: none !important;
+}
+
+.game-layout .adventure-finish > p,
+.game-layout .adventure-curiosity p,
+.game-layout .adventure-curiosity strong,
+.game-layout .curiosity-card p,
+.game-layout .curiosity-card strong {
+  color: #000000 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+.game-layout .adventure-curiosity,
+.game-layout .curiosity-card {
+  color: #000000 !important;
+  background: #FFF4E8 !important;
+  border-color: #6A9876 !important;
+}
