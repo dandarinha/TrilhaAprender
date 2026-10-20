@@ -194,9 +194,11 @@ export default function RhymesGame() {
 
     if (timeLeft <= 0) {
       handleWrong();
-      setRoundIndex(
-        (previous) => previous + 1
-      );
+      if (lives > 1) {
+        setRoundIndex(
+          (previous) => previous + 1
+        );
+      }
       return;
     }
 
@@ -213,6 +215,7 @@ export default function RhymesGame() {
     gameOver,
     allRoundMatched,
     handleWrong,
+    lives,
   ]);
 
   /*
@@ -349,6 +352,11 @@ export default function RhymesGame() {
       accuracy={accuracy}
       correctAnswers={correctAnswers}
       wrongAnswers={wrongAnswers}
+      learningCorrection={{
+        prompt: 'As palavras abaixo terminam com sons parecidos e formam pares de rima:',
+        answer: currentPairs.map((pair) => `${pair.left.word} ↔ ${pair.right.word}`).join(' • '),
+        explanation: 'Para encontrar uma rima, fale as palavras em voz alta e compare o som final. PATO e GATO, por exemplo, terminam com o som “ATO”.',
+      }}
       streak={streak}
       gameOver={gameOver}
       onRestart={() => {

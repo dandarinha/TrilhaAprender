@@ -2407,3 +2407,18 @@ body,
   background: #FFF4E8 !important;
   border-color: #6A9876 !important;
 }
+
+/* Correção pedagógica: leitura preta em superfície clara. */
+.game-layout .learning-correction {
+  color: #000000 !important;
+  background: #E8F1E8 !important;
+  border-color: #6A9876 !important;
+}
+.game-layout .learning-correction p {
+  color: #000000 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+.game-layout .learning-correction p:first-child {
+  color: #0B4D2B !important;
+}

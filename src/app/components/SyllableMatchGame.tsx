@@ -423,6 +423,11 @@ export default function SyllableMatchGame() {
       accuracy={accuracy}
       correctAnswers={correctAnswers}
       wrongAnswers={wrongAnswers}
+      learningCorrection={{
+        prompt: `A letra ${level.consonant} aparece no começo destas palavras:`,
+        answer: level.bank.map((target) => `${target.syllable} → ${target.word}`).join(' • '),
+        explanation: 'Observe o começo de cada palavra. A primeira sílaba combina a consoante do desafio com uma vogal, como B + A = BA.',
+      }}
       streak={streak}
       gameOver={gameOver}
       onRestart={() => {

@@ -22,6 +22,11 @@ interface GameLayoutProps {
   correctAnswers?: number;
   wrongAnswers?: number;
   streak?: number;
+  learningCorrection?: {
+    prompt: string;
+    answer: string;
+    explanation: string;
+  };
   gameOver: boolean;
   onRestart: () => void;
   children: React.ReactNode;
@@ -46,6 +51,7 @@ export function GameLayout({
   streak = 0,
   correctAnswers = 0,
   wrongAnswers = 0,
+  learningCorrection,
   gameOver,
   onRestart,
   children,
@@ -389,6 +395,23 @@ export function GameLayout({
               </strong>{' '}
               pegadas! 🐾
             </p>
+
+            {learningCorrection && wrongAnswers > 0 && (
+              <div className="learning-correction mb-3 rounded-xl border-2 border-[#6A9876] bg-[#E8F1E8] p-2.5 text-left sm:mb-6 sm:rounded-2xl sm:p-4">
+                <p className="mb-1 text-[10px] font-black uppercase tracking-widest text-[#0B4D2B] sm:text-xs">
+                  Vamos corrigir
+                </p>
+                <p className="text-xs font-bold text-black sm:text-sm">
+                  {learningCorrection.prompt}
+                </p>
+                <p className="mt-1 text-sm font-black text-[#0B4D2B] sm:text-lg">
+                  Resposta: {learningCorrection.answer}
+                </p>
+                <p className="mt-1 text-[11px] font-semibold leading-snug text-black sm:text-sm">
+                  {learningCorrection.explanation}
+                </p>
+              </div>
+            )}
 
             {/* Curiosidade */}
             <motion.div

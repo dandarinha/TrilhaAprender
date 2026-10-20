@@ -196,11 +196,12 @@ export function AdditionGame() {
         }, 900);
       } else {
         handleWrong();
-
-        unlockTimeoutRef.current = setTimeout(() => {
-          setLocked(false);
-          unlockTimeoutRef.current = null;
-        }, 700);
+        if (lives > 1) {
+          unlockTimeoutRef.current = setTimeout(() => {
+            setLocked(false);
+            unlockTimeoutRef.current = null;
+          }, 700);
+        }
       }
     },
     [
@@ -208,6 +209,7 @@ export function AdditionGame() {
       handleCorrect,
       handleWrong,
       locked,
+      lives,
       problem.answer,
     ]
   );
@@ -239,6 +241,11 @@ export function AdditionGame() {
       accuracy={accuracy}
       correctAnswers={correctAnswers}
       wrongAnswers={wrongAnswers}
+      learningCorrection={{
+        prompt: `Conte os dois grupos: ${problem.a} + ${problem.b}.`,
+        answer: `${problem.a} + ${problem.b} = ${problem.answer}`,
+        explanation: `Comece com ${problem.a} e junte mais ${problem.b}. Ao contar tudo, chegamos a ${problem.answer}.`,
+      }}
       streak={streak}
       gameOver={gameOver}
       onRestart={handleRestart}
@@ -395,11 +402,12 @@ export function SubtractionGame() {
         }, 900);
       } else {
         handleWrong();
-
-        unlockTimeoutRef.current = setTimeout(() => {
-          setLocked(false);
-          unlockTimeoutRef.current = null;
-        }, 700);
+        if (lives > 1) {
+          unlockTimeoutRef.current = setTimeout(() => {
+            setLocked(false);
+            unlockTimeoutRef.current = null;
+          }, 700);
+        }
       }
     },
     [
@@ -407,6 +415,7 @@ export function SubtractionGame() {
       handleCorrect,
       handleWrong,
       locked,
+      lives,
       problem.answer,
     ]
   );
@@ -438,6 +447,11 @@ export function SubtractionGame() {
       accuracy={accuracy}
       correctAnswers={correctAnswers}
       wrongAnswers={wrongAnswers}
+      learningCorrection={{
+        prompt: `Comece com ${problem.a} objetos e retire ${problem.b}.`,
+        answer: `${problem.a} − ${problem.b} = ${problem.answer}`,
+        explanation: `Retire ${problem.b} elementos de ${problem.a}. Os que permanecem são ${problem.answer}.`,
+      }}
       streak={streak}
       gameOver={gameOver}
       onRestart={handleRestart}
@@ -603,11 +617,12 @@ export function CountingGame() {
       setFlash('wrong');
 
       handleWrong();
-
-      nextRoundTimeoutRef.current = setTimeout(() => {
-        setRound((currentRound) => currentRound + 1);
-        nextRoundTimeoutRef.current = null;
-      }, 1000);
+      if (lives > 1) {
+        nextRoundTimeoutRef.current = setTimeout(() => {
+          setRound((currentRound) => currentRound + 1);
+          nextRoundTimeoutRef.current = null;
+        }, 1000);
+      }
 
       return;
     }
@@ -626,6 +641,7 @@ export function CountingGame() {
     locked,
     gameOver,
     handleWrong,
+    lives,
   ]);
 
   const handleClick = useCallback(
@@ -647,11 +663,12 @@ export function CountingGame() {
       } else {
         setFlash('wrong');
         handleWrong();
-
-        nextRoundTimeoutRef.current = setTimeout(() => {
-          setRound((currentRound) => currentRound + 1);
-          nextRoundTimeoutRef.current = null;
-        }, 800);
+        if (lives > 1) {
+          nextRoundTimeoutRef.current = setTimeout(() => {
+            setRound((currentRound) => currentRound + 1);
+            nextRoundTimeoutRef.current = null;
+          }, 800);
+        }
       }
     },
     [
@@ -659,6 +676,7 @@ export function CountingGame() {
       handleCorrect,
       handleWrong,
       locked,
+      lives,
       problem.n,
     ]
   );
@@ -697,6 +715,11 @@ export function CountingGame() {
       accuracy={accuracy}
       correctAnswers={correctAnswers}
       wrongAnswers={wrongAnswers}
+      learningCorrection={{
+        prompt: 'Conte os elementos da tela, um por um, sem pular nenhum.',
+        answer: `${problem.n} elementos`,
+        explanation: `A contagem correta termina no número ${problem.n}. Aponte para cada elemento enquanto conta em voz alta.`,
+      }}
       streak={streak}
       gameOver={gameOver}
       onRestart={handleRestart}

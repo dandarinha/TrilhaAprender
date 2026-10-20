@@ -471,6 +471,13 @@ export default function PortugueseGame() {
       accuracy={accuracy}
       correctAnswers={correctAnswers}
       wrongAnswers={wrongAnswers}
+      learningCorrection={{
+        prompt: isWordSearch
+          ? `No caça-palavras, procure ${currentWordData.word} seguindo letras vizinhas.`
+          : 'Organize as sílabas na ordem em que falamos a palavra.',
+        answer: `${currentWordData.word} = ${currentWordData.syllables.join(' – ')}`,
+        explanation: `Leia cada parte e depois junte tudo: ${currentWordData.syllables.join(' + ')}.`,
+      }}
       streak={streak}
       gameOver={gameOver}
       onRestart={() => {
