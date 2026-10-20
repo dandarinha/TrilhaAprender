@@ -2371,3 +2371,13 @@ body,
     touch-action: manipulation;
   }
 }
+
+/* Comandos de atividade ficam sobre o palco verde: texto claro e sólido. */
+.game-layout .game-stage h3,
+.game-layout .game-stage p,
+.game-layout .game-stage span[class*="text-white/"],
+.game-layout .game-stage span[class*="text-[#DCEBDD]"] {
+  color: #FFF4E8 !important;
+  opacity: 1 !important;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, .28);
+}
