@@ -2315,3 +2315,59 @@ body,
   -webkit-text-fill-color: #063A20 !important;
   text-shadow: 0 2px 0 rgba(255,244,232,.9) !important;
 }
+
+/* =============================================================
+   ACABAMENTO MOBILE — TOQUE, SAFE AREA E SCROLL CONTROLADO
+============================================================= */
+@media (max-width: 639px) {
+  html,
+  body,
+  #root {
+    min-width: 320px;
+    min-height: 100%;
+  }
+
+  body {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  button,
+  a,
+  select,
+  input {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  /* Campos com menos de 16px provocam zoom automático no Safari/iOS. */
+  .teacher-page input,
+  .teacher-page select {
+    font-size: 16px !important;
+  }
+
+  .teacher-page,
+  .app-shell,
+  .game-layout {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .teacher-page button,
+  .teacher-page select {
+    min-height: 42px;
+  }
+
+  .teacher-page .teacher-performance-actions button,
+  .teacher-page .teacher-header a,
+  .teacher-page .teacher-header button {
+    min-height: 44px;
+  }
+
+  .game-layout .game-stage {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .game-layout .game-stage button {
+    touch-action: manipulation;
+  }
+}
