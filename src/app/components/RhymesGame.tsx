@@ -63,6 +63,8 @@ export default function RhymesGame() {
     resetGame,
     progressLevel,
     accuracy,
+    correctAnswers,
+    wrongAnswers,
     streak,
   } = useGameLogic();
 
@@ -345,6 +347,8 @@ export default function RhymesGame() {
       score={score}
       level={progressLevel}
       accuracy={accuracy}
+      correctAnswers={correctAnswers}
+      wrongAnswers={wrongAnswers}
       streak={streak}
       gameOver={gameOver}
       onRestart={() => {

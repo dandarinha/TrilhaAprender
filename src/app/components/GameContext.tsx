@@ -19,6 +19,15 @@ export type Student = {
   createdAt: string;
   lastAccess: string | null;
   playedActivitiesCount?: number;
+  sessionsCount?: number;
+};
+
+export type SessionMetrics = {
+  correctAnswers?: number;
+  wrongAnswers?: number;
+  accuracy?: number;
+  durationSeconds?: number;
+  endReason?: "completed" | "game_over" | "abandoned" | "navigation";
 };
 
 export type PlayerHistory = Student;
@@ -99,7 +108,7 @@ export interface GameContextType {
   /**
    * Finaliza somente a sessão atual.
    */
-  saveCurrentSession: () => Promise<void>;
+  saveCurrentSession: (metrics?: SessionMetrics) => Promise<void>;
 
   /**
    * Limpa somente o estado local.
@@ -258,50 +267,12 @@ export function GameProvider({
 
       setIsOnline(true);
 
-      const studentsWithPerformance =
-        await Promise.all(
-          students.map(async (student) => {
-            const performance =
-              await fetchStudentPerformance(student.id);
-
-            if (!performance) {
-              return {
-                ...student,
-                paws: Number(student.paws) || 0,
-                playedActivitiesCount: 0,
-              };
-            }
-
-            const performancePaws =
-              Number(performance.student?.paws);
-
-            const studentPaws =
-              Number(student.paws);
-
-            const playedActivitiesCount =
-              Number(
-                performance.statistics
-                  ?.playedActivitiesCount
-              );
-
-            return {
-              ...student,
-
-              paws: Number.isFinite(performancePaws)
-                ? performancePaws
-                : Number.isFinite(studentPaws)
-                  ? studentPaws
-                  : 0,
-
-              playedActivitiesCount:
-                Number.isFinite(
-                  playedActivitiesCount
-                )
-                  ? playedActivitiesCount
-                  : 0,
-            };
-          })
-        );
+      const studentsWithPerformance = students.map((student) => ({
+        ...student,
+        paws: Number(student.paws) || 0,
+        playedActivitiesCount: Number(student.playedActivitiesCount) || 0,
+        sessionsCount: Number(student.sessionsCount) || 0,
+      }));
 
       setHistory(studentsWithPerformance);
 
@@ -785,7 +756,7 @@ export function GameProvider({
   ========================================================== */
 
   const saveCurrentSession = useCallback(
-    async () => {
+    async (metrics: SessionMetrics = {}) => {
       const studentId = state.studentId;
 
       if (!studentId) {
@@ -803,6 +774,7 @@ export function GameProvider({
               "Content-Type":
                 "application/json",
             },
+            body: JSON.stringify(metrics),
           }
         );
 

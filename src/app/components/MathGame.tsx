@@ -133,6 +133,8 @@ export function AdditionGame() {
     resetGame,
     progressLevel,
     accuracy,
+    correctAnswers,
+    wrongAnswers,
     streak,
   } = useGameLogic();
 
@@ -235,6 +237,8 @@ export function AdditionGame() {
       score={score}
       level={progressLevel}
       accuracy={accuracy}
+      correctAnswers={correctAnswers}
+      wrongAnswers={wrongAnswers}
       streak={streak}
       gameOver={gameOver}
       onRestart={handleRestart}
@@ -328,6 +332,8 @@ export function SubtractionGame() {
     resetGame,
     progressLevel,
     accuracy,
+    correctAnswers,
+    wrongAnswers,
     streak,
   } = useGameLogic();
 
@@ -430,6 +436,8 @@ export function SubtractionGame() {
       score={score}
       level={progressLevel}
       accuracy={accuracy}
+      correctAnswers={correctAnswers}
+      wrongAnswers={wrongAnswers}
       streak={streak}
       gameOver={gameOver}
       onRestart={handleRestart}
@@ -542,6 +550,8 @@ export function CountingGame() {
     resetGame,
     progressLevel,
     accuracy,
+    correctAnswers,
+    wrongAnswers,
     streak,
   } = useGameLogic();
 
@@ -685,6 +695,8 @@ export function CountingGame() {
       score={score}
       level={progressLevel}
       accuracy={accuracy}
+      correctAnswers={correctAnswers}
+      wrongAnswers={wrongAnswers}
       streak={streak}
       gameOver={gameOver}
       onRestart={handleRestart}

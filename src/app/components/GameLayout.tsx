@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import {
   ArrowLeft,
@@ -19,6 +19,8 @@ interface GameLayoutProps {
   score: number;
   level?: number;
   accuracy?: number;
+  correctAnswers?: number;
+  wrongAnswers?: number;
   streak?: number;
   gameOver: boolean;
   onRestart: () => void;
@@ -42,6 +44,8 @@ export function GameLayout({
   level = 1,
   accuracy = 0,
   streak = 0,
+  correctAnswers = 0,
+  wrongAnswers = 0,
   gameOver,
   onRestart,
   children,
@@ -50,6 +54,8 @@ export function GameLayout({
   const location = useLocation();
   const navigate = useNavigate();
   const [endedByBack, setEndedByBack] = React.useState(false);
+  const startedAtRef = useRef(Date.now());
+  const sessionSavedRef = useRef(false);
   const showEndScreen = gameOver || endedByBack;
   const borderHex = BORDER_HEX[themeColor] ?? '#6A9876';
 
@@ -61,11 +67,31 @@ export function GameLayout({
   const handleBack = () => {
     if (showEndScreen) return;
     setEndedByBack(true);
-    void saveCurrentSession();
+    void saveCurrentSession({
+      correctAnswers,
+      wrongAnswers,
+      accuracy,
+      durationSeconds: Math.round((Date.now() - startedAtRef.current) / 1000),
+      endReason: 'navigation',
+    });
   };
+
+  useEffect(() => {
+    if (!gameOver || sessionSavedRef.current) return;
+    sessionSavedRef.current = true;
+    void saveCurrentSession({
+      correctAnswers,
+      wrongAnswers,
+      accuracy,
+      durationSeconds: Math.round((Date.now() - startedAtRef.current) / 1000),
+      endReason: 'game_over',
+    });
+  }, [accuracy, correctAnswers, gameOver, saveCurrentSession, wrongAnswers]);
 
   const handleRestart = () => {
     setEndedByBack(false);
+    sessionSavedRef.current = false;
+    startedAtRef.current = Date.now();
     onRestart();
   };
 

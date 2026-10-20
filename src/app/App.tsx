@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { RouterProvider } from "react-router/dom";
 import { Toaster } from "sonner";
 
@@ -7,7 +8,15 @@ import { GameProvider } from "./components/GameContext";
 export default function App() {
   return (
     <GameProvider>
-      <RouterProvider router={router} />
+      <Suspense
+        fallback={
+          <div className="forest-scene flex min-h-screen items-center justify-center text-xl font-black text-white">
+            Explorando a floresta...
+          </div>
+        }
+      >
+        <RouterProvider router={router} />
+      </Suspense>
       <Toaster
         position="top-center"
         richColors

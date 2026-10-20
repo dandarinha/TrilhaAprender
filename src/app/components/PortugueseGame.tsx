@@ -76,6 +76,8 @@ export default function PortugueseGame() {
     resetGame,
     progressLevel,
     accuracy,
+    correctAnswers,
+    wrongAnswers,
     streak,
   } = useGameLogic();
 
@@ -467,6 +469,8 @@ export default function PortugueseGame() {
       score={score}
       level={progressLevel}
       accuracy={accuracy}
+      correctAnswers={correctAnswers}
+      wrongAnswers={wrongAnswers}
       streak={streak}
       gameOver={gameOver}
       onRestart={() => {

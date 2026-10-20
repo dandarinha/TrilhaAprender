@@ -110,14 +110,19 @@ app.get(
     try {
       const [rows] = await db.query(`
         SELECT
-          id,
-          name,
-          className,
-          paws,
-          createdAt,
-          lastAccess
-        FROM students
-        ORDER BY name ASC
+          s.id,
+          s.name,
+          s.className,
+          s.paws,
+          s.createdAt,
+          s.lastAccess,
+          COUNT(DISTINCT sa.id) AS playedActivitiesCount,
+          COUNT(DISTINCT gs.id) AS sessionsCount
+        FROM students s
+        LEFT JOIN student_activities sa ON sa.student_id = s.id
+        LEFT JOIN game_sessions gs ON gs.student_id = s.id
+        GROUP BY s.id, s.name, s.className, s.paws, s.createdAt, s.lastAccess
+        ORDER BY s.name ASC
       `);
 
       return res.json(rows);
@@ -446,6 +451,13 @@ app.patch(
         });
       }
 
+      const correctAnswers = Math.max(0, Math.round(Number(req.body?.correctAnswers) || 0));
+      const wrongAnswers = Math.max(0, Math.round(Number(req.body?.wrongAnswers) || 0));
+      const accuracy = Math.min(100, Math.max(0, Number(req.body?.accuracy) || 0));
+      const durationSeconds = Math.max(0, Math.round(Number(req.body?.durationSeconds) || 0));
+      const allowedReasons = new Set(["completed", "game_over", "abandoned", "navigation"]);
+      const endReason = allowedReasons.has(req.body?.endReason) ? req.body.endReason : "completed";
+
       const [result] = await db.query(
         `
           UPDATE game_sessions
@@ -455,12 +467,22 @@ app.patch(
               FROM students
               WHERE id = ?
             ),
-            finished_at = NOW()
+            finished_at = NOW(),
+            correct_answers = ?,
+            wrong_answers = ?,
+            accuracy = ?,
+            duration_seconds = ?,
+            end_reason = ?
           WHERE student_id = ?
             AND finished_at IS NULL
         `,
         [
           studentId,
+          correctAnswers,
+          wrongAnswers,
+          accuracy,
+          durationSeconds,
+          endReason,
           studentId,
         ]
       );
@@ -824,6 +846,11 @@ app.get(
           SELECT
             id,
             paws,
+            correct_answers,
+            wrong_answers,
+            accuracy,
+            duration_seconds,
+            end_reason,
             started_at,
             finished_at
           FROM game_sessions
@@ -842,6 +869,24 @@ app.get(
 
       const sessionsCount =
         sessions.length;
+      const totalCorrectAnswers = sessions.reduce(
+        (sum, session) => sum + Number(session.correct_answers || 0),
+        0
+      );
+      const totalWrongAnswers = sessions.reduce(
+        (sum, session) => sum + Number(session.wrong_answers || 0),
+        0
+      );
+      const totalDurationSeconds = sessions.reduce(
+        (sum, session) => sum + Number(session.duration_seconds || 0),
+        0
+      );
+      const averageAccuracy = sessionsCount === 0
+        ? 0
+        : Math.round(
+            sessions.reduce((sum, session) => sum + Number(session.accuracy || 0), 0) /
+              sessionsCount
+          );
 
       return res.json({
         student,
@@ -849,6 +894,10 @@ app.get(
         statistics: {
           playedActivitiesCount,
           sessionsCount,
+          totalCorrectAnswers,
+          totalWrongAnswers,
+          totalDurationSeconds,
+          averageAccuracy,
         },
 
         activities,

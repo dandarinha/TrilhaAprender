@@ -114,7 +114,7 @@ export function StartScreen({
     >
       <Link
         to="/professor"
-        className="absolute -top-12 right-2 z-20 flex items-center gap-2 rounded-2xl border-2 border-[#6A9876]/40 bg-[#0B4D2B]/90 px-3 py-2.5 text-xs font-black text-white shadow-[0_4px_0_rgba(0,0,0,0.2)] transition-all hover:bg-[#155A35] active:translate-y-1 sm:top-4 sm:right-4 sm:px-4 sm:text-sm"
+        className="absolute right-2 top-2 z-20 flex items-center gap-2 rounded-2xl border-2 border-[#6A9876]/40 bg-[#0B4D2B]/90 px-3 py-2.5 text-xs font-black text-white shadow-[0_4px_0_rgba(0,0,0,0.2)] transition-all hover:bg-[#155A35] active:translate-y-1 sm:right-4 sm:top-4 sm:px-4 sm:text-sm"
         style={{ fontFamily: "var(--font-display)" }}
       >
         👩‍🏫 ÁREA DO PROFESSOR

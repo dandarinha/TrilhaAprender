@@ -24,6 +24,7 @@ import {
   Users,
   X,
 } from "lucide-react";
+import TeacherInsights from "./TeacherInsights";
 
 const API_BASE_URL =
   (import.meta as ImportMeta & {
@@ -39,6 +40,7 @@ type Student = {
   createdAt: string;
   lastAccess: string | null;
   playedActivitiesCount?: number;
+  sessionsCount?: number;
 };
 
 type Activity = {
@@ -54,6 +56,11 @@ type Session = {
   paws: number;
   started_at: string;
   finished_at: string | null;
+  correct_answers: number;
+  wrong_answers: number;
+  accuracy: number;
+  duration_seconds: number;
+  end_reason: string | null;
 };
 
 type StudentPerformance = {
@@ -61,6 +68,10 @@ type StudentPerformance = {
   statistics: {
     playedActivitiesCount: number;
     sessionsCount: number;
+    totalCorrectAnswers: number;
+    totalWrongAnswers: number;
+    totalDurationSeconds: number;
+    averageAccuracy: number;
   };
   activities: Activity[];
   sessions: Session[];
@@ -96,6 +107,13 @@ function formatShortDate(value: string | null | undefined) {
 
 function normalize(value: string) {
   return value.trim().toLocaleLowerCase("pt-BR");
+}
+
+function formatDuration(totalSeconds: number) {
+  const seconds = Math.max(0, Math.round(totalSeconds || 0));
+  const minutes = Math.floor(seconds / 60);
+  const remainder = seconds % 60;
+  return minutes ? `${minutes}min ${remainder}s` : `${remainder}s`;
 }
 
 export default function TeacherArea() {
@@ -844,7 +862,7 @@ export default function TeacherArea() {
                 LISTA
             ================================================== */}
 
-            <div className="max-h-[600px] overflow-y-auto p-2.5">
+            <div className="min-h-[180px] max-h-[42vh] overflow-y-auto p-2.5 lg:max-h-[600px]">
 
               {loadingStudents ? (
                 <div className="px-3 py-8 text-center text-xs font-bold text-[#7C897F]">
@@ -989,7 +1007,7 @@ export default function TeacherArea() {
 
                 <div className="teacher-performance-header border-b border-[#D9E4D3] bg-[#DCEBDD] px-5 py-4">
 
-                  <div className="teacher-performance-header-inner flex items-center justify-between gap-4">
+                  <div className="teacher-performance-header-inner flex flex-wrap items-center justify-between gap-4">
 
                     <div className="teacher-performance-identity flex min-w-0 items-center gap-3">
 
@@ -1133,6 +1151,13 @@ export default function TeacherArea() {
                   />
 
                 </div>
+
+                <TeacherInsights
+                  correct={selectedPerformance.statistics.totalCorrectAnswers}
+                  wrong={selectedPerformance.statistics.totalWrongAnswers}
+                  accuracy={selectedPerformance.statistics.averageAccuracy}
+                  durationSeconds={selectedPerformance.statistics.totalDurationSeconds}
+                />
 
                 {/* ==================================================
                     CONTEÚDO
@@ -1298,6 +1323,9 @@ export default function TeacherArea() {
                                 {Number(
                                   session.paws
                                 ) || 0}
+                              </span>
+                              <span className="hidden shrink-0 text-[10px] font-black text-[#526A5A] sm:inline">
+                                {Number(session.accuracy || 0)}% · {formatDuration(Number(session.duration_seconds || 0))}
                               </span>
 
                             </div>
@@ -1574,8 +1602,8 @@ function LoadingPerformance({
         <Leaf
           size={30}
           fill="currentColor"
-        />
-      </div>
+                  />
+                </div>
 
       <h2 className="text-lg font-black text-[#173C2A]">
         Carregando jornada...

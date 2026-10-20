@@ -128,6 +128,11 @@ async function createTables() {
       id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
       student_id VARCHAR(36) NOT NULL,
       paws INT NOT NULL DEFAULT 0,
+      correct_answers INT NOT NULL DEFAULT 0,
+      wrong_answers INT NOT NULL DEFAULT 0,
+      accuracy DECIMAL(5,2) NOT NULL DEFAULT 0,
+      duration_seconds INT NOT NULL DEFAULT 0,
+      end_reason VARCHAR(30) NULL,
       started_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       finished_at DATETIME NULL,
 
@@ -457,6 +462,30 @@ async function ensureIndex(
   }
 }
 
+async function migrateSessionMetrics() {
+  const [rows] = await executeQuery(
+    `
+      SELECT column_name
+      FROM information_schema.columns
+      WHERE table_schema = ? AND table_name = 'game_sessions'
+    `,
+    [databaseName]
+  );
+  const columns = new Set((rows as any[]).map((row) => row.column_name));
+  const additions: Array<[string, string]> = [
+    ["correct_answers", "INT NOT NULL DEFAULT 0 AFTER paws"],
+    ["wrong_answers", "INT NOT NULL DEFAULT 0 AFTER correct_answers"],
+    ["accuracy", "DECIMAL(5,2) NOT NULL DEFAULT 0 AFTER wrong_answers"],
+    ["duration_seconds", "INT NOT NULL DEFAULT 0 AFTER accuracy"],
+    ["end_reason", "VARCHAR(30) NULL AFTER duration_seconds"],
+  ];
+  for (const [name, definition] of additions) {
+    if (!columns.has(name)) {
+      await execute(`ALTER TABLE game_sessions ADD COLUMN ${name} ${definition}`);
+    }
+  }
+}
+
 /* =========================================================
    ATIVIDADES INICIAIS
 ========================================================= */
@@ -599,6 +628,7 @@ export async function initializeDatabase() {
    * Por isso a migração vem depois.
    */
   await migrateStudentActivities();
+  await migrateSessionMetrics();
 
   await seedActivities();
 
