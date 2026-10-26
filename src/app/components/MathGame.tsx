@@ -262,7 +262,8 @@ export function AdditionGame() {
           </h3>
 
           <SpeakButton
-            text={`Quanto é ${problem.a} mais ${problem.b}?`}
+            text={`Some os dois grupos! Quanto é ${problem.a} mais ${problem.b}?`}
+            label="Ouvir o comando da adição"
           />
         </div>
 
@@ -468,7 +469,8 @@ export function SubtractionGame() {
           </h3>
 
           <SpeakButton
-            text={`Você tem ${problem.a}. Tira ${problem.b}. Quanto sobra?`}
+            text={`Quantos sobram? Você tem ${problem.a}. Tira ${problem.b}. Quanto sobra?`}
+            label="Ouvir o comando da subtração"
           />
         </div>
 
@@ -738,7 +740,10 @@ export function CountingGame() {
                 Quantos você vê?
               </h3>
 
-              <SpeakButton text="Quantos você vê? Rápido!" />
+              <SpeakButton
+                text="Quantos você vê? Conte os elementos antes do tempo acabar!"
+                label="Ouvir o comando da contagem"
+              />
             </div>
 
             <motion.span
@@ -858,7 +863,7 @@ export function CountingGame() {
           ))}
         </div>
 
-        <p className="text-yellow-200/70 text-xs sm:text-base font-bold text-center">
+        <p className="activity-command-hint mt-1 rounded-xl border-2 border-[#FF9A5C] bg-[#07391F]/90 px-3 py-2 text-center text-sm font-black text-[#FFF4E8] shadow-[0_3px_0_rgba(0,0,0,0.25)] sm:rounded-2xl sm:px-5 sm:py-3 sm:text-base">
           ⚡ Responda antes do tempo acabar!
         </p>
       </div>

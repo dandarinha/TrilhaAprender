@@ -533,13 +533,14 @@ export default function PortugueseGame() {
           <div className="absolute -top-2 -right-2">
             <SpeakButton
               text={currentWordData.word}
+              label={`Ouvir o nome: ${currentWordData.word}`}
             />
           </div>
         </div>
 
         {isWordSearch ? (
           <div className="flex flex-col items-center gap-2 sm:gap-4 w-full">
-            <h4 className="text-base sm:text-2xl font-bold text-white mb-0 sm:mb-2">
+            <h4 className="activity-command-hint rounded-xl border-2 border-[#FF9A5C] bg-[#07391F]/90 px-3 py-2 text-center text-sm font-black text-[#FFF4E8] shadow-[0_3px_0_rgba(0,0,0,0.25)] sm:mb-2 sm:rounded-2xl sm:px-5 sm:py-3 sm:text-2xl">
               Encontre a palavra!
             </h4>
 
@@ -712,6 +713,7 @@ export default function PortugueseGame() {
                         <div className="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 z-10">
                           <SpeakButton
                             text={syllable}
+                            label={`Ouvir a sílaba: ${syllable}`}
                             size={14}
                           />
                         </div>

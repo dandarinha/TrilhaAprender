@@ -472,7 +472,10 @@ export default function SyllableMatchGame() {
             Ache as figuras da letra
           </h3>
 
-          <SpeakButton text={level.consonant} />
+          <SpeakButton
+            text={`Ache as figuras da letra ${level.consonant}!`}
+            label={`Ouvir o comando: ache as figuras da letra ${level.consonant}`}
+          />
         </div>
 
         {/* Placa de madeira com a consoante */}
@@ -527,7 +530,11 @@ export default function SyllableMatchGame() {
               >
                 {!isFound && (
                   <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-10 rounded-full bg-white/95 p-0.5 sm:p-1 shadow-md">
-                    <SpeakButton text={fig.word} size={15} />
+                    <SpeakButton
+                      text={fig.word}
+                      label={`Ouvir o nome: ${fig.word}`}
+                      size={15}
+                    />
                   </div>
                 )}
 
@@ -574,7 +581,7 @@ export default function SyllableMatchGame() {
           })}
         </div>
 
-        <p className="text-[#DCEBDD]/70 text-xs sm:text-base font-bold text-center">
+        <p className="activity-command-hint mt-1 rounded-xl border-2 border-[#FF9A5C] bg-[#07391F]/90 px-3 py-2 text-center text-sm font-black text-[#FFF4E8] shadow-[0_3px_0_rgba(0,0,0,0.25)] sm:rounded-2xl sm:px-5 sm:py-3 sm:text-base">
           Clique na figura que começa com cada sílaba do banco! 🌿
         </p>
       </div>

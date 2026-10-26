@@ -385,7 +385,10 @@ export default function RhymesGame() {
               Ligue as palavras que rimam!
             </h3>
 
-            <SpeakButton text="Ligue as palavras que rimam!" />
+            <SpeakButton
+              text="Ligue as palavras que rimam!"
+              label="Ouvir o comando: ligue as palavras que rimam"
+            />
           </div>
 
           {/* Badge do tempo restante */}
@@ -445,6 +448,7 @@ export default function RhymesGame() {
                   <div className="absolute -top-2 -right-2 z-10">
                     <SpeakButton
                       text={card.word}
+                      label={`Ouvir o nome: ${card.word}`}
                       size={16}
                     />
                   </div>
@@ -537,6 +541,7 @@ export default function RhymesGame() {
                   <div className="absolute -top-2 -right-2 z-10">
                     <SpeakButton
                       text={card.word}
+                      label={`Ouvir o nome: ${card.word}`}
                       size={16}
                     />
                   </div>
