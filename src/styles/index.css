@@ -2422,3 +2422,30 @@ body,
 .game-layout .learning-correction p:first-child {
   color: #0B4D2B !important;
 }
+
+/* Tela final: cartão compacto, completo e legível no celular. */
+.game-layout .adventure-finish {
+  overflow-y: auto !important;
+  max-height: calc(100dvh - 5.5rem) !important;
+  scrollbar-width: thin;
+}
+
+.game-layout .adventure-finish .finish-score strong {
+  line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .app-shell .game-layout .adventure-finish {
+    max-height: calc(100dvh - 5rem) !important;
+    padding: .65rem !important;
+  }
+
+  .app-shell .game-layout .adventure-finish .adventure-curiosity {
+    padding: .6rem !important;
+  }
+
+  .app-shell .game-layout .adventure-finish button {
+    min-height: 2.55rem;
+    padding-block: .55rem !important;
+  }
+}

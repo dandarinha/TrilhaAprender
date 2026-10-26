@@ -2,6 +2,9 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import {
   ArrowLeft,
+  Award,
+  CheckCircle2,
+  Lightbulb,
   Sun,
   PawPrint,
   TreePine,
@@ -357,57 +360,56 @@ export function GameLayout({
               bounce: 0.6,
             }}
             className="adventure-finish game-stage
-              w-full max-w-md
+              w-full max-w-lg
               rounded-2xl border-4 border-[#7A200F]
               bg-[#14432c] forest-panel
-              p-3 text-center
+              p-2.5 text-center
               shadow-[0_8px_0_rgba(0,0,0,0.4),0_0_25px_rgba(246,166,35,0.3)]
               sm:rounded-[2rem]
-              sm:border-[6px] sm:p-10
+              sm:border-[6px] sm:p-6
               sm:shadow-[0_16px_0_rgba(0,0,0,0.4),0_0_40px_rgba(246,166,35,0.3)]
             "
           >
-            <div className="mb-1 text-5xl sm:mb-4 sm:text-8xl">
-              🌿
+            <div className="mb-2 flex items-center justify-center gap-2 sm:mb-3">
+              <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border-2 border-[#6A9876] bg-[#E8F1E8] text-3xl shadow-[0_3px_0_rgba(11,77,43,.2)] sm:h-16 sm:w-16 sm:text-5xl">
+                🌿
+              </span>
+              <div className="text-left">
+                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#0B4D2B] sm:text-xs">
+                  Expedição concluída
+                </p>
+                <h2 className="text-2xl font-black text-[#0B4D2B] sm:text-4xl" style={{ fontFamily: 'var(--font-display)' }}>
+                  Fim da Trilha!
+                </h2>
+              </div>
             </div>
 
-            <h2
-              className="
-                mb-1 text-2xl font-black
-                text-transparent
-                sm:mb-3 sm:text-5xl
-              "
-              style={{
-                fontFamily: 'var(--font-display)',
-                backgroundImage:
-                  'linear-gradient(to right, #F45A0A, #6A9876, #6A9876)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-              }}
-            >
-              Fim da Trilha!
-            </h2>
-
-            <p className="mb-3 text-base font-bold text-white/90 sm:mb-6 sm:text-2xl">
+            <div className="mb-2 flex items-center justify-center gap-2 rounded-xl border-2 border-[#FF9A5C] bg-[#FFF4E8] px-3 py-2 sm:mb-3 sm:rounded-2xl sm:py-2.5">
+              <Award size={22} className="text-[#B9270A] sm:h-7 sm:w-7" />
+              <p className="text-sm font-black text-black sm:text-lg">
               Você juntou{' '}
-              <strong className="text-xl text-[#F45A0A] sm:text-4xl">
+              <strong className="text-2xl text-[#B9270A] sm:text-3xl">
                 {score}
               </strong>{' '}
               pegadas! 🐾
-            </p>
+              </p>
+            </div>
 
             {learningCorrection && wrongAnswers > 0 && (
-              <div className="learning-correction mb-3 rounded-xl border-2 border-[#6A9876] bg-[#E8F1E8] p-2.5 text-left sm:mb-6 sm:rounded-2xl sm:p-4">
-                <p className="mb-1 text-[10px] font-black uppercase tracking-widest text-[#0B4D2B] sm:text-xs">
-                  Vamos corrigir
-                </p>
-                <p className="text-xs font-bold text-black sm:text-sm">
+              <div className="learning-correction mb-2 rounded-xl border-2 border-[#6A9876] bg-[#E8F1E8] p-2.5 text-left sm:mb-3 sm:rounded-2xl sm:p-3">
+                <div className="mb-1 flex items-center gap-1.5">
+                  <CheckCircle2 size={16} className="text-[#0B4D2B]" />
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[#0B4D2B] sm:text-xs">
+                    Vamos corrigir
+                  </p>
+                </div>
+                <p className="text-xs font-bold leading-snug text-black sm:text-sm">
                   {learningCorrection.prompt}
                 </p>
-                <p className="mt-1 text-sm font-black text-[#0B4D2B] sm:text-lg">
+                <p className="mt-1 text-sm font-black text-[#0B4D2B] sm:text-base">
                   Resposta: {learningCorrection.answer}
                 </p>
-                <p className="mt-1 text-[11px] font-semibold leading-snug text-black sm:text-sm">
+                <p className="mt-1 text-[11px] font-semibold leading-snug text-black sm:text-xs">
                   {learningCorrection.explanation}
                 </p>
               </div>
@@ -419,13 +421,13 @@ export function GameLayout({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
               className="adventure-curiosity curiosity-card
-                mb-3 rounded-xl
+                mb-2 rounded-xl
                 border-2 border-[#6A9876]/60
                 bg-[#155A35]
                 p-2.5 text-left
                 shadow-[0_3px_0_rgba(0,0,0,0.3)]
-                sm:mb-6 sm:rounded-2xl
-                sm:border-4 sm:p-5
+                sm:mb-3 sm:rounded-2xl
+                sm:border-4 sm:p-3
               "
             >
               <div className="mb-1 flex items-center gap-2">
@@ -434,12 +436,15 @@ export function GameLayout({
                 </span>
 
                 <div>
-                  <p className="text-[9px] font-black uppercase tracking-widest text-[#6A9876] sm:text-xs">
-                    Você sabia?
-                  </p>
+                  <div className="flex items-center gap-1">
+                    <Lightbulb size={14} className="text-[#B9270A]" />
+                    <p className="text-[9px] font-black uppercase tracking-widest text-[#6A9876] sm:text-xs">
+                      Você sabia?
+                    </p>
+                  </div>
 
                   <p
-                    className="text-xs font-black text-yellow-200 sm:text-lg"
+                    className="text-xs font-black text-[#0B4D2B] sm:text-base"
                     style={{ fontFamily: 'var(--font-display)' }}
                   >
                     {curiosity.animal}
@@ -447,7 +452,7 @@ export function GameLayout({
                 </div>
               </div>
 
-              <p className="text-xs font-semibold leading-snug text-white/90 sm:text-base">
+              <p className="text-xs font-semibold leading-snug text-black sm:text-sm">
                 {curiosity.fact}
               </p>
             </motion.div>
