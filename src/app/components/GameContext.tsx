@@ -6,6 +6,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { API_BASE_URL } from "../lib/api";
 
 /* ============================================================
    TIPOS
@@ -136,16 +137,6 @@ export const initialState: GameState = {
   currentScreen: "start",
   currentAnimal: null,
 };
-
-/* ============================================================
-   API
-============================================================ */
-
-const API_BASE_URL =
-  (import.meta as ImportMeta & {
-    env?: { VITE_API_BASE_URL?: string };
-  }).env?.VITE_API_BASE_URL ||
-  "http://localhost:3000/api";
 
 /* ============================================================
    TIPOS INTERNOS

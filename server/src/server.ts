@@ -20,6 +20,26 @@ const allowedOrigins = [
     array.indexOf(origin) === index
 );
 
+const allowLanOrigins =
+  process.env.ALLOW_LAN_ORIGINS !== "false";
+
+function isLocalNetworkOrigin(origin: string): boolean {
+  try {
+    const hostname = new URL(origin).hostname;
+
+    return (
+      hostname === "localhost" ||
+      hostname === "127.0.0.1" ||
+      hostname.endsWith(".local") ||
+      /^10\.(?:\d{1,3}\.){2}\d{1,3}$/.test(hostname) ||
+      /^192\.168\.(?:\d{1,3}\.)\d{1,3}$/.test(hostname) ||
+      /^172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2}$/.test(hostname)
+    );
+  } catch {
+    return false;
+  }
+}
+
 /* =========================================================
    FUNÇÕES AUXILIARES
 ========================================================= */
@@ -62,7 +82,10 @@ app.use(
         return callback(null, true);
       }
 
-      if (allowedOrigins.includes(origin)) {
+      if (
+        allowedOrigins.includes(origin) ||
+        (allowLanOrigins && isLocalNetworkOrigin(origin))
+      ) {
         return callback(null, true);
       }
 

@@ -25,12 +25,7 @@ import {
   X,
 } from "lucide-react";
 import TeacherInsights from "./TeacherInsights";
-
-const API_BASE_URL =
-  (import.meta as ImportMeta & {
-    env?: { VITE_API_BASE_URL?: string };
-  }).env?.VITE_API_BASE_URL ||
-  "http://localhost:3000/api";
+import { API_BASE_URL } from "../lib/api";
 
 type Student = {
   id: string;
