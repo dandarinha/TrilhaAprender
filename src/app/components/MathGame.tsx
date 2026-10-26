@@ -54,10 +54,11 @@ function shuffle<T>(arr: T[]): T[] {
  * - evita loop infinito.
  */
 function makeOptions(answer: number, max = 12): number[] {
-  const safeMax = Math.max(3, Math.floor(max));
-  const safeAnswer = Math.min(
-    Math.max(0, Math.floor(answer)),
-    safeMax
+  const safeAnswer = Math.max(0, Math.floor(answer));
+  const safeMax = Math.max(
+    3,
+    Math.floor(max),
+    safeAnswer
   );
 
   const distractors = Array.from(
@@ -150,8 +151,9 @@ export function AdditionGame() {
   >(null);
 
   const problem = useMemo(() => {
-    const a = Math.floor(Math.random() * 6) + 1;
-    const b = Math.floor(Math.random() * 6) + 1;
+    const maxOperand = [3, 5, 7, 9, 12][progressLevel - 1] ?? 12;
+    const a = Math.floor(Math.random() * maxOperand) + 1;
+    const b = Math.floor(Math.random() * maxOperand) + 1;
     const answer = a + b;
 
     return {
@@ -161,7 +163,7 @@ export function AdditionGame() {
       options: makeOptions(answer, 12),
       emoji: getRandomEmoji(),
     };
-  }, [round]);
+  }, [progressLevel, round]);
 
   useEffect(() => {
     setLocked(false);
@@ -357,7 +359,9 @@ export function SubtractionGame() {
   >(null);
 
   const problem = useMemo(() => {
-    const a = Math.floor(Math.random() * 7) + 4;
+    const minimum = [4, 6, 8, 10, 12][progressLevel - 1] ?? 12;
+    const maximum = minimum + 2;
+    const a = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
     const b = Math.floor(Math.random() * (a - 1)) + 1;
     const answer = a - b;
 
@@ -368,7 +372,7 @@ export function SubtractionGame() {
       options: makeOptions(answer, 12),
       emoji: getRandomEmoji(),
     };
-  }, [round]);
+  }, [progressLevel, round]);
 
   useEffect(() => {
     setLocked(false);
@@ -585,14 +589,15 @@ export function CountingGame() {
   >(null);
 
   const problem = useMemo(() => {
-    const n = Math.floor(Math.random() * 9) + 2;
+    const maximum = [5, 7, 9, 12, 15][progressLevel - 1] ?? 15;
+    const n = Math.floor(Math.random() * (maximum - 1)) + 2;
 
     return {
       n,
       emoji: getRandomEmoji(),
-      options: makeOptions(n, 12),
+      options: makeOptions(n, maximum),
     };
-  }, [round]);
+  }, [progressLevel, round]);
 
   // Reinicia timer e estado visual quando a rodada muda.
   useEffect(() => {
