@@ -40,7 +40,6 @@ VALUES
   (UUID(), 'Taina Cochi Oliveira', '1º ano do Ensino Fundamental', 0, NOW(), NULL),
   (UUID(), 'Helena Oliveira Marques', '1º ano do Ensino Fundamental', 0, NOW(), NULL),
   (UUID(), 'Lunna Catarina dos Santos', '1º ano do Ensino Fundamental', 0, NOW(), NULL)
-AS novos
 ON DUPLICATE KEY UPDATE
-  name = novos.name,
-  className = novos.className;
+  name = VALUES(name),
+  className = VALUES(className);
