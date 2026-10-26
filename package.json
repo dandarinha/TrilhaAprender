@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:network": "vite --host 0.0.0.0",
     "build": "vite build",
+    "preview:network": "vite preview --host 0.0.0.0",
     "server": "tsx server/src/server.ts"
   },
   "dependencies": {

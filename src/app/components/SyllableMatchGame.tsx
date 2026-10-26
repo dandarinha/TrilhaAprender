@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { GameLayout } from './GameLayout';
 import { useGameLogic } from '../hooks/useGameLogic';
 import { motion } from 'motion/react';
@@ -318,6 +318,16 @@ export default function SyllableMatchGame() {
   const [levelIndex, setLevelIndex] = useState(0);
   const [foundSyllables, setFoundSyllables] = useState<string[]>([]);
   const [wrongIds, setWrongIds] = useState<string[]>([]);
+  const transitionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (transitionTimeoutRef.current) {
+        clearTimeout(transitionTimeoutRef.current);
+        transitionTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
   const level = useMemo(
     () => LEVELS[levelIndex % LEVELS.length],
@@ -384,7 +394,8 @@ export default function SyllableMatchGame() {
       if (newFound.length === level.bank.length) {
         handleCorrect();
 
-        setTimeout(() => {
+        transitionTimeoutRef.current = setTimeout(() => {
+          transitionTimeoutRef.current = null;
           setLevelIndex((currentIndex) => currentIndex + 1);
         }, 900);
       }
@@ -405,7 +416,8 @@ export default function SyllableMatchGame() {
 
     handleWrong();
 
-    setTimeout(() => {
+    transitionTimeoutRef.current = setTimeout(() => {
+      transitionTimeoutRef.current = null;
       setWrongIds((currentWrongIds) =>
         currentWrongIds.filter((word) => word !== fig.word)
       );

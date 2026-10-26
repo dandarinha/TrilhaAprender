@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { GameLayout } from './GameLayout';
 import { useGameLogic } from '../hooks/useGameLogic';
 import { useGame } from './GameContext';
@@ -99,6 +99,16 @@ export default function PortugueseGame() {
   >([]);
   const [wordSearchSelected, setWordSearchSelected] =
     useState<string[]>([]);
+  const transitionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (transitionTimeoutRef.current) {
+        clearTimeout(transitionTimeoutRef.current);
+        transitionTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
   /*
    * A atividade é registrada como JOGADA quando o aluno
@@ -271,7 +281,8 @@ export default function PortugueseGame() {
     ) {
       handleCorrect();
 
-      setTimeout(() => {
+      transitionTimeoutRef.current = setTimeout(() => {
+        transitionTimeoutRef.current = null;
         setupWordSearch();
       }, 800);
     }
@@ -434,7 +445,8 @@ export default function PortugueseGame() {
       ) {
         handleCorrect();
 
-        setTimeout(() => {
+        transitionTimeoutRef.current = setTimeout(() => {
+          transitionTimeoutRef.current = null;
           setIsWordSearch(false);
           setWordSearchSelected([]);
           setSelectedSyllables([]);

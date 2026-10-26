@@ -25,7 +25,7 @@ import {
   X,
 } from "lucide-react";
 import TeacherInsights from "./TeacherInsights";
-import { API_BASE_URL } from "../lib/api";
+import { API_BASE_URL, apiFetch } from "../lib/api";
 
 type Student = {
   id: string;
@@ -152,7 +152,7 @@ export default function TeacherArea() {
     setLoadingStudents(true);
 
     try {
-      const response = await fetch(
+      const response = await apiFetch(
         `${API_BASE_URL}/students`
       );
 
@@ -216,7 +216,7 @@ export default function TeacherArea() {
       setError("");
 
       try {
-        const response = await fetch(
+        const response = await apiFetch(
           `${API_BASE_URL}/students/${studentId}/performance`
         );
 
@@ -372,7 +372,7 @@ export default function TeacherArea() {
     setError("");
 
     try {
-      const response = await fetch(
+      const response = await apiFetch(
         `${API_BASE_URL}/students`,
         {
           method: "POST",
@@ -440,7 +440,7 @@ export default function TeacherArea() {
     setSavingStudent(true);
     setError("");
     try {
-      const response = await fetch(`${API_BASE_URL}/students/${editingStudent.id}`, {
+      const response = await apiFetch(`${API_BASE_URL}/students/${editingStudent.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: cleanName, className: cleanClass }),
@@ -480,7 +480,7 @@ export default function TeacherArea() {
     setError("");
 
     try {
-      const response = await fetch(
+      const response = await apiFetch(
         `${API_BASE_URL}/students/${student.id}`,
         {
           method: "DELETE",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { GameLayout } from './GameLayout';
 import { useGameLogic } from '../hooks/useGameLogic';
 import { useGame } from './GameContext';
@@ -83,6 +83,16 @@ export default function RhymesGame() {
   } | null>(null);
   const [timeLeft, setTimeLeft] =
     useState<number>(ROUND_TIME_SECONDS);
+  const feedbackTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (feedbackTimeoutRef.current) {
+        clearTimeout(feedbackTimeoutRef.current);
+        feedbackTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
   /*
    * A atividade é registrada como JOGADA quando o aluno
@@ -193,6 +203,9 @@ export default function RhymesGame() {
     }
 
     if (timeLeft <= 0) {
+      // Evita que o mesmo zero seja processado novamente enquanto o
+      // estado de vidas ainda está sendo atualizado.
+      setTimeLeft(ROUND_TIME_SECONDS);
       handleWrong();
       if (lives > 1) {
         setRoundIndex(
@@ -263,7 +276,8 @@ export default function RhymesGame() {
         rightWord: right.word,
       });
 
-      setTimeout(() => {
+      feedbackTimeoutRef.current = setTimeout(() => {
+        feedbackTimeoutRef.current = null;
         setWrongPair(null);
         setSelectedLeft(null);
         setSelectedRight(null);

@@ -6,7 +6,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { API_BASE_URL } from "../lib/api";
+import { API_BASE_URL, apiFetch, readLocalStorage, removeLocalStorage, writeLocalStorage } from "../lib/api";
 
 /* ============================================================
    TIPOS
@@ -201,7 +201,7 @@ export function GameProvider({
       studentId: string
     ): Promise<PerformanceResponse | null> => {
       try {
-        const response = await fetch(
+        const response = await apiFetch(
           `${API_BASE_URL}/students/${encodeURIComponent(
             studentId
           )}/performance`
@@ -243,7 +243,7 @@ export function GameProvider({
 
   const refreshStudents = useCallback(async () => {
     try {
-      const response = await fetch(
+      const response = await apiFetch(
         `${API_BASE_URL}/students`
       );
 
@@ -318,7 +318,7 @@ export function GameProvider({
     const studentId = state.studentId;
     if (!studentId) return;
     const finishOnExit = () => {
-      void fetch(
+      void apiFetch(
         `${API_BASE_URL}/students/${encodeURIComponent(studentId)}/session/finish`,
         { method: "PATCH", keepalive: true }
       );
@@ -377,7 +377,7 @@ export function GameProvider({
            INICIAR SESSÃO
         ------------------------------------------------------ */
 
-        const sessionResponse = await fetch(
+        const sessionResponse = await apiFetch(
           `${API_BASE_URL}/students/${encodeURIComponent(
             student.id
           )}/session`,
@@ -534,7 +534,7 @@ export function GameProvider({
       }
 
       try {
-        const response = await fetch(
+        const response = await apiFetch(
           `${API_BASE_URL}/students/${encodeURIComponent(
             studentId
           )}/paws`,
@@ -589,8 +589,8 @@ export function GameProvider({
       } catch (error: unknown) {
         try {
           const key = `trilha_pending_paws_${studentId}`;
-          const pending = Number(localStorage.getItem(key) || 0);
-          localStorage.setItem(key, String(pending + delta));
+          const pending = Number(readLocalStorage(key) || 0);
+          writeLocalStorage(key, String(pending + delta));
         } catch {
           // O jogo continua funcionando mesmo sem armazenamento local.
         }
@@ -609,16 +609,16 @@ export function GameProvider({
     const studentId = state.studentId;
     if (!isOnline || !studentId) return;
     const key = `trilha_pending_paws_${studentId}`;
-    const pending = Number(localStorage.getItem(key) || 0);
+    const pending = Number(readLocalStorage(key) || 0);
     if (!Number.isInteger(pending) || pending <= 0) return;
-    void fetch(`${API_BASE_URL}/students/${encodeURIComponent(studentId)}/paws`, {
+    void apiFetch(`${API_BASE_URL}/students/${encodeURIComponent(studentId)}/paws`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ amount: pending }),
     }).then(async (response) => {
       if (!response.ok) return;
       const data = await response.json().catch(() => ({}));
-      localStorage.removeItem(key);
+      removeLocalStorage(key);
       const savedPaws = Number(data.paws);
       if (Number.isFinite(savedPaws)) {
         setState((current) => current.studentId === studentId ? { ...current, paws: savedPaws } : current);
@@ -661,7 +661,7 @@ export function GameProvider({
       }
 
       try {
-        const response = await fetch(
+        const response = await apiFetch(
           `${API_BASE_URL}/students/${encodeURIComponent(
             studentId
           )}/activities`,
@@ -694,11 +694,11 @@ export function GameProvider({
          * Patinhas só são concedidas por handleCorrect().
          */
       } catch (error: unknown) {
-        try {
-          const key = `trilha_pending_activities_${studentId}`;
-          const pending = JSON.parse(localStorage.getItem(key) || "[]") as string[];
+      try {
+        const key = `trilha_pending_activities_${studentId}`;
+          const pending = JSON.parse(readLocalStorage(key) || "[]") as string[];
           pending.push(normalizedId);
-          localStorage.setItem(key, JSON.stringify(pending.slice(-50)));
+          writeLocalStorage(key, JSON.stringify(pending.slice(-50)));
         } catch {
           // A atividade ainda pode ser jogada se o armazenamento estiver indisponível.
         }
@@ -719,12 +719,12 @@ export function GameProvider({
     const key = `trilha_pending_activities_${studentId}`;
     let pending: string[];
     try {
-      pending = JSON.parse(localStorage.getItem(key) || "[]") as string[];
+      pending = JSON.parse(readLocalStorage(key) || "[]") as string[];
     } catch {
       pending = [];
     }
     if (pending.length === 0) return;
-    void Promise.all(pending.map((activityId) => fetch(
+    void Promise.all(pending.map((activityId) => apiFetch(
       `${API_BASE_URL}/students/${encodeURIComponent(studentId)}/activities`,
       {
         method: "POST",
@@ -732,7 +732,7 @@ export function GameProvider({
         body: JSON.stringify({ activityId }),
       }
     ))).then((responses) => {
-      if (responses.every((response) => response.ok)) localStorage.removeItem(key);
+      if (responses.every((response) => response.ok)) removeLocalStorage(key);
     }).catch(() => undefined);
   }, [isOnline, state.studentId]);
 
@@ -755,7 +755,7 @@ export function GameProvider({
       }
 
       try {
-        const response = await fetch(
+        const response = await apiFetch(
           `${API_BASE_URL}/students/${encodeURIComponent(
             studentId
           )}/session/finish`,

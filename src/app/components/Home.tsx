@@ -478,7 +478,11 @@ export default function Home() {
   }, [location.search, state.playerName, state.studentId]);
 
   const handleLogout = () => {
-    if (state.studentId) void saveCurrentSession();
+    if (state.studentId) {
+      void saveCurrentSession().catch((error: unknown) => {
+        console.error("Não foi possível finalizar a sessão ao sair:", error);
+      });
+    }
 
     try {
       localStorage.removeItem("bichoName");

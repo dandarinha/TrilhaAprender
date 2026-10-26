@@ -82,6 +82,8 @@ export function GameLayout({
       accuracy,
       durationSeconds: Math.round((Date.now() - startedAtRef.current) / 1000),
       endReason: 'navigation',
+    }).catch((error: unknown) => {
+      console.error('Não foi possível finalizar a sessão ao sair:', error);
     });
   };
 
@@ -94,6 +96,8 @@ export function GameLayout({
       accuracy,
       durationSeconds: Math.round((Date.now() - startedAtRef.current) / 1000),
       endReason: 'game_over',
+    }).catch((error: unknown) => {
+      console.error('Não foi possível salvar o fim da partida:', error);
     });
   }, [accuracy, correctAnswers, gameOver, saveCurrentSession, wrongAnswers]);
 
