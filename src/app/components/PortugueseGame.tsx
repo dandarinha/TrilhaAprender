@@ -503,7 +503,8 @@ export default function PortugueseGame() {
           </h3>
 
           <SpeakButton
-            text={currentWordData.word}
+            text="Forme a palavra!"
+            label="Ouvir o comando: forme a palavra"
           />
         </div>
 
@@ -653,7 +654,7 @@ export default function PortugueseGame() {
                     exit={{
                       opacity: 0,
                     }}
-                    className="text-white/40 text-xs sm:text-lg font-bold flex items-center h-full text-center"
+                    className="activity-command-hint flex min-h-10 items-center justify-center rounded-xl border-2 border-[#FF9A5C] bg-[#07391F]/90 px-3 py-2 text-center text-sm font-black text-[#FFF4E8] shadow-[0_3px_0_rgba(0,0,0,0.25)] sm:min-h-16 sm:rounded-2xl sm:px-6 sm:text-lg"
                   >
                     Clique nas sílabas na
                     ordem certa
