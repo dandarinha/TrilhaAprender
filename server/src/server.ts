@@ -934,11 +934,30 @@ app.get(
         (sum, session) => sum + Number(session.duration_seconds || 0),
         0
       );
-      const averageAccuracy = sessionsCount === 0
+      const totalAnswers = totalCorrectAnswers + totalWrongAnswers;
+      const averageAccuracy = totalAnswers === 0
         ? 0
         : Math.round(
-            sessions.reduce((sum, session) => sum + Number(session.accuracy || 0), 0) /
-              sessionsCount
+            (totalCorrectAnswers / totalAnswers) * 100
+          );
+      const completedSessions = sessions.filter(
+        (session) => session.end_reason === "completed"
+      ).length;
+      const abandonedSessions = sessions.filter(
+        (session) => ["abandoned", "navigation"].includes(session.end_reason)
+      ).length;
+      const gameOverSessions = sessions.filter(
+        (session) => session.end_reason === "game_over"
+      ).length;
+      const bestAccuracy = sessionsCount === 0
+        ? 0
+        : Math.max(...sessions.map((session) => Number(session.accuracy || 0)));
+      const recentSessions = [...sessions].reverse().slice(-5);
+      const recentAccuracy = recentSessions.length === 0
+        ? 0
+        : Math.round(
+            recentSessions.reduce((sum, session) => sum + Number(session.accuracy || 0), 0) /
+              recentSessions.length
           );
 
       return res.json({
@@ -951,6 +970,11 @@ app.get(
           totalWrongAnswers,
           totalDurationSeconds,
           averageAccuracy,
+          completedSessions,
+          abandonedSessions,
+          gameOverSessions,
+          bestAccuracy,
+          recentAccuracy,
         },
 
         activities,

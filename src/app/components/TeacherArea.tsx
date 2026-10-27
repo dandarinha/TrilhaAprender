@@ -67,6 +67,11 @@ type StudentPerformance = {
     totalWrongAnswers: number;
     totalDurationSeconds: number;
     averageAccuracy: number;
+    completedSessions: number;
+    abandonedSessions: number;
+    gameOverSessions: number;
+    bestAccuracy: number;
+    recentAccuracy: number;
   };
   activities: Activity[];
   sessions: Session[];
@@ -1152,6 +1157,12 @@ export default function TeacherArea() {
                   wrong={selectedPerformance.statistics.totalWrongAnswers}
                   accuracy={selectedPerformance.statistics.averageAccuracy}
                   durationSeconds={selectedPerformance.statistics.totalDurationSeconds}
+                  sessions={selectedPerformance.sessions}
+                  completedSessions={selectedPerformance.statistics.completedSessions}
+                  abandonedSessions={selectedPerformance.statistics.abandonedSessions}
+                  gameOverSessions={selectedPerformance.statistics.gameOverSessions}
+                  bestAccuracy={selectedPerformance.statistics.bestAccuracy}
+                  recentAccuracy={selectedPerformance.statistics.recentAccuracy}
                 />
 
                 {/* ==================================================
