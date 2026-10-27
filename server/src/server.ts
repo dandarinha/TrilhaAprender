@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import crypto from "crypto";
-import { db } from "./db";
+import { db, dbConfig, databaseName } from "./db";
 import { initializeDatabase } from "./database";
 
 const app = express();
@@ -106,10 +106,15 @@ app.get(
   "/api/health",
   async (_req: Request, res: Response) => {
     try {
-      await db.query("SELECT 1");
+      const [rows] = await db.query(
+        "SELECT DATABASE() AS databaseName, COUNT(*) AS studentCount FROM students"
+      );
+      const databaseStatus = (rows as any[])[0] ?? {};
       return res.json({
         success: true,
         database: "connected",
+        databaseName: databaseStatus.databaseName,
+        studentCount: Number(databaseStatus.studentCount) || 0,
         message: "API Trilha do Aprender funcionando.",
       });
     } catch (error) {
@@ -949,10 +954,20 @@ async function startServer() {
     await initializeDatabase();
 
     await db.query("SELECT 1");
+    const [studentRows] = await db.query(
+      "SELECT COUNT(*) AS studentCount FROM students"
+    );
+    const studentCount = Number(
+      (studentRows as any[])[0]?.studentCount ?? 0
+    );
 
     console.log(
       "MySQL conectado com sucesso."
     );
+    console.log(
+      `Banco ativo: ${dbConfig.user}@${dbConfig.host}:${dbConfig.port}/${databaseName}`
+    );
+    console.log(`Alunos persistidos encontrados: ${studentCount}`);
 
     app.listen(
       PORT,

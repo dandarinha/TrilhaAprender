@@ -1,5 +1,19 @@
-import "dotenv/config";
+import dotenv from "dotenv";
 import mysql from "mysql2/promise";
+import path from "node:path";
+
+const projectRoot = path.resolve(
+  process.cwd().toLowerCase().endsWith(`${path.sep}server`)
+    ? process.cwd()
+    : path.join(process.cwd(), "server")
+);
+
+// Aceita configuração na raiz ou em server/.env. A raiz tem prioridade.
+dotenv.config({ path: path.join(projectRoot, "..", ".env") });
+dotenv.config({
+  path: path.join(projectRoot, ".env"),
+  override: false,
+});
 
 export const dbConfig = {
   host: process.env.DB_HOST || "127.0.0.1",
