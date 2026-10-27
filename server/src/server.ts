@@ -392,7 +392,10 @@ app.post(
       await db.query(
         `
           UPDATE game_sessions
-          SET finished_at = NOW()
+          SET
+            finished_at = NOW(),
+            duration_seconds = TIMESTAMPDIFF(SECOND, started_at, NOW()),
+            end_reason = 'abandoned'
           WHERE student_id = ?
             AND finished_at IS NULL
         `,
@@ -483,6 +486,10 @@ app.patch(
       const wrongAnswers = Math.max(0, Math.round(Number(req.body?.wrongAnswers) || 0));
       const accuracy = Math.min(100, Math.max(0, Number(req.body?.accuracy) || 0));
       const durationSeconds = Math.max(0, Math.round(Number(req.body?.durationSeconds) || 0));
+      const requestedSessionId = Number(req.body?.sessionId);
+      const sessionId = Number.isInteger(requestedSessionId) && requestedSessionId > 0
+        ? requestedSessionId
+        : null;
       const allowedReasons = new Set(["completed", "game_over", "abandoned", "navigation"]);
       const endReason = allowedReasons.has(req.body?.endReason) ? req.body.endReason : "completed";
 
@@ -502,6 +509,7 @@ app.patch(
             duration_seconds = ?,
             end_reason = ?
           WHERE student_id = ?
+            AND (? IS NULL OR id = ?)
             AND finished_at IS NULL
         `,
         [
@@ -512,6 +520,8 @@ app.patch(
           durationSeconds,
           endReason,
           studentId,
+          sessionId,
+          sessionId,
         ]
       );
 
@@ -875,6 +885,7 @@ app.get(
       const [activityRows] = await db.query(
         `
           SELECT
+            sa.id AS play_id,
             a.id,
             a.name,
             a.trail,

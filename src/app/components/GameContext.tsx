@@ -55,6 +55,7 @@ export type GameScreen =
 
 export interface GameState {
   studentId: string | null;
+  sessionId: number | null;
   playerName: string;
   selectedTrail: TrailColor;
   subject: Subject;
@@ -130,6 +131,7 @@ export const GameContext =
 
 export const initialState: GameState = {
   studentId: null,
+  sessionId: null,
   playerName: "",
   selectedTrail: null,
   subject: null,
@@ -317,15 +319,24 @@ export function GameProvider({
   useEffect(() => {
     const studentId = state.studentId;
     if (!studentId) return;
+    const sessionId = state.sessionId;
     const finishOnExit = () => {
       void apiFetch(
         `${API_BASE_URL}/students/${encodeURIComponent(studentId)}/session/finish`,
-        { method: "PATCH", keepalive: true }
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sessionId,
+            endReason: "abandoned",
+          }),
+          keepalive: true,
+        }
       );
     };
     window.addEventListener("pagehide", finishOnExit);
     return () => window.removeEventListener("pagehide", finishOnExit);
-  }, [state.studentId]);
+  }, [state.studentId, state.sessionId]);
 
   /* ==========================================================
      CARREGAMENTO INICIAL
@@ -424,6 +435,8 @@ export function GameProvider({
           ...previousState,
 
           studentId: student.id,
+
+          sessionId: Number(sessionData.id) || null,
 
           playerName: student.name,
 
@@ -769,7 +782,10 @@ export function GameProvider({
               "Content-Type":
                 "application/json",
             },
-            body: JSON.stringify(metrics),
+            body: JSON.stringify({
+              ...metrics,
+              sessionId: state.sessionId,
+            }),
           }
         );
 
@@ -804,6 +820,7 @@ export function GameProvider({
     },
     [
       state.studentId,
+      state.sessionId,
       refreshStudents,
     ]
   );

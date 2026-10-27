@@ -39,6 +39,7 @@ type Student = {
 };
 
 type Activity = {
+  play_id: number;
   id: string;
   name: string;
   trail: string;
@@ -1235,7 +1236,7 @@ export default function TeacherArea() {
                         {selectedPerformance.activities.map(
                           (activity) => (
                             <div
-                              key={activity.id}
+                              key={`${activity.id}-${activity.play_id}`}
                               className="flex min-w-0 items-center gap-2 rounded-xl border border-[#E2E5D9] bg-white px-3 py-2.5"
                             >
 
@@ -1253,6 +1254,9 @@ export default function TeacherArea() {
 
                                 <p className="truncate text-[9px] font-semibold text-[#526A5A]">
                                   {activity.trail}
+                                </p>
+                                <p className="text-[9px] font-bold text-[#8A958C]">
+                                  Jogada em {formatShortDate(activity.played_at)}
                                 </p>
 
                               </div>
