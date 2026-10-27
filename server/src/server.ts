@@ -564,6 +564,9 @@ app.patch(
       }
 
       const { amount } = req.body;
+      const operationId = typeof req.body?.operationId === "string"
+        ? req.body.operationId.trim().slice(0, 80)
+        : "";
       const delta = Number(amount);
 
       if (
@@ -575,6 +578,28 @@ app.patch(
           error:
             "A quantidade de patinhas deve ser um inteiro positivo.",
         });
+      }
+
+      if (operationId) {
+        const [operationResult] = await db.query(
+          `
+            INSERT IGNORE INTO paws_operations
+              (operation_id, student_id, amount)
+            VALUES (?, ?, ?)
+          `,
+          [operationId, studentId, delta]
+        );
+        if ((operationResult as any).affectedRows === 0) {
+          const [existingPaws] = await db.query(
+            `SELECT paws FROM students WHERE id = ? LIMIT 1`,
+            [studentId]
+          );
+          return res.json({
+            success: true,
+            paws: Number((existingPaws as any[])[0]?.paws ?? 0),
+            duplicate: true,
+          });
+        }
       }
 
       const [result] = await db.query(

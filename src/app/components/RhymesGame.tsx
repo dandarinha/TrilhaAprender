@@ -509,8 +509,8 @@ export default function RhymesGame() {
                           : isWrong
                           ? 'bg-red-500 border-red-300 shadow-[0_4px_0_rgb(153,27,27)]'
                           : isSelected
-                          ? 'bg-yellow-300 border-white shadow-[0_0_15px_rgba(253,224,71,0.8)] scale-105'
-                          : 'bg-gradient-to-b from-yellow-400 to-yellow-500 border-white shadow-[0_4px_0_rgb(161,98,7)] hover:from-yellow-300'
+                          ? 'bg-yellow-300 text-[#173C2A] border-white shadow-[0_0_15px_rgba(253,224,71,0.8)] scale-105'
+                          : 'bg-gradient-to-b from-yellow-400 to-yellow-500 text-[#173C2A] border-white shadow-[0_4px_0_rgb(161,98,7)] hover:from-yellow-300'
                       }
                     `}
                   >
@@ -602,8 +602,8 @@ export default function RhymesGame() {
                           : isWrong
                           ? 'bg-red-500 border-red-300 shadow-[0_4px_0_rgb(153,27,27)]'
                           : isSelected
-                          ? 'bg-yellow-300 border-white shadow-[0_0_15px_rgba(253,224,71,0.8)] scale-105'
-                          : 'bg-gradient-to-b from-yellow-400 to-yellow-500 border-white shadow-[0_4px_0_rgb(161,98,7)] hover:from-yellow-300'
+                          ? 'bg-yellow-300 text-[#173C2A] border-white shadow-[0_0_15px_rgba(253,224,71,0.8)] scale-105'
+                          : 'bg-gradient-to-b from-yellow-400 to-yellow-500 text-[#173C2A] border-white shadow-[0_4px_0_rgb(161,98,7)] hover:from-yellow-300'
                       }
                     `}
                   >

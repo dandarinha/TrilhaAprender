@@ -2449,3 +2449,38 @@ body,
     padding-block: .55rem !important;
   }
 }
+
+/* =============================================================
+   CONTRASTE FINAL — superfícies claras e estados pedagógicos
+============================================================= */
+.game-layout .activity-command-hint {
+  color: #FFF4E8 !important;
+  background: #07391F !important;
+  border-color: #FF9A5C !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+.game-layout .adventure-curiosity .text-\[\#6A9876\],
+.game-layout .adventure-curiosity .text-\[\#0B4D2B\] {
+  color: #0B4D2B !important;
+}
+.game-layout .adventure-curiosity .text-\[\#B9270A\] {
+  color: #7A200F !important;
+}
+.game-layout button:disabled {
+  opacity: .82 !important;
+}
+.game-layout .game-stage .text-white\/25,
+.game-layout .game-stage .text-white\/35,
+.game-layout .game-stage .text-white\/45 {
+  color: #DCEBDD !important;
+  opacity: 1 !important;
+}
+.game-layout .game-stage .bg-white\/20 {
+  background-color: rgba(255, 244, 232, .28) !important;
+}
+.teacher-page button:disabled,
+.teacher-page input:disabled,
+.teacher-page select:disabled {
+  opacity: .78 !important;
+}

@@ -158,6 +158,25 @@ async function createTables() {
     COLLATE=utf8mb4_unicode_ci
   `);
 
+  await execute(`
+    CREATE TABLE IF NOT EXISTS paws_operations (
+      operation_id VARCHAR(80) NOT NULL,
+      student_id VARCHAR(36) NOT NULL,
+      amount INT NOT NULL,
+      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (operation_id),
+      KEY idx_paws_operations_student (student_id),
+      CONSTRAINT fk_paws_operations_student
+        FOREIGN KEY (student_id)
+        REFERENCES students(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+    )
+    ENGINE=InnoDB
+    DEFAULT CHARSET=utf8mb4
+    COLLATE=utf8mb4_unicode_ci
+  `);
+
   console.log(
     "Tabelas do jogo verificadas com sucesso."
   );

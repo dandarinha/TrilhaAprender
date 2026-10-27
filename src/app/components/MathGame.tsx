@@ -858,7 +858,7 @@ export function CountingGame() {
               onClick={() => handleClick(option)}
               disabled={locked || gameOver}
               aria-label={`Resposta ${option}`}
-              className="bg-gradient-to-b from-yellow-400 to-yellow-500 text-white border-2 sm:border-4 border-white shadow-[0_3px_0_rgb(161,98,7)] sm:shadow-[0_4px_0_rgb(161,98,7)] rounded-xl sm:rounded-2xl font-black text-2xl sm:text-5xl py-2 sm:py-5 disabled:opacity-60 transition-all"
+              className="bg-gradient-to-b from-yellow-400 to-yellow-500 text-[#173C2A] border-2 sm:border-4 border-white shadow-[0_3px_0_rgb(161,98,7)] sm:shadow-[0_4px_0_rgb(161,98,7)] rounded-xl sm:rounded-2xl font-black text-2xl sm:text-5xl py-2 sm:py-5 disabled:opacity-60 transition-all"
               style={{
                 fontFamily: 'var(--font-display)',
               }}
