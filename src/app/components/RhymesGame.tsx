@@ -51,7 +51,7 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const PAIRS_PER_ROUND = 3;
-const ROUND_TIME_SECONDS = 15;
+const ROUND_TIME_SECONDS = 20;
 
 export default function RhymesGame() {
   const {

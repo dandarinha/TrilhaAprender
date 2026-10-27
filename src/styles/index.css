@@ -2484,3 +2484,32 @@ body,
 .teacher-page select:disabled {
   opacity: .78 !important;
 }
+
+/* Curiosidades: contraste reforçado em qualquer tela e tema de jogo. */
+.game-layout .adventure-curiosity,
+.game-layout .curiosity-card {
+  background: #FFF4E8 !important;
+  color: #000000 !important;
+  border: 3px solid #0B4D2B !important;
+  box-shadow: 0 4px 0 rgba(11, 77, 43, .28) !important;
+}
+.game-layout .adventure-curiosity p,
+.game-layout .curiosity-card p {
+  color: #000000 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+.game-layout .adventure-curiosity p[class*="uppercase"],
+.game-layout .curiosity-card p[class*="uppercase"] {
+  color: #7A200F !important;
+  font-weight: 900 !important;
+}
+.game-layout .adventure-curiosity p[style],
+.game-layout .curiosity-card p[style] {
+  color: #0B4D2B !important;
+  font-weight: 900 !important;
+}
+.game-layout .adventure-curiosity svg,
+.game-layout .curiosity-card svg {
+  color: #7A200F !important;
+}
