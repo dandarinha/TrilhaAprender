@@ -283,18 +283,22 @@ const LEVELS: Level[] = [
   },
 ];
 
-function shuffleArray<T>(array: T[]): T[] {
+function shuffleArray<T>(array: T[], seed: number): T[] {
   const shuffled = [...array];
-
+  let state = (seed >>> 0) || 1;
+  const nextRandom = () => {
+    state = (1664525 * state + 1013904223) >>> 0;
+    return state / 4294967296;
+  };
   for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(nextRandom() * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
-
   return shuffled;
 }
 
 type Figure = {
+  id: string;
   word: string;
   emoji: string;
   syllable: string | null;
@@ -358,20 +362,23 @@ export default function SyllableMatchGame() {
   const currentDifficulty = difficultyInfo[level.difficulty];
 
   const figures = useMemo<Figure[]>(() => {
-    const targets: Figure[] = level.bank.map((target) => ({
+    const targets: Figure[] = level.bank.map((target, index) => ({
+      id: `target-${levelIndex}-${index}`,
       word: target.word,
       emoji: target.emoji,
       syllable: target.syllable,
     }));
 
-    const distractors: Figure[] = level.distractors.map((distractor) => ({
+    const distractors: Figure[] = level.distractors.map((distractor, index) => ({
+      id: `distractor-${levelIndex}-${index}`,
       word: distractor.word,
       emoji: distractor.emoji,
       syllable: null,
     }));
 
-    return shuffleArray<Figure>([...targets, ...distractors]);
-  }, [level]);
+    // A mesma rodada mantém a mesma disposição após qualquer re-renderização.
+    return shuffleArray<Figure>([...targets, ...distractors], levelIndex + 1);
+  }, [level, levelIndex]);
 
   // Limpa o progresso somente quando o nível muda.
   // Um erro não deve apagar as sílabas que já foram encontradas.
@@ -381,7 +388,7 @@ export default function SyllableMatchGame() {
   }, [levelIndex, level.consonant]);
 
   const handlePick = (fig: Figure) => {
-    if (wrongIds.includes(fig.word)) {
+    if (wrongIds.includes(fig.id)) {
       return;
     }
 
@@ -411,7 +418,7 @@ export default function SyllableMatchGame() {
     // Distrator
     setWrongIds((currentWrongIds) => [
       ...currentWrongIds,
-      fig.word,
+      fig.id,
     ]);
 
     handleWrong();
@@ -419,7 +426,7 @@ export default function SyllableMatchGame() {
     transitionTimeoutRef.current = setTimeout(() => {
       transitionTimeoutRef.current = null;
       setWrongIds((currentWrongIds) =>
-        currentWrongIds.filter((word) => word !== fig.word)
+        currentWrongIds.filter((id) => id !== fig.id)
       );
     }, 700);
   };
@@ -533,11 +540,11 @@ export default function SyllableMatchGame() {
               fig.syllable != null &&
               foundSyllables.includes(fig.syllable);
 
-            const isWrong = wrongIds.includes(fig.word);
+            const isWrong = wrongIds.includes(fig.id);
 
             return (
               <div
-                key={fig.word}
+                key={fig.id}
                 className="relative w-[30%] sm:w-[21%] aspect-square"
               >
                 {!isFound && (
